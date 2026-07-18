@@ -1,1337 +1,310 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Stanford CS 120: Introduction to AI Safety, Autumn 2026.">
 
-  <meta property="og:site_name" content="Stanford CS120" />
-  <meta property="og:type" content="article" />
-  <meta property="og:title" content="CS120: Introduction to AI Safety" />
-  <meta property="og:description" content="Introduction to AI Safety" />
-  <meta property="og:url" content="https://cs120.stanford.edu/" />
-  <meta property="og:image" content="https://web.stanford.edu/class/cs120//images/stanfordlogo.jpg" />
+  <meta property="og:site_name" content="Stanford CS 120">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="CS 120: Introduction to AI Safety — Autumn 2026">
+  <meta property="og:description" content="Technical and socio-technical approaches to understanding, evaluating, auditing, and governing AI systems.">
+  <meta property="og:url" content="https://stanford-cs120.github.io/fall2026/">
+  <meta property="og:image" content="https://stanford-cs120.github.io/fall2026/images/stanfordlogo.png">
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="CS120: Introduction to AI Safety" />
-  <meta name="twitter:description" content="Introduction to AI Safety" />
-  <meta name="twitter:url" content="https://cs120.stanford.edu/" />
-  <meta name="twitter:image" content="https://web.stanford.edu/class/cs329h/images/stanfordlogo.jpg" />
-  <meta name="twitter:site" content="@mlamparth" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CS 120: Introduction to AI Safety — Autumn 2026">
+  <meta name="twitter:description" content="Technical and socio-technical approaches to understanding, evaluating, auditing, and governing AI systems.">
+  <meta name="twitter:image" content="https://stanford-cs120.github.io/fall2026/images/stanfordlogo.png">
 
-  <title>Stanford CS120 | Introduction to AI Safety</title>
-
-  <!-- bootstrap -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
-  <!-- Google fonts -->
-  <link href='http://fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
-
-  <!-- Google Tag Manager -->
-  <script>(function (w, d, s, l, i) {
-      w[l] = w[l] || []; w[l].push({
-        'gtm.start':
-          new Date().getTime(), event: 'gtm.js'
-      }); var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-MQGJWPF');</script>
-  <!-- End Google Tag Manager -->
-
-  <link rel="stylesheet" type="text/css" href="style.css" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
+  <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/">
+  <link rel="stylesheet" href="style.css">
+  <title>Stanford CS 120 | Introduction to AI Safety | Autumn 2026</title>
 </head>
 
 <body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MQGJWPF" height="0" width="0"
-      style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
+  <a class="skip-link" href="#main">Skip to main content</a>
 
-  <!-- <script src="header.js"></script> -->
-  <!-- Navbar -->
-  <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header">
-        <a class="navbar-brand brand" href="index.html">CS120 Home</a>
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-          data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="index.html#course">Overview</a></li>
-          <li><a href="index.html#instructors">Instructors</a></li>
-          <li><a href="index.html#logistics">Logistics</a></li>
-          <li><a href="index.html#grading">Grading</a></li>
-          <li><a href="index.html#curriculum">Curriculum</a></li>
-          <li><a href="index.html#related">Related Courses</a></li>
-        </ul>
+  <nav class="site-nav" aria-label="Primary navigation">
+    <div class="nav-inner">
+      <a class="brand" href="#top">CS 120</a>
+      <div class="nav-links">
+        <a href="#overview">Overview</a>
+        <a href="#people">People</a>
+        <a href="#logistics">Logistics</a>
+        <a href="#schedule">Schedule</a>
+        <a href="#coursework">Course work</a>
       </div>
     </div>
   </nav>
 
-  <!-- Header -->
-  <div id="header" style="text-align:center">
-    <img src="images/blank.png" class="logo-left">
-    <a href="http://stanford.edu/">
-      <img src="images/stanfordlogo.png" class="logo-right">
-    </a>
-    <h1>CS120: Introduction to AI Safety</h1>
-    <h3>Fall 2025</h3>
-  </div>
-
-
-  <div class="container sec" id="course">
-    <h2>Overview</h2>
-    <p>What is safe AI, and how do we make it? CS120 explores this question, focusing on the technical challenges of creating reliable, ethical, and aligned AI systems. We distinguish between model-specific and systemic safety issues, from examining fairness and data limitations to adversarial vulnerabilities and embedding desired behavior in AI. While primarily focusing on current solutions and their limitations through CS publications, we will also discuss socio-technical concerns of modern AI deployment, how oversight of intelligence could look like, and what future risks we might face.</p>
-    <p>Topics will span reinforcement learning, computer vision, and natural language processing, focusing on interpretability, robustness, and evaluations. You will gain insights into the complexities and problems of why ensuring AI safety and reliability is challenging through lectures, readings, quizzes, and a final project. This course aims to prepare you to critically assess and contribute to safe AI development, equipping them with knowledge of cutting-edge research and ongoing debates in the field.</p>
-    
-    <!-- <p>Until start of classes, details on this website can be changed (including grading).</p> -->
-
-
-  <div class="sechighlight">
-    <div class="container sec" id="instructors">
-      <div class="col-md-3">
-        <h3>Instructor</h3>
-        <div class="instructor">
-          <a target="_blank" rel="noopener noreferrer" href="https://www.maxlamparth.com">
-            <div class="instructorphoto"><img src="images/lamparth.jpg"></div>
-            <div>Max Lamparth</div>
-          </a>
-        </div>
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">Stanford University · Autumn 2026</p>
+        <h1>CS 120: Introduction to AI Safety</h1>
+        <p class="hero-subtitle">Human inputs, unintended effects, evaluation, auditability, and governance</p>
       </div>
-      <div class="col-md-3">
-        <h3>Course Assistant</h3>
-        <div class="instructor">
-          <a rel="noopener noreferrer" target="_blank" href="https://profiles.stanford.edu/liza-pertseva">
-            <div class="instructorphoto"><img src="images/liza.jpg"></div>
-            <div>Liza Pertseva</div>
-          </a>
-        </div>
+      <a href="https://www.stanford.edu/" aria-label="Stanford University home page">
+        <img class="stanford-logo" src="images/stanfordlogo.png" alt="Stanford University">
+      </a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="notice-wrap" aria-label="Planning notice">
+      <div class="notice">
+        <strong>Course website under construction.</strong>
+        Topics, policies, staffing, room assignment, and course-platform links are tentative and will be updated before the quarter begins.
+        <span class="last-updated">Last updated July 18, 2026.</span>
       </div>
-      <div class="col-md-3">
-        <h3>Course Assistant</h3>
-        <div class="instructor">
-          <a rel="noopener noreferrer" target="_blank" href="https://profiles.stanford.edu/naomi-solomon">
-            <div class="instructorphoto"><img src="images/naomi.jpg"></div>
-            <div>Naomi Solomon</div>
-          </a>
-        </div>
+    </section>
+
+    <section class="section" id="overview">
+      <div class="section-heading">
+        <p class="section-kicker">Course overview</p>
+        <h2>What is safe AI, and how do we make it?</h2>
       </div>
-      <div class="col-md-3">
-        <!-- <h3> &nbsp;</h3> -->
-        <div class="instructor">
-          <a rel="noopener noreferrer" target="_blank" href="">
-            <div class="classlogo"><img src="images/cs120_sticker.png" class="logo-second"></div>
-            <div></div>
-          </a>
-        </div>
+
+      <p>CS 120 explores this question through the technical and socio-technical challenges of understanding, evaluating, and governing AI systems. We focus on the role of human input in the training process, unintended effects of AI development and deployment, and scalable evaluation for increasingly capable systems.</p>
+
+      <p>Through computer science research and complementary work from adjacent fields, we will examine the labor and institutions behind AI, how evaluation is defined and audited, what oversight of AI systems could look like, and what future risks we might face. Topics span data work, foundation models, and governance, with emphasis on robustness, evaluation, and auditability.</p>
+
+      <p>Through lectures, readings, short quizzes, and a final project, students will learn to critically assess and contribute to safe AI development. There are no official prerequisites, although familiarity with machine learning and statistics is recommended.</p>
+
+      <div class="theory-card">
+        <h3>Working theory of the course</h3>
+        <p>AI safety depends on how human inputs, data, and judgments are produced and integrated; what unintended effects arise as models amplify and recirculate them; and whether the resulting systems can be meaningfully evaluated, audited, and governed.</p>
       </div>
+
+      <div class="three-column" aria-label="Course themes">
+        <article class="theme-card">
+          <span class="theme-number">01</span>
+          <h3>Human inputs</h3>
+          <p>Who produces data and feedback? How are judgments elicited, aggregated, and translated into model behavior?</p>
+        </article>
+        <article class="theme-card">
+          <span class="theme-number">02</span>
+          <h3>Unintended effects</h3>
+          <p>How do models amplify, recirculate, or reshape inputs once they are embedded in products and institutions?</p>
+        </article>
+        <article class="theme-card">
+          <span class="theme-number">03</span>
+          <h3>Evaluation and audit</h3>
+          <p>What evidence supports safety claims, who can inspect it, and what forms of oversight are credible at scale?</p>
+        </article>
+      </div>
+
+      <h3>Learning goals</h3>
+      <ul class="check-list">
+        <li>Identify where assumptions, values, and human judgments enter the AI development lifecycle.</li>
+        <li>Analyze technical failures together with deployment context, incentives, labor, and institutional constraints.</li>
+        <li>Assess the validity and limitations of benchmarks, red-team exercises, interpretability methods, and audits.</li>
+        <li>Design or critique an evaluation, audit, or governance intervention for an AI system.</li>
+      </ul>
+    </section>
+
+    <section class="section section-tinted" id="people">
+      <div class="section-heading">
+        <p class="section-kicker">Teaching team</p>
+        <h2>People</h2>
+      </div>
+
+      <div class="people-grid">
+        <article class="person-card">
+          <img class="person-photo" src="images/zachary-robertson.jpg" alt="Placeholder for a photograph of Zachary Robertson">
+          <div>
+            <p class="person-role">Instructor</p>
+            <h3>Zachary Robertson</h3>
+            <p>Contact information and office hours will be posted before the quarter begins.</p>
+          </div>
+        </article>
+
+        <article class="person-card person-card-muted">
+          <div class="person-photo ca-placeholder" aria-hidden="true">CA</div>
+          <div>
+            <p class="person-role">Course assistants</p>
+            <h3>To be announced</h3>
+            <p>Course-assistant information will be added after staffing is confirmed.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="logistics">
+      <div class="section-heading">
+        <p class="section-kicker">Current planning information</p>
+        <h2>Logistics</h2>
+      </div>
+
+      <dl class="logistics-grid">
+        <div>
+          <dt>Course</dt>
+          <dd>CS 120: Introduction to AI Safety</dd>
+        </div>
+        <div>
+          <dt>Quarter</dt>
+          <dd>Autumn 2026</dd>
+        </div>
+        <div>
+          <dt>Meeting time</dt>
+          <dd>Tuesdays and Thursdays, 11:30 a.m.–12:50 p.m. <span class="status">anticipated</span></dd>
+        </div>
+        <div>
+          <dt>Location</dt>
+          <dd>TBD; anticipated <a href="https://campus-map.stanford.edu/?id=04-510">Hewlett Teaching Center 102</a></dd>
+        </div>
+        <div>
+          <dt>Class meetings</dt>
+          <dd>September 22–December 3, 2026, excluding university no-class dates</dd>
+        </div>
+        <div>
+          <dt>Prerequisites</dt>
+          <dd>No official prerequisites; familiarity with machine learning and statistics is recommended</dd>
+        </div>
+      </dl>
+
+      <p class="small-note">The official Stanford calendar lists September 22 as the first day of Autumn Quarter instruction, November 3 as Democracy Day with no classes, November 23–27 as Thanksgiving Recess, and December 4 as the last day of classes. For this Tuesday/Thursday course, the final scheduled meeting is December 3. See the <a href="https://studentservices.stanford.edu/calendar-events/academic-calendars/future-academic-calendars/stanford-academic-calendar-2026-2027">Stanford 2026–27 Academic Calendar</a>.</p>
+    </section>
+
+    <section class="section section-tinted" id="schedule">
+      <div class="section-heading">
+        <p class="section-kicker">Provisional course map</p>
+        <h2>Tentative schedule</h2>
+      </div>
+
+      <p>This schedule is a planning scaffold rather than a final syllabus. Readings, lecture titles, assignments, and any guest speakers remain to be confirmed.</p>
+
+      <div class="table-wrap" role="region" aria-label="Tentative schedule" tabindex="0">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Week</th>
+              <th scope="col">Date</th>
+              <th scope="col">Module</th>
+              <th scope="col">Tentative topic</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td><td>Tue Sep 22</td><td>Framing</td>
+              <td>What counts as AI safety? Models, systems, and institutions</td>
+            </tr>
+            <tr>
+              <td></td><td>Thu Sep 24</td><td>Framing</td>
+              <td>How foundation models are built: data, objectives, and feedback</td>
+            </tr>
+            <tr>
+              <td>2</td><td>Tue Sep 29</td><td>Human inputs</td>
+              <td>Human feedback as training data</td>
+            </tr>
+            <tr>
+              <td></td><td>Thu Oct 1</td><td>Human inputs</td>
+              <td>Whose preferences? Subjectivity, pluralism, and aggregation</td>
+            </tr>
+            <tr>
+              <td>3</td><td>Tue Oct 6</td><td>Human inputs</td>
+              <td>Data work: collection, labeling, moderation, and labor</td>
+            </tr>
+            <tr>
+              <td></td><td>Thu Oct 8</td><td>Human inputs</td>
+              <td>Dataset decisions: curation, documentation, and provenance</td>
+            </tr>
+            <tr>
+              <td>4</td><td>Tue Oct 13</td><td>Unintended effects</td>
+              <td>Distribution shift, feedback loops, and recirculation</td>
+            </tr>
+            <tr>
+              <td></td><td>Thu Oct 15</td><td>Unintended effects</td>
+              <td>Deployment context: incentives, institutions, and downstream harms</td>
+            </tr>
+            <tr>
+              <td>5</td><td>Tue Oct 20</td><td>Evaluation</td>
+              <td>Evaluation as measurement: constructs, validity, and claims</td>
+            </tr>
+            <tr>
+              <td></td><td>Thu Oct 22</td><td>Evaluation</td>
+              <td>Benchmarks: contamination, gaming, and generalization</td>
+            </tr>
+            <tr>
+              <td>6</td><td>Tue Oct 27</td><td>Evaluation</td>
+              <td>Red teaming and adversarial evaluation</td>
+            </tr>
+            <tr>
+              <td></td><td>Thu Oct 29</td><td>Auditability</td>
+              <td>Interpretability and other evidence for audit</td>
+            </tr>
+            <tr class="no-class">
+              <td>7</td><td>Tue Nov 3</td><td>No class</td>
+              <td>Democracy Day</td>
+            </tr>
+            <tr>
+              <td></td><td>Thu Nov 5</td><td>Oversight</td>
+              <td>Human oversight and scalable supervision</td>
+            </tr>
+            <tr>
+              <td>8</td><td>Tue Nov 10</td><td>Evaluation</td>
+              <td>Evaluating increasingly capable systems</td>
+            </tr>
+            <tr>
+              <td></td><td>Thu Nov 12</td><td>Auditability</td>
+              <td>Access, documentation, and third-party evaluation</td>
+            </tr>
+            <tr>
+              <td>9</td><td>Tue Nov 17</td><td>Governance</td>
+              <td>Standards, regulation, assurance, and oversight institutions</td>
+            </tr>
+            <tr>
+              <td></td><td>Thu Nov 19</td><td>Integration</td>
+              <td>Auditing a deployed AI system: case study or guest lecture</td>
+            </tr>
+            <tr class="no-class">
+              <td>10</td><td>Tue Nov 24</td><td>No class</td>
+              <td>Thanksgiving Recess</td>
+            </tr>
+            <tr class="no-class">
+              <td></td><td>Thu Nov 26</td><td>No class</td>
+              <td>Thanksgiving Recess</td>
+            </tr>
+            <tr>
+              <td>11</td><td>Tue Dec 1</td><td>Project</td>
+              <td>Final-project workshop and peer feedback</td>
+            </tr>
+            <tr>
+              <td></td><td>Thu Dec 3</td><td>Synthesis</td>
+              <td>From human inputs to evaluable and accountable AI systems</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="coursework">
+      <div class="section-heading">
+        <p class="section-kicker">Provisional structure</p>
+        <h2>Course work</h2>
+      </div>
+
+      <div class="two-column">
+        <article class="info-card">
+          <h3>Readings and short quizzes</h3>
+          <p>Students should expect research papers and complementary readings from technical and socio-technical fields, accompanied by low-stakes quizzes or short responses.</p>
+        </article>
+        <article class="info-card">
+          <h3>Final project</h3>
+          <p>The course will culminate in a final project. Possible formats include an empirical evaluation, an audit or assurance design, a data or human-feedback study, a literature synthesis, or a governance analysis.</p>
+        </article>
+      </div>
+
+      <p>Exact grading weights, deadlines, team-size rules, attendance policies, late-day policies, and submission links are still under review. They will be published together so that the workload and course goals are internally consistent.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <p><strong>Stanford CS 120 · Autumn 2026</strong></p>
+      <p>Course website under construction.</p>
     </div>
-  </div>
-
-
-    <!-- <h3>Schedule Overview</h3> -->
-    <div class="table-responsive">
-      <table id="schedule" class="table table-hover">
-        <thead>
-          <tr>
-            <th>Week</th><th>Date</th><th>Lecturer</th>
-            <th>Topic</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><a href="#week1">Week 1</a></td><td>09/23/25</td><td>Max</td>
-            <td>What Does Safe AI Mean Anyways?</td>
-          </tr>
-          <tr>
-            <td></td><td>09/25/25</td><td>Max</td>
-            <td><strong>[Optional]</strong> Technical AI/Machine Learning Recap</td>
-          </tr>
-          <tr>
-            <td><a href="#week2">Week 2</a></td><td>09/30/25</td><td>Max</td>
-            <td>Reward Functions, Alignment, and Human Preferences</td>
-          </tr>
-          <tr>
-            <td></td><td>10/02/25</td><td>Max</td>
-            <td>Encoding Human Preferences in AI</td>
-          </tr>
-          <tr>
-            <td><a href="#week3">Week 3</a></td><td>10/07/25</td><td>Sydney Katz (Stanford)</td>
-            <td><strong>[Guest]</strong> Validation of AI Systems</td>
-          </tr>
-          <tr>
-            <td></td><td>10/09/25</td><td>Max</td>
-            <td>Data Is All You Need: The Impact of Data</td>
-          </tr>
-          <tr>
-            <td><a href="#week4">Week 4</a></td><td>10/14/25</td><td>Max</td>
-            <td>Needs for AI Safety Today: Beyond the Hype</td>
-          </tr>
-          <tr>
-            <td></td><td>10/16/25</td><td>Martin Castillo-Quintana (UChicago)</td>
-            <td><strong>[Guest]</strong> Social-Choice Theory for Engineers</td>
-          </tr>
-          <tr>
-            <td><a href="#week5">Week 5</a></td><td>10/21/25</td><td>Declan Grabb & Andrea Vallone (OpenAI)</td>
-            <td><strong>[Guest]</strong> AI and Mental Health</td>
-          </tr>
-          <tr>
-            <td></td><td>10/23/25</td><td>Max</td>
-            <td>Red Teaming, Adversarial Vulnerabilities, and Multi-Agent Systems</td>
-          </tr>
-          <tr>
-            <td><a href="#week6">Week 6</a></td><td>10/28/25</td><td>Max</td>
-            <td>Interpretability</td>
-          </tr>
-          <tr>
-            <td></td><td>10/30/25</td><td>Liza & Max</td>
-            <td>Formal Methods / Safe Human-AI Interaction</td>
-          </tr>
-          <tr>
-            <td><a href="#week7">Week 7</a></td><td>11/04/25</td><td>Max</td>
-            <td><strong>[Recorded/Optional Attendance]</strong> Electric Sheep: What Is Intelligence and Does It Want?</td>
-          </tr>
-          <tr>
-            <td></td><td>11/06/25</td><td>Nicholas Carlini (Anthropic)</td>
-            <td><strong>[Guest]</strong> Jailbreaks/Adversarial Robustness</td>
-          </tr>
-          <tr>
-            <td><a href="#week8">Week 8</a></td><td>11/11/25</td><td>Max & Naomi</td>
-            <td>Attributing Model Behavior at Scale: Evaluating AI Systems / AI Governance</td>
-          </tr>
-          <tr>
-            <td></td><td>11/13/25</td><td>Daniel Johnson (Transluce)</td>
-            <td><strong>[Guest]</strong> Towards A Science of Model Behavior</td>
-          </tr>
-          <tr>
-            <td><a href="#week9">Week 9</a></td><td>11/18/25</td><td>Max</td>
-            <td>Scalable Oversight: How to Supervise Advanced AI?</td>
-          </tr>
-          <tr>
-            <td></td><td>11/20/25</td><td>Deb Raji (UC Berkeley)</td>
-            <td><strong>[Guest]</strong> TBD</td>
-          </tr>
-          <tr>
-            <td><a href="#week10">Week 10</a></td><td>11/25/25</td><td><strong>[No class]</strong></td>
-            <td>Thanksgiving</td>
-          </tr>
-          <tr>
-            <td></td><td>11/27/25</td><td><strong>[No class]</strong></td>
-            <td>Thanksgiving</td>
-          </tr>
-          <tr>
-            <td><a href="#week11">Week 11</a></td><td>12/02/25</td><td>Liza</td>
-            <td><strong>[Optional]</strong> Final Project Co-Working and Feedback</td>
-          </tr>
-          <tr>
-            <td></td><td>12/04/25</td><td>Naomi / Max</td>
-            <td><strong>[Optional]</strong> Final Project Co-Working and Feedback</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    
-    
-
-  <div class="container sec" id="logistics">
-    <h2>Logistics</h2>
-
-    <h3>Class Information</h3>
-    <ul>
-        <li><strong>Class Number:</strong> CS 120</li>
-        <li><strong>Number of Students:</strong> 65 enrolled students</li>
-        <li><strong>Number of Units:</strong> 3 units</li>
-        <li><strong>Meeting Times:</strong> 2x80 minute lectures</li>
-        <li><strong>Time and Place:</strong> TuTh 3:00-4:20 PM in <a href="https://campus-map.stanford.edu/?id=04-510" target="_blank">Hewlett Teaching Center 102</a>. Classes are required in person.</li>
-	<li><strong>Course Email:</strong> cs120-teaching-team@stanford.edu (for all course-related questions and inquiries)</li>
-        <li><strong>Ed (Discussions/QA)</strong> <a href="https://edstem.org/us/courses/87624/discussion" target="_blank">Link</a></li>
-        <li><strong>Gradescope (Assignments)</strong> <a href="https://www.gradescope.com/courses/1142692" target="_blank">Link</a></li>
-        <li><strong>Office Hours:</strong> Link on <a href="https://stanford.zoom.us/j/96168970857?pwd=TuG5aitHrDQhZax255zfqj0rqAN0Ow.1" target="_blank">Zoom (Password: 966718)</a> (Wednesdays 9:00 - 9:30 am via Zoom, starting 10/01)</li>
-        <li><strong>Prerequisites:</strong> This course has no official requirements, although we recommend some knowledge about machine learning and statistics.</li>
-        <li><strong>Enrollment:</strong> No application. First-come first-served basis.</li>
-        <li><strong>Faculty Sponsor:</strong> Clark Barrett (CS)</li>
-        <li><strong>Past Iteration(s):</strong> (with links to slides and recordings)
-          <a href="https://github.com/maxlampe/cs120_website/tree/cs120_fall24" target="_blank">Fall 2024</a>,   
-          <a href="https://docs.google.com/document/d/1XlVsSHlQQfeWbOjJFjfCc44IZ4NX2_bEBFKg3YqRsGA/edit?usp=sharing" target="_blank">Spring 2024</a></li>
-    </ul>
-
-    <h3>Anonymous Feedback</h3>
-    <p>This <a href="https://docs.google.com/forms/d/e/1FAIpQLSe8zrDTDtquvyFCc1VYdCT47njvlaZwJ5w2Tt3L-7sQeRmKNQ/viewform" target="_blank">form </a> is completely anonymous and a way for you to share your thoughts, concerns and ideas with the CS 120 teaching team.</p>
-
-    <h3>Auditing The Class</h3>
-    <p>You are welcome to audit the class! Please reach out to me (Max) if you want to audit the class to ensure we do not reach the capacity of the classroom.</p>
-    <p>Please note that auditing is only allowed for matriculated undergraduates, matriculated graduate/professional students, postdoctoral scholars, visiting scholars, Stanford faculty, and Stanford staff. After checking with me, please fill out <a href="https://applygrad.stanford.edu/register/non-degree-auditor">this form</a> and submit it. Non-Stanford students cannot audit the course. The current Stanford auditing policy is stated here.</p>
-    <p>Also, if you are auditing the class, please be informed that audited courses are not recorded on an academic transcript and no official records are maintained for auditors. There will not be any record that they audited the course.</p>
-
-    <h3>Academic Integrity and the Honor Code</h3>
-    <p>Violating the Honor Code is a serious offense, even when the violation is unintentional. The Honor Code is available here. Students are responsible for understanding the University rules regarding academic integrity. In brief, conduct prohibited by the Honor Code includes all forms of academic dishonesty including and representing as one's own work the work of another. If students have any questions about these matters, they should contact their section instructor.</p>
-
-    <h3>Diversity, Equity and Inclusion</h3>
-    <p>Much of the writing on existential risk produced in the last few decades, especially the notion of longtermism and its implications, has been authored by white male residents of high income countries. Diverse perspectives on threats to the future of humanity enrich our understanding and improve creative problem-solving. We have intentionally pulled work from a broader range of scholars. We encourage students to consider not only the ideas offered by various authors, but also how their social, economic and political position informs their views.</p>
-    <p>This class provides a setting where individuals of all visible and nonvisible differences– including but not limited to race, ethnicity, national origin, cultural identity, gender, gender identity, gender expression, sexual orientation, physical ability, body type, socioeconomic status, veteran status, age, and religious, philosophical, and political perspectives–are welcome. Each member of this learning community is expected to contribute to creating and maintaining a respectful, inclusive environment for all the other members. If students have any concerns please reach out to Professor Barrett.</p>
-
-    <h3>Students with Documented Disabilities</h3>
-    <p>Students who need an academic accommodation based on the impact of a disability must initiate the request with the Office of Accessible Education (OAE). Professional staff will evaluate the request with required documentation, recommend reasonable accommodations, and prepare an Accommodation Letter for faculty dated in the current quarter in which the request is being made. Students should contact the OAE as soon as possible since timely notice is needed to coordinate accommodations. The OAE is located at 563 Salvatierra Walk (phone: 723-1066, URL: <a href="http://oae.stanford.edu">http://oae.stanford.edu</a>).</p>
-  </div>
-
-  <div class="container sec" id="grading">
-    <h2>Grading</h2>
-    <p>Each week, students are expected to do the <strong>required readings</strong> and <strong>submit quizzes</strong>. Towards the end, students will need to submit a <strong>final project</strong> (later quizzes will adjusted and reduced in scope). Final projects can range from running experiments to writing literature reviews and policy recommendations to accommodate for different backgrounds. The grading breakdown is:</p>
-
-    <ul>
-        <li><strong>50%</strong> quizzes (half from completion, half from correctness)</li>
-        <li><strong>33%</strong> final project</li>
-        <li><strong>12%</strong> peer review</li>
-        <li><strong>5%</strong> class attendance</li>
-    </ul>
-    Bonus/extra credit on top of final grade
-    <ul>
-      <li>(up to) <strong>6%</strong> for unused late days (1% per late day)</li>
-    </ul>
-
-    <div style="display: flex; gap: 20px;">
-      <table border="1">
-        <tr>
-          <th>Letter Grade</th>
-          <th>Percentage</th>
-        </tr>
-        <tr>
-          <td>A</td>
-          <td>89-100%</td>
-        </tr>
-        <tr>
-          <td>A-</td>
-          <td>86-88%</td>
-        </tr>
-        <tr>
-          <td>B+</td>
-          <td>83-85%</td>
-        </tr>
-        <tr>
-          <td>B</td>
-          <td>80-82%</td>
-        </tr>
-        <tr>
-          <td>B-</td>
-          <td>76-78%</td>
-        </tr>
-        <tr>
-          <td>C+</td>
-          <td>73-75%</td>
-        </tr>
-      </table>
-    
-      <table border="1">
-        <tr>
-          <th>Letter Grade</th>
-          <th>Percentage</th>
-        </tr>
-        <tr>
-          <td>C</td>
-          <td>69-72%</td>
-        </tr>
-        <tr>
-          <td>C-</td>
-          <td>66-68%</td>
-        </tr>
-        <tr>
-          <td>D+</td>
-          <td>63-65%</td>
-        </tr>
-        <tr>
-          <td>D</td>
-          <td>59-62%</td>
-        </tr>
-        <tr>
-          <td>D-</td>
-          <td>56-58%</td>
-        </tr>
-        <tr>
-          <td>F</td>
-          <td>0-55%</td>
-        </tr>
-      </table>
-    </div>
-
-    <p>While it's possible to receive an A+, only a few outstanding students will earn this grade.</p>
-
-
-    <h3>Quizzes</h3>
-    <p>Submit each weekly quiz (one per week, released by Thursday 3 pm in that week) by the following quiz release (i.e., 7 days later) on Gradescope. The quizzes are based on the content from the previous lectures and the listed readings. The quizzes will not cover readings marked as “optional”, unless they were explicitly covered in the lectures.</p>
-    <ul>
-      <li>Most questions will be multiple choice with one correct answer. There will be short free form/essay questions that will be graded as correct if they address the given question and refer to relevant content from the lecture and listed readings.</li>
-      <li>The point is to engage more with the material, not to burden you with a bunch of arbitrary homework. To this end, you get two grades per quiz — one for completion, and one for correctness.</li>
-      <li>You can submit quizzes an unlimited number of times, and your latest submission will be used for your grade.</li>
-      <li>If a quiz is not released on time, the delay will be added to the submission deadline.</li>
-      <li>Quizzes will cover guest lecturer classes.</li>
-    </ul>
-
-    <h3>Final Projects</h3>
-    <p>A third of the final grade will be determined by a final project, which needs to be submitted by 5 PM PST on 12/05/2025. <b>Check out our <a href="https://docs.google.com/document/d/1envnbQq5FCJxMn67QwXMKTdAhnMnGHGow_zcz82NfsE/edit?usp=sharing" target="_blank">Project Tips and Guide</a></b> document for more detailed instructions.</p>
-    <p>Are you <b>looking for a project partner?</b> Use our optional <a href="https://docs.google.com/forms/d/e/1FAIpQLScZtDxUpkPrBD4BSxvENMCqLrureJrP2vhD3arFgkYC-eUKAw/viewform?usp=dialog" target="_blank">final project matching form</a> for us to match you with someone!</p>
-    <ul>
-      <li>To accommodate for different backgrounds, final projects can range from running scientific experiments with a written summary to writing literature reviews and policy recommendations. </li>
-      <!-- <li>The final project proposal will be part of a quiz during the quarter and you can use office hours to get feedback if it will be sufficient. </li> -->
-      <li>Final projects will be peer-reviewed by fellow students.</li>
-      <li>You can submit a final project alone or as a group of up to three. We strongly recommend working in groups of three, as this usually increases the quality and scope of the project, while also increasing the likelihood of a project turning into a paper.</li>
-      <li>The final submission will be a pdf and, for projects involving code, a complementary GitHub repository.</li>
-    </ul>
-
-    <!-- <h4>Find a Project Idea</h4> -->
-
-    <h4>Project Guidelines</h4>
-    <ul>
-      <li>5-8 page PDF, excluding references; appendices can be added without limitation. The goal is to be concise, not to reach the maximum page limit.</li>
-      <li>For groups of students, we expect a more comprehensive project and more than 6 pages.</li>
-      <li>Choose a topic related to the core subjects of CS120. This could be an issue from the lectures or readings that you are passionate about.</li>
-      <li>Regardless of your project's focus (technical, sociotechnical, or governance), it must follow the structure of a scientific paper.</li>
-      <li>Templates: <a href="https://drive.google.com/file/d/19suNEoESkxOIHvUyeuSVqW-oBIo9u0r_/view?usp=share_link" target="_blank">LaTeX</a> and <a href="https://docs.google.com/document/d/1BMdCLS55bS9FtjIAhwL0sP_XZ5RZ9XO6fkA1EOuQvUY/edit?usp=sharing" target="_blank">Google Docs</a> submissions.</li>
-      <li>You will need to submit a regular and anonymized PDF of your final project. Instructions for anonymization are stated in the respective templates.</li>
-    </ul>
-    <p>The first two pages should concise of:</p>
-    <ul>
-      <li><strong>Abstract:</strong> A standalone summary of your paper.</li>
-      <li><strong>Introduction:</strong> Motivation and definition of the problem, its relevance, your approach, and key contributions.</li>
-      <li><strong>Related Work:</strong> A review of existing studies on similar problems, positioning your work relative to them (what did you do differently?).</li>
-    </ul>
-
-    <p>It is not sufficient to only cite papers from the curriculum. You are expected to explore further related works. A good starting point could be to examine the references in a lecture paper or look up which works cite that paper online. The last half page should be a</p>
-    <ul>
-      <li><strong>Discussion:</strong> A summary of your work, potential directions for future research, and the limitations of your project (e.g., how generalizable it is, what cases it doesn't cover, simplifications made).</li>
-    </ul>
-
-    <p>The middle section (pages 3 onward) will depend on the nature of your project. We encourage you to study different papers from the reading list to get a better feel for how they approach their topics.</p>
-
-    <p>For project ideas, you can also study recent publications from different conferences and workshops:</p>
-    <ul>
-      <li>(technical) <a href="https://colmweb.org/AcceptedPapers.html" target="_blank">CoLM 2024 Accepted Papers</a>, <a href="https://neurips.cc/virtual/2023/workshop/66496" target="_blank">NeurIPS 2023 Solar Workshop Papers</a>, <a href="https://neurips.cc/virtual/2023/workshop/66496" target="_blank">NeurIPS 2023 Attrib Workshop Papers</a></li>
-      <li>(socio-technical) <a href="https://dl.acm.org/doi/pdf/10.1145/3600211" target="_blank">AIES 2023 Proceedings</a>, <a href="https://dl.acm.org/doi/pdf/10.1145/3630106" target="_blank">FAccT 2024 Proceedings</a></li>
-      <li>(technical governance) <a href="https://www.taig-icml.com/accepted-papers" target="_blank"> ICML 2025 Technical AI Governance Workshop</a>, <a href="https://www.genlaw.org/2024-icml-papers" target="_blank"> ICML 2024 Generative AI + Law Workshop </a></li>
-      <li>(policy brief) <a href="https://openreview.net/group?id=ICML.cc/2025/Position_Paper_Track#tab-accept-oral" target="_blank"> ICML 2025 Position Papers</a></li> (Not exactly policy briefs, but matching format and similar content (linking a problem to a solution backed up by argumentation))
-    </ul> 
-    <p>Here are a few <a href="https://docs.google.com/document/d/1JCYEIoUuranihfOrxrLSS78XdwlWokITsyas1R_YQ6E/edit?usp=sharing" target="_blank">example project ideas</a>.</p>
-    <p>We <strong>do not expect</strong> you to write a final project on par with any of these publications. If you are unsure about the appropriate project scope, but have a topic in mind, we can discuss details after class or in office hours. Quiz 6 will also help you find a final project topic.</p>
-
-
-    <h3>Peer Review</h3>
-    <p>A twelfth of the final grade will be determined by the quality of two peer reviews.</p>
-    <ul>
-      <li>Each student will be assigned two final projects to review.</li>
-      <li>The peer review should be one page long and submitted as a pdf. </li>
-      <li>The <strong>peer review should also be anonymized</strong>, such that we can share it with the original project authors. </li>
-      <li>You can use the final project templates as basis for the peer reviews. Please find peer review instructions in this <a href="https://docs.google.com/document/d/1PGwB9dO_QrkbfjqzM2Z3fGCoKSrPRLPy2P80q8YqFNA/edit?usp=sharing" target="_blank"> Google Doc</a>.</li>
-    </ul>
-
-    <h3>Late Days</h3>
-    <p>All students get 6 late days at the start of the course.</p>
-    <ul>
-      <li>Each late day grants a 24-hour extension on one assignment (quiz, final project, or peer review) deadline.</li>
-      <li>You <strong>cannot use more than 2 late days</strong> for the <strong>peer review</strong> due to the final grading deadline.</li>
-      <li>Any assignments turned in after all late days have been used up will be marked missing and not accepted. </li>
-      <li>At the end of the course, each unused late day you still have is 1% extra credit (up to 6% extra credit).</li>
-    </ul>
-
-    <h3>Attendance</h3>
-    <p>All classes have mandatory attendance.</p>
-    <ul>
-      <li>You can miss only two classes to get the full attendance grade of 5% and 0% otherwise.</li>
-      <li>Attendance is checked at the start and end of each lecture.</li>
-      <li>Office hours are not mandatory. </li>
-      <li>The second lecture (Technical AI/Machine Learning Recap) is the only optional lecture that will also not be counted towards the attendance bonus. </li>
-    </ul>
-  </div>
-
-  <div class="container sec" id="curriculum" style="margin-top:-20px">
-    <h2>Curriculum</h2>
-
-    <p>The rest of this document contains the schedule of assigned and optional readings for each week. Course slides, lecture recordings, and quizzes will be linked below, though we do not guarantee that all lectures will be recorded, especially with guest speakers. </p>
-    <p>Readings can be subject to change throughout the course, but will not change more than 14 days in advance. Please check the curriculum here rather than a printed or duplicated copy.</p>
-
-    <h3>How to Read Research Papers</h3>
-
-    This course builds mainly on technical AI research papers as readings. If you haven't read AI research papers before, we recommend checking out these resources:
-    <ul>
-      <li><a href="https://developer.nvidia.com/blog/how-to-read-research-papers-a-pragmatic-approach-for-ml-practitioners/" target="_blank">How to Read Research Papers: A Pragmatic Approach for ML Practitioners</a> - NVIDIA</li>
-      <li><a href="https://www.youtube.com/watch?v=733m6qBH-jI" target="_blank">Career Advice / Reading Research Papers - Stanford CS230: Deep Learning</a> - Andrew Ng</li>
-    </ul>
-
-    <h3>Newspaper Access</h3>
-
-    Given the rapid development and social impact of AI, the course will be referring to some news articles as sources. 
-    These will be either publicly available or through Stanford.
-    See <a href="https://guides.library.stanford.edu/newspapers">here</a> for how to access general newspapers (e.g., NYT, WaPo, WSJ, or the Atlantic) or <a href="https://guides.library.stanford.edu/c.php?g=1190709&p=8709008">here</a> for sources like Foreign Affairs through Stanford.
-
-    <h3>Deadlines</h3>
-    <ul>
-      <li>Weekly quizzes are due every Thursday by 3 pm</li>
-      <li>12/05/2025: Final project due</li>
-      <li>12/12/2025: Peer review due</li>
-    </ul>
-
-    <div class="table-responsive">
-      <table id="schedule" class="table table-hover">
-        <thead>
-          <tr>
-            <th>Week</th><th>Date</th><th>Lecturer</th>
-            <th>Topic</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td id="week1">Week 1</td><td>09/23/25</td><td>Max</td>
-            <td>What Does Safe AI Mean Anyways?</td><td></td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture <a href="https://drive.google.com/file/d/1QOO6nb8cdUjfy81oy1kkgVv86c7GL4Kc/view?usp=share_link" target="_blank">Slides</a> + 
-                (Recording unavailable due to technical difficulties. Alternatively, see last year's <a href="https://stanford.zoom.us/rec/share/RtjF4CJACRiTZbMri5LUVNGaidrmTQQ_5ZG8PI6uKXHraqFqo_0nhtjeMoPLoraR.4j9sV6835njE5Dwi" target="_blank">recording</a> of lecture 1)</p>
-              Readings (Required)
-              <ul>
-                <!-- <li><a href="link" target="_blank">Text</a></li> -->
-                <li><a href="https://arxiv.org/pdf/1606.06565" target="_blank">Concrete Problems in AI Safety</a> 
-                  - Amodei et al. 2016  <br> Preprint <br> 
-                  Read the abstract and sections 1 and 2 </li>
-                <li><a href="https://dl.acm.org/doi/pdf/10.1145/3531146.3533088" target="_blank">Taxonomy of Risks posed by Language Models</a> 
-                  - Weidinger et al. 2022<br> FAccT Publication <br></li>
-                <li><a href="https://www.normaltech.ai/p/ai-safety-is-not-a-model-property" target="_blank">AI safety is not a model property</a> 
-                  - Narayanan and Kapoor 2024<br> Blog post <br></li>
-                <li><a href="https://www.sciencedirect.com/science/article/pii/S0004370221001065" target="_blank">Hard Choices in Artificial Intelligence</a> 
-                  - Dobbe et al. 2021  <br> Artificial Intelligence publication <br> 
-                  Read the abstract and section 1</li>  
-              </ul>
-
-              Optional Readings (Not Required)
-              <ul>
-                TBD
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td></td><td>09/25/25</td><td>Max</td>
-            <td><strong>[Optional]</strong> Technical AI/Machine Learning Recap</td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture <a href="https://drive.google.com/file/d/12e8UZ6ZaGjkIxj7WSzglZhy-NLg2j5mK/view?usp=share_link" target="_blank">Slides</a> + 
-                <a href="https://stanford.zoom.us/rec/share/43il1iTdzB_V0otRsK5QODTCTcXRkYdapxOAsd6oHujqH3lUMXEpkUSN_KY19hGN.uGqMwxo40Q1RGHG9" target="_blank">Recording</a>
-              </p>
-              Readings (Required)
-              <ul>
-                <!-- <li><a href="link" target="_blank">Text</a></li> -->
-                None
-              </ul>
-
-              Optional Readings (Not Required)
-              <ul>
-                <li><a href="https://mitsloan.mit.edu/ideas-made-to-matter/machine-learning-explained" target="_blank">Machine Learning, Explained</a> 
-                  - Brown 2021 <br> Beginner-friendly overview of machine learning field </li>
-                <li><a href="https://www.youtube.com/watch?v=aircAruvnKk" target="_blank">But what is a neural network?</a> 
-                  - 3Blue1Brown 2017  <br> Youtube video</li>
-                <li><a href="https://www.youtube.com/watch?v=IHZwWFHWa-w" target="_blank">Gradient descent, how neural networks learn</a> 
-                  - 3Blue1Brown 2017  <br> Youtube video</li>
-                <li><a href="https://www.youtube.com/watch?v=Ilg3gGewQ5U" target="_blank">What is backpropagation really doing?</a> 
-                  - 3Blue1Brown 2017  <br> Youtube video</li>
-                <li><a href="https://www.youtube.com/watch?v=zjkBMFhNj_g" target="_blank">Intro to Large Language Models</a> 
-                  - Kaparthy 2024  <br> Youtube video</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td id="week2">Week 2</td><td>09/30/25</td><td>Max</td>
-            <td>Reward Functions, Alignment, and Human Preferences</td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture <a href="https://drive.google.com/file/d/1uI8bVRtzJaxjLz_K-UsHc59laFfm6UW5/view?usp=sharing" target="_blank">Slides</a> + 
-                <a href="https://stanford.zoom.us/rec/share/FOFksziPtBP4vpboE4OKbnsoM5VJ_joPvoWjFs9QayCSXO5NRMaPn6dx_WJYL-ly.w0de81_H-XwIWAQU" target="_blank">Recording</a>
-              </p>
-              Readings (Required)
-              <ul>
-                <!-- <li><a href="link" target="_blank">Text</a></li> -->
-                <li><a href="https://www.deepmind.com/blog/specification-gaming-the-flip-side-of-ai-ingenuity" target="_blank">Specification gaming: the flip side of AI ingenuity</a> 
-                  - Krakovna et al. 2020  <br> Blog post from DeepMind</li>
-                <li><a href="https://arxiv.org/pdf/2203.02155.pdf" target="_blank">Training language models to follow instructions
-                  with human feedback</a> 
-                  - Ouyang et al. 2022  <br> Preprint from OpenAI, here is the accompanying <a href="https://openai.com/research/instruction-following" target="_blank">blog post</a> <br> 
-                  Read the blog post and in the paper only the abstract and the introduction </li>
-                <li><a href="https://openreview.net/pdf?id=bBLjms8nZE#:~:text=Because%20the%20reward%20model%20is,of%20collecting%20human%20preference%20data." target="_blank">Scaling Laws for Reward Model Overoptimization</a> 
-                  - Gao et al. 2022  <br> ICML publication <br> 
-                  Read only the abstract and the introduction </li>
-                <li><a href="https://openreview.net/forum?id=bx24KpJ4Eb" target="_blank">Open Problems and Fundamental Limitations of Reinforcement Learning from Human Feedback</a> 
-                  - Casper et al. 2023  <br> TMLR publication <br> 
-                  Read only the abstract, introduction (section 1), and section 3 up to 3.1 </li>
-              </ul>
-
-              Optional Readings (Not Required)
-              <ul>
-                <li><a href="https://arxiv.org/abs/1706.03741" target="_blank">Deep reinforcement learning from human preferences</a> 
-                  - Christiano et al. 2017  <br> Preprint form OpenAI/DeepMind <br></li>
-                <li><a href="https://openreview.net/forum?id=uydQ2W41KO" target="_blank">RLAIF: Scaling Reinforcement Learning from Human Feedback with AI Feedback</a> 
-                  - Lee et al. 2024  <br> ICML publication <br> 
-                  Read only the abstract and the introduction </li>
-                <li><a href="https://nips.cc/virtual/2023/invited-talk/73993" target="_blank">The Many Faces of Responsible AI</a> 
-                  - Aroyo 2023  <br> NeurIPS keynote</li>
-                <li><a href="https://arxiv.org/abs/2502.06059" target="_blank">We Need An Adaptive Interpretation of Helpful, Honest, and Harmless Principles</a> 
-                  - Huang et al. 2025  <br> Preprint</li>
-                <li><a href="https://doi.org/10.48550/arXiv.2306.07899" target="_blank">Artificial Artificial Artificial Intelligence: Crowd Workers Widely Use Large Language Models for Text Production Tasks</a> 
-                  - Veselovsky et al. 2023  <br> Preprint</li>
-                <li><a href="https://doi.org/10.48550/arXiv.2306.07899" target="_blank">The PRISM Alignment Dataset: What Participatory, Representative and Individualised Human Feedback Reveals About the Subjective and Multicultural Alignment of Large Language Models</a> 
-                  - Kirk et al. 2024  <br>NeurIPS publication</li>
-                <li><a href="https://link.springer.com/article/10.1007/s11098-025-02300-4?utm_source=rct_congratemailt&utm_medium=email&utm_campaign=oa_20250330&utm_content=10.1007%2Fs11098-025-02300-4" target="_blank">A matter of principle? AI alignment as the fair treatment of claims</a> 
-                  - Gabriel and Keeling 2025  <br>Philosophical Studies publication</li>
-              </ul>
-            </td>
-          <tr>
-            <td></td><td>10/02/25</td><td>Max</td>
-            <td>Encoding Human Preferences in AI</td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture <a href="https://drive.google.com/file/d/1-RdAdGX6RFY6-LwqoZLG0epQAZV22lAM/view?usp=sharing" target="_blank">Slides</a> + 
-                <a href="https://stanford.zoom.us/rec/share/AOWTwcZzWB2rZXvO0HO1MrgJLiwQQGpT_9y78UEfNtTxRS7_UMipNKKJ4aP7rmuC.TFHi02keZjuKjST7" target="_blank">Recording</a>
-              </p>
-              Readings (Required)
-              <ul>
-                <!-- <li><a href="link" target="_blank">Text</a></li> -->
-                <li><a href="https://arxiv.org/abs/2212.08073" target="_blank">Constitutional AI: Harmlessness from AI Feedback</a> 
-                  - Bai et al. 2022  <br> Preprint form Anthropic <br> 
-                  Read only the abstract and the introduction </li>
-                <li><a href="https://aclanthology.org/2023.findings-acl.847/" target="_blank">Discovering Language Model Behaviors with Model-Written Evaluations</a> 
-                  - Perez et al. 2023  <br> ACL publication <br> 
-                  Read only the abstract, introduction, and section 2 </li>
-                <li><a href="https://medium.com/@joaolages/direct-preference-optimization-dpo-622fc1f18707" target="_blank">Direct Preference Optimization (DPO) - A Simplified Explanation</a> 
-                  - Lages 2023  <br> Blog post </li>
-                <li><a href="https://openreview.net/pdf?id=HPuSIXJaa9" target="_blank">Direct Preference Optimization: Your Language Model is Secretly a Reward Model</a> 
-                  - Rafailov et al 2023  <br> NeurIPS publication <br> 
-                  Read only the abstract and the introduction </li>
-              </ul>
-
-              Optional Readings (Not Required)
-              <ul>
-                <li><a href="https://arxiv.org/pdf/2310.03716.pdf" target="_blank">A long way to go: Investigating length correlations in RLHF</a> 
-                  - Singhal et al. 2023  <br> CoLM publication <br> 
-                  Read only the abstract and the introduction </li>
-                <li><a href="https://arxiv.org/abs/2310.13595" target="_blank">Reward Model Interpretability via Optimal and Pessimal Tokens</a> 
-                  - Christian et al. 2025  <br>FAccT publication</li>
-                <li><a href="https://openreview.net/forum?id=6Mxhg9PtDE" target="_blank">Safety Alignment Should be Made More Than Just a Few Tokens Deep</a> 
-                  - Qi et al. 2025  <br>ICLR publication</li>
-                <li><a href="https://arxiv.org/abs/2310.13595" target="_blank">The History and Risks of Reinforcement Learning and Human Feedback</a> 
-                  - Lambert et al. 2023  <br> Preprint</li>
-                <li><a href="https://arxiv.org/abs/2409.12822v2" target="_blank">Unpacking DPO and PPO: Disentangling Best Practices for Learning from Preference Feedback</a> 
-                  - Ivison et al. 2024  <br> Preprint</li>
-                <li><a href="https://arxiv.org/abs/2406.09279" target="_blank">Language Models Learn to Mislead Humans via RLHF</a> 
-                  - Wen et al. 2024  <br> Preprint</li>
-                <li><a href="https://people.eecs.berkeley.edu/~russell/papers/russell-nips16-cirl.pdf" target="_blank">Cooperative Inverse Reinforcement Learning</a> 
-                  - Hadfield-Menell et al. 2016  <br>NeurIPS publication</li>
-                <li><a href="https://arxiv.org/abs/1711.02827" target="_blank">Inverse Reward Design</a> 
-                  - Hadfield-Menell et al. 2017  <br>NeurIPS publication</li>
-                <li><a href="https://arxiv.org/pdf/2504.07091" target="_blank">AssistanceZero: Scalably Solving Assistance Games</a> 
-                  - Laidlaw et al. 2025  <br>ICML publication</li>
-                <li><a href="https://arxiv.org/abs/2406.02900" target="_blank">Scaling Laws for Reward Model Overoptimization in Direct Alignment Algorithms</a> 
-                  - Rafailov et al. 2024  <br> Preprint</li>
-                <li><a href="https://arxiv.org/abs/2408.16984" target="_blank">Beyond Preferences in AI Alignment</a> 
-                  - Zhi-Xuan et al. 2024<br> Preprint <br>
-                  Read the abstract and the introduction (until end of page 3)</li>
-                <li><a href="https://openreview.net/forum?id=gQpBnRHwxM" target="_blank">Position: A Roadmap to Pluralistic Alignment</a> 
-                  - Soerensen et al. 2024<br> ICML Publication <br></li>
-                <li><a href="https://arxiv.org/abs/2407.02996" target="_blank">Are Large Language Models Consistent over Value-laden Questions?</a> 
-                  - Moore et al. 2024<br> Preprint <br></li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td id="week3">Week 3</td><td>10/07/25</td><td>Sydney Katz</td>
-            <td><strong>[Guest]</strong> Validation of AI Systems</td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture <a href="https://drive.google.com/file/d/1QGhv-aHIS2hR5igZX6Llr839Wzhu61ZJ/view?usp=share_link" target="_blank">Slides</a> + 
-                <a href="https://stanford.zoom.us/rec/play/CIskrbYCJ3LaF66xdbH2jZq9sXciOMuisHVY_jZCfyYmhF_Gd0YW5N8I6dWllDik2AXSAcEU5BLJmagh.M78lsRS--3fmyUkA?eagerLoadZvaPages=&accessLevel=meeting&canPlayFromShare=true&from=share_recording_detail&continueMode=true&componentName=rec-play&originRequestUrl=https%3A%2F%2Fstanford.zoom.us%2Frec%2Fshare%2FtsiVInPkt23Eef54zGIZBoh5jTTnXzLPHcNWiYny9NR9leHHbuKEVMBQIM9qb87m.bOO32ewQzStsj2N1&autoplay=true&startTime=1759874700000" target="_blank">Recording</a>
-              </p>
-              Readings (Required)
-              <ul>
-                <!-- <li><a href="link" target="_blank">Text</a></li> -->
-                None
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td></td><td>10/09/25</td><td>Max</td>
-            <td>Data Is All You Need: The Impact of Data</td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture <a href="https://drive.google.com/file/d/1ps97uSILwW4vE_CYsDVyZx99PnKNGwNM/view?usp=share_link" target="_blank">Slides</a> + 
-                <a href="https://stanford.zoom.us/rec/share/R3d-CIm5O962bIhDR6q_KtHj1tMfQNMFiUNswbC69BjE8B8jQ6LnAg7050BMyklC.GrezdeU5D0cuPe4i" target="_blank">Recording</a>
-              </p>
-              Readings (Required)
-              <ul>
-                <li><a href="https://openai.com/index/dall-e-2-pre-training-mitigations/" target="_blank">DALL·E 2 pre-training mitigations</a> 
-                  - OpenAI 2022  <br> OpenAI blog post </li>
-		            <li><a href="https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing" target="_blank">Machine Bias</a> 
-                  - Angwin et al. 2016  <br> ProRepublica article </li>
-                <li><a href="https://doi.org/10.48550/arXiv.2306.13141" target="_blank">On Hate Scaling Laws For Data-Swamps</a> 
-                  - Birhane et al. 2023  <br> Preprint <br> 
-                  Read the abstract and the introduction </li>
-		            <li><a href="https://arxiv.org/pdf/2412.06966" target="_blank">Machine Unlearning Doesn't Do What You Think: Lessons for Generative AI Policy, Research, and Practice</a> 
-                  - Cooper et al. 2024  <br> Preprint <br> 
-                  Read the abstract and sections 1 + 2</li>
-		            <li><a href="https://arxiv.org/pdf/2508.06601 " target="_blank">Deep Ignorance: Filtering Pretraining Data Builds Tamper-Resistant Safeguards into Open-Weight LLMs</a> 
-                  - O'Biran et al. 2025  <br> Preprint <br> 
-                  Read the abstract and the introduction</li>
-              </ul>
-
-              Optional Readings (Not Required)
-              <ul>
-                <li><a href="https://arxiv.org/abs/2001.08361" target="_blank">Scaling Laws for Neural Language Models</a> 
-                  - Kaplan, McCandlish et al. 2020  <br> Preprint </li>
-                <li><a href="https://arxiv.org/pdf/2305.07759.pdf" target="_blank">TinyStories: How Small Can Language Models Be and Still Speak Coherent English?</a> 
-                  - Eldan and Li 2023  <br> Preprint </li>
-                <li><a href="https://arxiv.org/abs/2306.11644" target="_blank">Textbooks Are All You Need</a> 
-                  - Gunasekar et al. 2023  <br> Preprint <br> 
-                  Read the abstract, introduction, and section 2.1 </li>
-                <li><a href="https://arxiv.org/abs/2401.06059" target="_blank">Investigating Data Contamination for Pre-training Language Models</a> 
-                  - Jian et al. 2024  <br> Preprint <br> 
-                  Read the abstract and the introduction </li>
-                <li><a href="https://arxiv.org/abs/2503.17514" target="_blank">Language Models May Verbatim Complete Text They Were Not Explicitly Trained On</a> 
-                  -  <br> Preprint </li>
-                <li><a href="https://openreview.net/forum?id=8Dy42ThoNe&referrer=%5Bthe%20profile%20of%20Yang%20Liu%5D(%2Fprofile%3Fid%3D~Yang_Liu3)" target="_blank">Large Language Model Unlearning</a> 
-                  - Yao et al. 2024  <br> NeurIPS <br> 
-                  Read the abstract and the introduction up to until 1.1 </li>
-                <li><a href="https://arxiv.org/abs/2310.02238" target="_blank">Who's Harry Potter? Approximate Unlearning for LLMs</a> 
-                  - Eldan and Rusinovich 2023  <br> Preprint <br> 
-                  Read the abstract, introduction, and the start of section 2 (until 2.1) </li>
-                <!-- <li><a href="https://openreview.net/forum?id=UYneFzXSJWh" target="_blank">Fine-Tuning can Distort Pretrained Features and Underperform Out-of-Distribution</a>  - Kumar et al. 2022  <br> ICLR Publication <br>   Read the abstract and introduction </li> -->
-                <li><a href="https://arxiv.org/pdf/2503.03150" target="_blank">Position: Model Collapse Does Not Mean What You Think</a> 
-                  -  <br> Preprint </li>
-                <li><a href="https://aclanthology.org/2023.emnlp-main.614.pdf" target="_blank">Do All Languages Cost the Same? Tokenization in the Era of Commercial Language Models</a> 
-                  - Ahia et al. 2023  <br> EMNLP Publication </li>
-                <li><a href="https://aclanthology.org/2023.emnlp-main.760.pdf" target="_blank">Large Language Models Only Pass Primary School Exams in Indonesia: A Comprehensive Test on IndoMMLU</a> 
-                  - Koto et al. 2023  <br> EMNLP Publication </li>
-                <li><a href="https://dl.acm.org/doi/10.1145/3600211.3604681" target="_blank">AI Art and its Impact on Artists</a> 
-                  - Jiang et al. 2023  <br> AIES Publication </li>
-                <!-- <li><a href="https://arxiv.org/abs/2402.07896" target="_blank">Suppressing Pink Elephants with Direct Principle Feedback</a> -  <br> Preprint </li> -->
-                <li><a href="https://dl.acm.org/doi/pdf/10.1145/2783258.2783311" target="_blank">Certifying and Removing Disparate Impact</a> 
-                  - Feldman et al. 2015  <br> KDD Publication </li>
-                <li><a href="http://proceedings.mlr.press/v28/zemel13.pdf" target="_blank">Learning Fair Representations</a> 
-                  - Zemel et al. 2013  <br> ICML Publication </li>
-                <li><a href="https://nips.cc/virtual/2023/tutorial/73949" target="_blank">Data-Centric AI for reliable and responsible AI: from theory to practice</a> 
-                  - van der Schaar, Seedat, and Guyon 2023  <br> NeurIPS Tutorial </li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td id="week4">Week 4</td><td>10/14/25</td><td>Max</td>
-            <td>Needs for AI Safety Today: Beyond the Hype</td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture <a href="https://drive.google.com/file/d/1GdqCtbFMnTRIHh2GHStiMOCZuL6MkntG/view?usp=share_link" target="_blank">Slides</a> + 
-                Recording unavaiable due to technical issues
-              </p>
-              Readings (Required)
-              <ul>
-                <li><a href="https://docs.google.com/document/d/1CDCI9bJZOB4vXnil-Xnwepvd04nID1bEz_xUCvyfWWw/edit?tab=t.0#heading=h.cuf1oxwlodt8" target="_blank">“AI for Good” Isn't Good Enough: A Call for Human-Centered Design</a> 
-                  - Landay 2024  <br> Google Doc <br> </li>
-                <li><a href="https://arxiv.org/pdf/2109.13916" target="_blank">Unsolved Problems in ML Safety</a> 
-                  - Hendrycks et al. 2022  <br> Preprint <br> 
-                  Read abstract and introduction </li>
-                <li><a href="https://www.science.org/doi/10.1126/science.adi8982" target="_blank">AI Safety on Whose Terms?</a> 
-                  - Lazar and Nelson 2023  <br> Science Publication </li>
-                <li><a href="https://firstmonday.org/ojs/index.php/fm/article/view/13636" target="_blank">The TESCREAL Bundle: Eugenics and the Promise of Utopia Through Artificial General Intelligence</a> 
-                  - Gebru and Torres 2024  <br> First Monday Publication <br> 
-                  Read abstract and introduction </li>
-                <li><a href="https://arxiv.org/pdf/2009.13676" target="_blank">The Grey Hoodie Project: Big Tobacco, Big Tech, and the Threat on Academic Integrity</a> 
-                  - Abdalla and Abdalla 2021  <br> AIES Publication <br> </li>
-                <li><a href="https://arxiv.org/pdf/2403.05104" target="_blank">How Culture Shapes What People Want From AI</a> 
-                  - Ge et al. 2024  <br> CHI Publication <br> 
-                  Read abstract and introduction </li>                                
-              </ul>
-
-              Optional Readings (Not Required)
-              <ul>
-                <li><a href="https://www.turing.ac.uk/sites/default/files/2019-06/understanding_artificial_intelligence_ethics_and_safety.pdf" target="_blank">Understanding artificial intelligence ethics and safety </a> 
-                  -  Leslie 2019 <br> The Alan Touring Institute <br> 
-                  Read sections “Why AI Ethics” and “FAST Track Principles” </li>
-                <li><a href="https://arxiv.org/abs/2108.07258" target="_blank">On the Opportunities and Risks of Foundation Models</a> 
-                  - Bommasani et al. 2022<br> Stanford CRFM preprint <br> 
-                  Read the abstract and section 1 until 1.2 </li>
-                <li><a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0306621" target="_blank">The Political Preferences of LLMs</a> 
-                  - Rozado 2024  <br> PLOS ONE Publication </li>
-                <li><a href="https://openreview.net/forum?id=zl16jLb91v" target="_blank">Towards Measuring the Representation of Subjective Global Opinions in Language Models</a> 
-                  - Durmus et al. 2024  <br> CoLM Publication </li>
-                <li><a href="https://dl.acm.org/doi/10.1145/3531146.3533083" target="_blank">The Values Encoded in Machine Learning Research</a> 
-                  - Birhane et al. 2022  <br> FAccT Publication </li>
-                <li><a href="https://www.psychologicalscience.org/observer/the-weird-science-of-culture-values-and-behavior" target="_blank">The WEIRD Science of Culture, Values, and Behavior</a> 
-                  - Armstrong 2018  <br> APS Publication </li>
-                <li><a href="https://proceedings.mlr.press/v97/aivodji19a.html" target="_blank">Fairwashing: The Risk of Rationalization</a> 
-                  - Aivodji et al. 2019  <br> ICML Publication </li>
-                <li><a href="https://arxiv.org/pdf/2412.01946" target="_blank">Reality of AI and Biorisk</a> 
-                  - Peppin et al. 2024  <br> Preprint </li>
-                <li><a href="https://doi.org/10.48550/arXiv.2306.03809" target="_blank">Can large language models democratize access to dual-use biotechnology?</a> 
-                  - Soice et al. 2023<br> Preprint <br> 
-                  Read abstract, introduction, and results </li>
-                <li><a href="https://www.interface-eu.org/publications/ai-agent-classification" target="_blank">An Autonomy-Based Classification (Policy Brief)</a> 
-                  - Soder et al. 2025  <br> Interface Policy Brief </li>
-                <li><a href="https://mistral.ai/news/our-contribution-to-a-global-environmental-standard-for-ai" target="_blank">Our contribution to a global environmental standard for AI</a> 
-                  - Mistral AI 2025<br> Blog post </li>
-                <li><a href="https://doi.org/10.48550/arXiv.2305.16941" target="_blank">Twitter's Algorithm: Amplifying Anger, Animosity, and Affective Polarization </a> 
-                  - Milli et al. 2023<br> Preprint <br> 
-                  Read the abstract and section 1 (with results) </li>
-                <li><a href="https://doi.org/10.48550/arXiv.2212.07877" target="_blank">Manifestations of Xenophobia in AI Systems</a> 
-                  - Tomasev et al. 2022<br> Deepmind preprint <br> 
-                  Read the abstract, introduction, and section 2 </li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td></td><td>10/16/25</td><td>Martin Castillo-Quintana (UChicago)</td>
-            <td><strong>[Guest]</strong> Social-Choice Theory for Engineers</td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture <a href="" target="_blank">Slides (See Ed)</a> + 
-                <a href="" target="_blank">Recording (See Ed)</a>
-              </p>
-              Readings (Required)
-              <ul>
-                <!-- <li><a href="link" target="_blank">Text</a></li> -->
-                None
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td id="week5">Week 5</td><td>10/21/25</td><td>Declan Grabb & Andrea Vallone (OpenAI)</td>
-            <td><strong>[Guest]</strong> AI and Mental Health</td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture Slides (Unavaiable) + 
-                Recording (Unavaiable)
-              </p>
-              Readings (Required)
-              <ul>
-                <!-- <li><a href="link" target="_blank">Text</a></li> -->
-                None
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td></td><td>10/23/25</td><td>Max</td>
-            <td>Red Teaming, Adversarial Vulnerabilities, and Multi-Agent Systems</td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture <a href="https://drive.google.com/file/d/1Wd0qn4c6YQzS0j4Phg4JD_ljXiGJWF0c/view?usp=sharing" target="_blank">Slides</a> + 
-                <a href="https://stanford.zoom.us/rec/share/5Xh50tvs10f3uaD0zUb8CU4avWR8vVjFGuWE5-Ac6_Pq3r3xYl_kU2iO18Cp4hA.38SYveRVARPK0Xgl" target="_blank">Recording</a>
-              </p>
-              Readings (Required)
-                            
-              <ul>
-                <li><a href="https://doi.org/10.48550/arXiv.1412.6572" target="_blank">Explaining and Harnessing Adversarial Examples</a> 
-                  - Goodfellow et al. 2015  <br> ICLR publication <br> 
-                  Read the abstract, introduction, and section 3 </li>
-                <li><a href="https://openreview.net/forum?id=OQQoD8Vc3B&referrer=%5Bthe%20profile%20of%20Nicholas%20Carlini%5D(%2Fprofile%3Fid%3D~Nicholas_Carlini1)" target="_blank">Are aligned neural networks adversarially aligned?</a> 
-                  - Carlini et al. 2023  <br> NeurIPS publication <br> 
-                  Read the abstract, introduction, and section 3 </li>
-                <li><a href="https://openreview.net/forum?id=jA235JGM09" target="_blank">Jailbroken: How Does LLM Safety Training Fail?</a> 
-                  - Wei et al. 2023  <br> NeurIPS publication <br> 
-                  Read the abstract, introduction (without 1.1), and section 3 </li>
-                <li><a href="https://www.microsoft.com/en-us/security/blog/2025/01/13/3-takeaways-from-red-teaming-100-generative-ai-products/" target="_blank">3 takeaways from red teaming 100 generative AI products</a> 
-                  - Bullwinkel et al. 2025  <br> Microsoft blog post <br> </li>
-                <li><a href="https://arxiv.org/abs/2506.12469" target="_blank">Levels of Autonomy for AI Agents</a> 
-                  - Feng et al. 2025  <br> Preprint <br> 
-                  Read the abstract, and sections 1 + 2</li>
-                <li><a href="https://arxiv.org/pdf/2502.14143" target="_blank">Multi-Agent Risks from Advanced AI</a> 
-                  - Hammond et al. 2025  <br> Technical Report <br> 
-                  Read the abstract and executive summary</li>
-              </ul>
-
-              Optional Readings (Not Required)
-              <ul>
-                <li><a href="https://aclanthology.org/2022.emnlp-main.225/" target="_blank">Red Teaming Language Models with Language Models</a> 
-                  - Perez  et al. 2022<br> ACL publication <br> 
-                  Read the abstract and introduction </li>
-                  <li><a href="https://openreview.net/pdf?id=JxtE52KIBR" target="_blank">Poisoning Language Models During Instruction Tuning</a> 
-                    - Wan et al. 2023  <br> ICML publication <br> 
-                    Read the abstract and the introduction</li>       
-                  <li><a href="https://arxiv.org/abs/2307.15043" target="_blank">Universal and Transferable Adversarial Attacks on Aligned Language Models</a> 
-                    -  Zou et al. 2023  <br> Preprint + <a href="https://llm-attacks.org" target="_blank">Blog post</a> <br> 
-                    Read the abstract, introduction, and the start of section 2 (until 2.1) </li>
-                  <li><a href="https://arxiv.org/abs/2302.10149" target="_blank">Poisoning Web-Scale Training Datasets is Practical</a> 
-                    - Carlini et al. 2023 <br> Preprint <br> 
-                    Read the abstract, introduction, and section 5.1 + 5.2 </li>
-                  <li><a href="https://arxiv.org/abs/2311.17035" target="_blank">Scalable Extraction of Training Data from (Production) Language Models</a> 
-                    - Nasr et al. 2023 <br> Preprint <br> 
-                    Read the abstract and the introduction </li>
-                  <li><a href="https://openreview.net/pdf?id=v3yM5zVzP4C" target="_blank">Natural Backdoor Datasets</a> 
-                    - Wenger et al. 2022 <br> NeurIPS publication <br> 
-                    Read the abstract, introduction, and figure 1 </li>
-                  <li><a href="https://openreview.net/forum?id=GxCGsxiAaK" target="_blank">Universal Jailbreak Backdoors from Poisoned Human Feedback</a> 
-                    - Rando and Tramer 2024 <br> ICLR publication <br> 
-                    Read the abstract and the introduction </li>
-                  <li><a href="https://openreview.net/forum?id=v74mJURD1L#discussion" target="_blank">Best-of-Venom: Attacking RLHF by Injecting Poisoned Preference Data</a> 
-                    - Baumgaertner et al. 2024 <br> CoLM publication <br> </li>
-                  <li><a href="https://openreview.net/pdf?id=0o95CVdNuz" target="_blank">Effective Prompt Extraction from Language Models</a> 
-                    - Zhang1 et al. 2024 <br> CoLM publication <br> </li>
-                  <li><a href="https://arxiv.org/abs/2401.03408" target="_blank">Escalation Risks from Language Models in Military and Diplomatic Decision-Making</a> 
-                    - Rivera et al. 2024<br> FAccT publication <br> 
-                    Read the abstract and introduction</li>
-                  <li><a href="https://arxiv.org/abs/2403.05030" target="_blank">Defending Against Unforeseen Failure Modes with Latent Adversarial Training</a> 
-                    - Casper et al. 2024<br>Preprint<br></li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td id="week6">Week 6</td><td>10/28/25</td><td>Max</td>
-            <td>Interpretability</td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture <a href="https://drive.google.com/file/d/1F_1eO9nKe6JaRN-Cv4Sz6gKPNzu1sYQd/view?usp=share_link" target="_blank">Slides</a> + 
-                <a href="https://stanford.zoom.us/rec/share/adKJ2wV848nEU1pfZ___5HKfIkdQfx82Yngno2d6m86k8zwKtD8pSDSkNNpj61nC.EdNo9YA5vBPXUHkm" target="_blank">Recording</a>
-              </p>
-              Readings (Required)
-              <ul>
-                <li><a href="https://direct.mit.edu/books/monograph/3299/chapter-standard/105803/The-Philosophy-and-the-Approach" target="_blank">Vision</a> 
-                  - Marr. 2014<br> Book <br> 
-                  Read full section 1.2 "Understanding Complex Information-Processing Systems"</li>
-                <li><a href="https://openreview.net/forum?id=8C5zt-0Utdn" target="_blank">SoK: Toward Transparent AI: A Survey on Interpreting the Inner Structures of Deep Neural Networks</a> 
-                  - Rauker, Ho, Casper et al. 2023<br> SaTML publication<br>
-                Read the abstract and introduction</li>
-                <li><a href="https://openreview.net/forum?id=ePUVetPKu6" target="_blank">Mechanistic Interpretability for AI Safety - A Review</a> 
-                  - Bereska and Gavves. 2024<br> TMLR publication<br>
-                Read the abstract, introduction (section 1), and section 2 </li>
-                <li><a href="https://distill.pub/2020/circuits/zoom-in/" target="_blank">Zoom In: An Introduction to Circuits</a> 
-                  - Olah et al. 2020<br> Blog post </li>
-              </ul>
-
-              Optional Readings (Not Required)
-              <ul>
-                <li><a href="https://arxiv.org/pdf/1401.4082.pdf" target="_blank">Stochastic Backpropagation and Approximate Inference in Deep Generative Models</a> 
-                  - Rezende et al. 2014<br> ICML publication <br> 
-                  Read the abstract and the introduction</li>
-                <li><a href="https://ieeexplore.ieee.org/document/8237336" target="_blank">Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization</a> 
-                  - Selvaraju et al. 2017<br> ICCV publication <br></li>
-                <li><a href="https://proceedings.neurips.cc/paper_files/paper/2018/file/3e9f0fc9b2f89e043bc6233994dfcf76-Paper.pdf" target="_blank">Towards robust interpretability with self-explaining neural networks</a> 
-                  - Melis and Jaakkola et al. 2018<br> NeurIPS publication <br></li>
-                <li><a href="https://openreview.net/forum?id=7uVcpu-gMD" target="_blank">Are neural nets modular? inspecting functional modularity through differentiable weight masks</a> 
-                  - Csordas et al. 2020<br> ICLR publication <br></li>
-                <li><a href="https://proceedings.neurips.cc/paper/2020/file/c74956ffb38ba48ed6ce977af6727275-Paper.pdf" target="_blank">Compositional explanations of neurons</a> 
-                  - Mu and Andreas. 2020<br> NeurIPS publication <br></li>
-                <li><a href="https://arxiv.org/abs/2010.12606" target="_blank">Exemplary natural images explain cnn activations better than state-of- the-art feature visualization</a> 
-                  - Borowski et al. 2020<br> ICLR publication <br></li>
-                <li><a href="https://arxiv.org/abs/2105.04857" target="_blank">Leveraging sparse linear layers for debuggable deep networks</a> 
-                  - Wong et al. 2021<br> ICML publication <br></li>
-                <li><a href="https://aclanthology.org/2022.acl-long.581/" target="_blank">Knowledge neurons in pretrained transformers</a> 
-                  - Dai et al. 2021<br> ACL publication <br></li>
-                <li><a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html" target="_blank">Language models can explain neurons in language models</a> 
-                  - Bills et al. 2023<br> OpenAI technical report </li>
-                <li><a href="https://arxiv.org/abs/2511.08579" target="_blank">Training Language Models to Explain Their Own Computations</a> 
-                    - Li et al. 2025<br> Arxiv preprint </li>
-                <li><a href="https://arxiv.org/abs/2308.10248v5" target="_blank">Steering Language Models With Activation Engineering</a> 
-                    - Turner et al. 2023<br> Arxiv preprint </li>
-                <li><a href="https://arxiv.org/pdf/2202.05262.pdf" target="_blank">Locating and Editing Factual Associations in GPT</a> 
-                  - Meng et al. 2022<br> NeurIPS publication +  <a href="https://rome.baulab.info" target="_blank">Blog post</a><br> 
-                  Read the abstract and the introduction </li>
-                <li><a href="https://openreview.net/forum?id=ETKGuby0hcs" target="_blank">Discovering Latent Knowledge in Language Models Without Supervision</a> 
-                  - Burns et al. 2023<br> ICLR publication <br> 
-                  Read the abstract and the introduction </li>
-                <li><a href="https://www.alignmentforum.org/posts/QL7J9wmS6W2fWpofd/but-is-it-really-in-rome-an-investigation-of-the-rome-model" target="_blank">But is it really in Rome? An investigation of the ROME model editing technique</a> 
-                  - Thibodeau 2022<br> Online forum post <br> 
-                  Read until “Motivation for this post” </li>
-                <li><a href="https://www.alignmentforum.org/posts/bWxNPMy5MhPnQTzKz/what-discovering-latent-knowledge-did-and-did-not-find-4" target="_blank">What Discovering Latent Knowledge Did and Did Not Find</a> 
-                  - Roger 2023<br> Online forum post </li>
-                <li><a href="https://arxiv.org/abs/2301.04213" target="_blank">Does Localization Inform Editing? Surprising Differences in Causality-Based Localization vs. Knowledge Editing in Language Models</a> 
-                    - Hase et al. 2023<br> NeurIPS 2023 paper </li>
-                <li><a href="https://arxiv.org/abs/2410.09087" target="_blank">Mechanistic?</a> 
-                    - Saphra and Wiegreffe 2024<br> Workshop paper (BlackBoxNLP 2024) </li>
-                <li><a href="https://proceedings.neurips.cc/paper_files/paper/2023/hash/ed3fea9033a80fea1376299fa7863f4a-Abstract-Conference.html" target="_blank">Language Models Don't Always Say What They Think: Unfaithful Explanations in Chain-of-Thought Prompting</a> 
-                    - Turpin et al. 2023<br> NeurIPS 2023 paper </li>
-                <li><a href="https://arxiv.org/abs/2307.13702" target="_blank">Measuring Faithfulness in Chain-of-Thought Reasoning</a> 
-                    - Lanham et al. 2023<br> Arxiv preprint </li>
-                <li><a href="https://transformer-circuits.pub/2023/monosemantic-features" target="_blank">Towards Monosemanticity: Decomposing Language Models With Dictionary Learning</a> 
-                  - Bricken et al. 2023<br> Anthropic blog post <br> 
-                    Read until “Why not use architectural approaches” </li>
-                <li><a href="https://arxiv.org/pdf/2309.08600" target="_blank">Sparse autoencoders find highly interpretable features in language models</a> 
-                  - Cunningham et al. 2024<br> ICLR publication<br> 
-                  Read the abstract and introduction</li>
-                <li><a href="https://arxiv.org/pdf/2310.02207" target="_blank">Language Models Represent Space and Time</a> 
-                  - Gournee and Tegmark. 2024<br> ICLR publication<br> 
-                  Read the abstract and introduction</li>
-                <li><a href="https://arxiv.org/abs/2405.14860" target="_blank">Not all language model features are linear</a> 
-                  - Engels et al. 2024<br> ICLR publication<br> 
-                  Read the abstract and introduction</li>
-                <li><a href="https://openai.com/research/clip" target="_blank">CLIP: Connecting text and images</a> 
-                  - OpenAI 2022<br> Blog post <br> 
-                  Read until (including) Figure 2</li>
-                <li><a href="https://www.pnas.org/doi/10.1073/pnas.2206625119" target="_blank">Acquisition of chess knowledge in alphazero</a> 
-                  - McGrath et al. 2023<br>PNAS publication <br></li>
-                <li><a href="https://arxiv.org/abs/2310.16410" target="_blank">Bridging the Human-AI Knowledge Gap: Concept Discovery and Transfer in AlphaZero</a> 
-                  - Schut et al. 2023<br>Preprint <br></li>
-                <li><a href="https://arxiv.org/abs/2403.19647" target="_blank">Sparse Feature Circuits: Discovering and Editing Interpretable Causal Graphs in Language Models</a> 
-                  - Marks et al. 2024<br>Preprint <br></li>
-                <li><a href="https://cdn.openai.com/papers/sparse-autoencoders.pdf" target="_blank">Scaling and evaluating sparse autoencoders</a> 
-                  - Gao et al. 2024<br> OpenAI Preprint <br></li>
-                <li><a href="https://openreview.net/forum?id=MRu3nZhoZP&referrer=%5Bthe%20profile%20of%20Gavin%20Leech%5D(%2Fprofile%3Fid%3D~Gavin_Leech1)" target="_blank">Activation addition: Steering language models without optimization</a> 
-                  - Turner et al. 2023<br> Preprint <br></li>
-                <li><a href="https://arxiv.org/pdf/2111.06206" target="_blank">Towards axiomatic, hierarchical, and symbolic explanation for deep models</a> 
-                  - Ren et al. 2021<br> Preprint <br></li>
-                <li><a href="https://openreview.net/forum?id=T6iiOqsGOh&referrer=%5Bthe%20profile%20of%20Shengbang%20Tong%5D(%2Fprofile%3Fid%3D~Shengbang_Tong1)" target="_blank">Mass-Producing Failures of Multimodal Systems with Language Models</a> 
-                  - Tong et al. 2023<br> NeurIPS publication <br> 
-                  Read the abstract, introduction, and section 3 until 3.2</li>
-                <li><a href="https://openreview.net/forum?id=5Ca9sSzuDp&noteId=EwGCcxaY2g" target="_blank">Interpreting CLIP's Image Representation via Text-Based Decomposition</a> 
-                  - Gandelsman et al. 2024<br> ICLR publication <br> 
-                  Read the abstract and introduction</li>    
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td></td><td>10/30/25</td><td>Liza & Max</td>
-            <td>Formal Methods / Safe Human-AI Interaction </td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture <a href="https://docs.google.com/presentation/d/1YKObnL6vzju9W1NhE-Yqi2mhgTYzGHQKOiW4DVmJtUw/edit?usp=sharing" target="_blank">Slides (Liza)</a> + <a href="https://drive.google.com/file/d/112kE6R8DyVxpm--qilaS7GrJRBexyDAL/view?usp=share_link" target="_blank">Slides (Max)</a> + 
-                <a href="https://stanford.zoom.us/rec/share/_Q-r0Kd_-Qhzt_1WxrR2BpPFYua3SI3ep3PhIK2kKb4xLbwrFBVA_aHqPGIM0WNI.qK7bd8_wzX7UydC_" target="_blank">Recording (first 30s are lost)</a>
-              </p>
-              Readings (Required)
-              <ul>
-                <li><a href="https://www.nature.com/articles/s41586-023-06647-8" target="_blank">Role play with large language models</a> 
-                  - Shanahan et al. 2023<br> Nature publication <br> 
-                  Read until “The nature of the simulator”</li>
-                <li><a href="https://arxiv.org/abs/2505.13995" target="_blank">ELEPHANT: Measuring and understanding social sycophancy in LLMs</a> 
-                  - Cheng et al. 2025<br> Preprint <br> 
-                  Read the abstract, introduction (section 1), and section 2</li>
-                <li><a href="https://medium.com/sw-verification-testing/what-is-deep-neural-network-verification-and-why-is-it-important-75281738f5db" target="_blank">What is Deep Neural Network Verification and Why is it Important?</a> 
-                  - Chase. 2021<br> log post <br></li>
-                <li><a href="https://arxiv.org/pdf/2310.17807" target="_blank">Clover: Closed-Loop Verifiable Code Generation</a> 
-                  - Sun et al. 2024<br> Preprint <br> 
-                  Read the abstract and the introduction </li>
-              </ul>
-
-              Optional Readings (Not Required)
-              <ul>
-                <li><a href="https://arxiv.org/abs/2002.06276" target="_blank">Trustworthy AI </a> 
-                  - Wing 2020 <br> Preprint <br> 
-                  Read abstract and introduction </li>
-                <li><a href="https://arxiv.org/pdf/1903.06758.pdf" target="_blank">Algorithms for Verifying Deep Neural Networks</a> 
-                  - Liu et al. 2020<br> Preprint/Text book <br> 
-                  Read the abstract and the introduction </li>
-                <li><a href="https://openreview.net/forum?id=E2TJI6CKm0&referrer=%5Bthe%20profile%20of%20Haoze%20Wu%5D(%2Fprofile%3Fid%3D~Haoze_Wu1)" target="_blank">VeriX: Towards Verified Explainability of Deep Neural Networks</a> 
-                  - Wu et al. 20230<br> NeurIPS publication <br> 
-                  Read the abstract and the introduction </li>
-                <li><a href="https://openreview.net/forum?id=M23dTGWCZy" target="_blank">Can LLMs Generate Novel Research Ideas? A Large-Scale Human Study with 100+ NLP Researchers</a> 
-                  - Si et al. 2025<br> ICLR 2025 paper </li>
-                <li><a href="https://arxiv.org/abs/2509.06580v2" target="_blank">AI for Scientific Discovery is a Social Problem</a> 
-                    - Channing and Ghosh 2025<br> Arxiv preprint </li>
-                <li><a href="https://openreview.net/forum?id=ccxD4mtkTU" target="_blank">Can LLM-Generated Misinformation Be Detected?</a> 
-                  - Chen and Shu 2024<br> ICLR publication <br> 
-                  Read the abstract, introduction, and section 2 </li>
-                <li><a href="https://aclanthology.org/2023.sicon-1.3/" target="_blank">Large Language Models respond to Influence like Humans</a> 
-                  - Griffin et al. 2023<br> ACL publication <br> 
-                  Read abstract, introduction, section 2, section 3 up until 3.1, section 5</li>
-                <li><a href="https://www.cell.com/action/showPdf?pii=S1364-6613%2823%2900098-0" target="_blank">Can AI language models replace human participants?</a> 
-                  - Dillion et al. 2023<br> Trends in Cognitive Sciences publication</li>
-                <li><a href="https://link.springer.com/article/10.1007/s00146-023-01725-x#:~:text=Because%20language%20models%20are%20exemplary,needed%20to%20assess%20these%20factors." target="_blank">AI language models cannot replace human research participants</a> 
-                  - Harding et al. 2023<br> Springer AI and Society</li>
-                  <li><a href="https://proceedings.mlr.press/v202/aher23a/aher23a.pdf" target="_blank">Using Large Language Models to Simulate Multiple Humans and Replicate Human Subject Studies </a> 
-                    - Aher et al. 2023<br> ICML publication <br> 
-                    Read the abstract, introduction until 1.1, and section 2</li>
-                  <li><a href="https://www.nature.com/articles/s44159-023-00241-5" target="_blank">Using large language models in psychology </a> 
-                    - Demszky 2023<br> Nature publication <br> 
-                    Read the abstract and introduction</li>
-                  <li><a href="https://www.science.org/doi/10.1126/science.1192788" target="_blank">How to Grow a Mind: Statistics, Structure, and Abstraction</a> 
-                    - Tenenbaum et al. 2023<br> Science publication <br></li>
-                  <li><a href="https://arxiv.org/abs/2403.03407" target="_blank">Human vs. Machine: Behavioral Differences Between Expert Humans and Language Models in Wargame Simulations</a> 
-                    - Lamparth et al. 2023<br> AIES publication <br> 
-                    Read the abstract and the introduction</li>
-                  <li><a href="https://openreview.net/forum?id=zKDSfGhCoK" target="_blank">Do Personality Tests Generalize to Large Language Models?</a> 
-                    - Dorner et al. 2023<br> NeurIPS Workshop <br> 
-                    Read the abstract, introduction, and section 4</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td id="week7">Week 7</td><td>11/04/25</td><td>Max</td>
-            <td><strong>[Recorded/Optional Attendance]</strong> Electric Sheep: What Is Intelligence and Does It Want?</td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture <a href="https://drive.google.com/file/d/1mQoWQFcPwpe0t1FudkYLXDg3b9xG-b0P/view?usp=share_link" target="_blank">Slides</a> + 
-                <a href="https://stanford.zoom.us/rec/share/TJVx7DyzJSx31j6XVlPyePajhYfRCIlq9O04IrJ341qFMi7jcFP98dFLQ_u7fPOS.X6i5Q4qb7ZeeJsYX" target="_blank">Recording</a>
-              </p>
-              Readings (Required)
-              <ul>
-                <li><a href="https://proceedings.neurips.cc/paper/2021/file/c26820b8a4c1b3c2aa868d6d57e14a79-Paper.pdf" target="_blank">Optimal Policies Tend to Seek Power</a> 
-                  - Turner et al. 2019<br> NeurIPS publication <br> 
-                  Read the abstract, introduction, and discussion</li>
-                <li><a href="https://www.lesswrong.com/tag/orthogonality-thesis" target="_blank">Orthogonality Thesis</a> <br> Online forum post</li>
-                <li><a href="https://drive.google.com/file/d/1FVl9W2gW5_8ODYNZJ4nuFg79Z-_xkHkJ/view" target="_blank">Superintelligence, Chapter 7: The superintelligent will</a> 
-                  - Bostrom 2014<br> Book chapter</li>
-                <li><a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html" target="_blank">The Bitter Lesson</a> 
-                  - Sutton 2019<br> Online forum post <br></li>
-                <li><a href="https://dl.acm.org/doi/pdf/10.1145/3442188.3445922" target="_blank">On the Dangers of Stochastic Parrots: Can Language Models Be Too Big? 🦜</a> 
-                  - Bender et al. 2021<br> FAccT publication <br> 
-                  Read the abstract, introduction, and section 6</li>
-                <li><a href="https://aclanthology.org/2022.findings-emnlp.423.pdf" target="_blank">Language Models as Agent Models</a> 
-                  - Andreas. 2022<br> EMNLP publication <br> 
-                  Read the abstract and the introduction</li>
-              </ul>
-
-              Optional Readings (Not Required)
-              <ul>
-                <li><a href="https://arxiv.org/pdf/2210.01790.pdf" target="_blank">Goal Misgeneralization: Why Correct Specifications Aren't Enough For Correct Goals </a> 
-                  - Shah et al. 2022<br> Deepmind preprint <br> 
-                  Read the abstract, introduction, section 2, and section 3</li>
-                <li><a href="https://www.alignmentforum.org/s/r9tYkB2a8Fp4DN8yB/p/zthDPAjh9w6Ytbeks" target="_blank">Deceptive Alignment</a> 
-                  - Hubinger et al. 2019<br> Online forum post <br> 
-                  Read only the introduction</li>
-                <li><a href="https://ojs.aaai.org/index.php/AIES/article/view/31625" target="_blank">Unsocial Intelligence: An Investigation of the Assumptions of AGI Discourse</a> 
-                  - Blili-Hamelin et al. 2024<br> AIES publication <br></li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td></td><td>11/06/25</td><td>Nicholas Carlini (Anthropic)</td>
-            <td><strong>[Guest]</strong> TBD</td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture 
-                <a href="https://stanford.zoom.us/rec/play/ejjvYQL5RNivkGQ6Y9akNlIZIUvDNbjxj1UB2kbNap2Gdxp_3x338yn7EEBh4RLuvl_ytEW20fE8p_n0.q3_b00KD7eigrauN?eagerLoadZvaPages=&isReferralProgramEnabled=false&isReferralProgramAvailable=false&accessLevel=meeting&canPlayFromShare=true&from=share_recording_detail&continueMode=true&componentName=rec-play&originRequestUrl=https%3A%2F%2Fstanford.zoom.us%2Frec%2Fshare%2FvHn2dioYBLVzVD3XbCDUszvEVeMrxSOC4AD9oK4BgRGSYf_mWk7TW7Em6aOYET0.096UdcPO_9sHWiF0" target="_blank">Recording</a>
-              </p>
-              Readings (Required)
-              <ul>
-                None
-              </ul>
-
-              Optional Readings (Not Required)
-              <ul>
-                TBD
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td id="week8">Week 8</td><td>11/11/25</td><td>Max / Naomi</td>
-            <td> Attributing Model Behavior at Scale: Evaluating AI Systems / AI Governance</td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture <a href="https://drive.google.com/file/d/1xcTIcNJj_fMVEJjHuKHsigfndZJqWUQp/view?usp=share_link" target="_blank">Slides (Max)</a> +
-                <a href="https://drive.google.com/file/d/1vPn-dRbBesv8yb-CnI94dFnFMng3C0Dy/view?usp=share_link" target="_blank">Slides (Naomi)</a> +
-                <a href="https://stanford.zoom.us/rec/share/P_qJWQnK0cz_YgsqczIkYJOe8goJFt5EXC5--J-8aj7uLNl4ODd3Ppt2QCphKkdk.f5tT9hfypUKo1N-N" target="_blank">Recording</a>
-              </p>
-              Readings (Required)
-              <ul>
-                <li><a href="https://doi.org/10.48550/arXiv.2407.05694" target="_blank">On the Limitations of Compute Thresholds as a Governance Strategy</a> 
-                  - Hooker 2024<br>Preprint/Essay<br>
-                  Read the abstract and section 1</li>
-                <li><a href="https://arxiv.org/abs/2502.09618" target="_blank">Pitfalls of Evidence-Based AI Policy</a> 
-                  - Casper et al. 2025<br>ICLR publication<br>
-                  Read the abstract, section 2, and section 3 </li>
-                <li><a href="https://arxiv.org/pdf/2505.10573" target="_blank">Measurement to Meaning: A Validity-Centered Framework for AI Evaluation</a> 
-                  - Salaudeen and Reuel et al. 2025<br>Preprint<br>
-                  Read the abstract and the introduction</li>
-                <li><a href="https://www.sciencedirect.com/science/article/pii/S2949948825000241" target="_blank"> A comprehensive review of Artificial Intelligence regulation: Weighing ethical principles and innovation</a> 
-                  - Cajueiro and Celestino. 2025<br> Journal of Economy and Technology publication <br> 
-                  Read the abstract, introduction, and sections 5 + 6</li>
-              </ul>
-
-              Optional Readings (Not Required)
-              <ul>
-                <li><a href="https://openreview.net/forum?id=nkals4A4Vs" target="_blank">Do the Rewards Justify the Means? Measuring Trade-Offs Between Rewards and Ethical Behavior in the MACHIAVELLI Benchmark</a> 
-                  - Pan et al. 2023<br> ICML publication <br> 
-                  Read the abstract, introduction, and section 2 until 2.3</li>
-                <li><a href="https://aclanthology.org/2024.acl-long.279.pdf" target="_blank">Are Emergent Abilities in Large Language Models just In-Context Learning?</a> 
-                  - Lu et al. 2023<br> ACL publication </li>
-                <li><a href="https://arxiv.org/abs/2401.15897v1" target="_blank">Red-Teaming for Generative AI: Silver Bullet or Security Theater?</a> 
-                  - Feffer et al. 2024<br> Preprint </li>
-                <li><a href="https://doi.org/10.48550/arXiv.2406.04391" target="_blank">Why Has Predicting Downstream Capabilities of Frontier AI Models with Scale Remained Elusive?</a> 
-                  - Schaeffer et al. 2024<br>Preprint<br></li>
-                <li><a href="https://openreview.net/forum?id=567BjxgaTp&noteId=CnDRb0dvFR" target="_blank">How to Catch an AI Liar: Lie Detection in Black-Box LLMs by Asking Unrelated Questions</a> 
-                  - Pacchiardi et al. 2024<br> ICLR publication <br> 
-                  Read the abstract, introduction, and section 2</li>
-                <li><a href="https://openreview.net/pdf?id=GPKTIktA0k" target="_blank">The Reversal Curse: LLMs trained on "A is B" fail to learn "B is A"</a> 
-                  - Berglund et al. 2024<br> ICLR publication <br> 
-                  Read until the end of section 1</li>
-                <li><a href="https://openreview.net/forum?id=yzkSU5zdwD" target="_blank">Emergent Abilities of Large Language Models</a> 
-                  - Wei et al. 2022<br> TMLR publication <br> 
-                  Read until the end of section 3</li>
-                <li><a href="https://openreview.net/forum?id=ITw9edRDlD" target="_blank">Are Emergent Abilities of Large Language Models a Mirage?</a> 
-                  - Schaeffer et al. 2023<br> NeurIPS publication <br> 
-                  Read the abstract, introduction, and section 2</li>
-                <li><a href="https://openreview.net/forum?id=_3ELRdg2sgI" target="_blank">STaR: Bootstrapping Reasoning With Reasoning</a> 
-                  - Zelikman et al. 2022<br>NeurIPS publication<br></li>
-                <li><a href="https://doi.org/10.48550/arXiv.2408.00118" target="_blank">Gemma 2: Improving Open Language Models at a Practical Size</a> 
-                  - Gemma Team 2024<br>Technical report<br></li>
-                <li><a href="https://doi.org/10.48550/arXiv.2407.21787" target="_blank">Large Language Monkeys: Scaling Inference Compute with Repeated Sampling</a> 
-                  - Brown et al. 2024<br>Preprint<br></li>
-                <li><a href="https://arxiv.org/abs/2407.14981" target="_blank">Open Problems in Technical AI Governance</a> 
-                  - Reuel and Buknall et al. 2024<br>Preprint<br> 
-                  Read the abstract, introduction, and appendix A "Policy Brief"</li>
-                <li><a href="https://openreview.net/forum?id=Be2B6f0ps1" target="_blank">Position: Technical Research and Talent is Needed for Effective AI Governance</a> 
-                  - Reuel et al. 2024<br>ICML Publication<br> 
-                  Read the abstract, introduction, and section 2</li>
-                  <li><a href="https://dl.acm.org/doi/10.1145/3630106.3659037" target="_blank">Black-Box Access is Insufficient for Rigorous AI Audits</a> 
-                    - Casper et al. 2024<br> FAccT publication <br> 
-                    Read the abstract and the introduction</li>  
-                <li><a href="https://openreview.net/forum?id=aX8ig9X2a7" target="_blank">A Watermark for Large Language Models</a> 
-                  - Kirchenbauer et al. 2023<br>ICML Publication<br> 
-                  Read the abstract, introduction, and section 2</li> 
-                <li><a href="https://openreview.net/forum?id=TwLHB8sKme" target="_blank">Tools for Verifying Neural Models' Training Data</a> 
-                  - Choi 2023<br>NeurIPS publication<br> 
-                  Read the abstract and the introduction</li> 
-                <li><a href="https://www.rand.org/pubs/working_papers/WRA2849-1.html" target="_blank">Securing Artificial Intelligence Model Weights</a> 
-                  - Nevo et al. 2023<br>Rand Cooperation Report<br> 
-                  Read until end of page 5</li> 
-                <li><a href="https://arxiv.org/abs/2303.11341" target="_blank">What does it take to catch a Chinchilla? Verifying Rules on Large-Scale Neural Network Training via Compute Monitoring</a> 
-                  - Shavit 2023<br>Preprint<br> 
-                  Read the abstract, introduction, and section 2 until 2.2</li> 
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td></td><td>11/13/25</td><td> Daniel Johnson (Transluce)</td>
-            <td><strong>[Guest]</strong> Towards A Science of Model Behavior</td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture 
-                <a href="https://stanford.zoom.us/rec/share/7E-yeCf4CFE6VejZDcGGqjJGwg1Rqi4mQ4y0fBbK9hrBc2vQuaB7WFI9I1-gzMZt.EjzJ9X_2Jd5Us9Om" target="_blank">Recording</a>
-              </p>
-              Readings (Required)
-              <ul>
-                None
-              </ul>
-
-              Optional Readings (Not Required)
-              <ul>
-                TBD
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td id="week9">Week 9</td><td>11/18/25</td><td>Max</td>
-            <td> Scalable Oversight: How to Supervise Advanced AI? </td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture <a href="https://drive.google.com/file/d/16trcjjtYL4-sJ3VIIrYwm3u_DQKKrCa_/view?usp=sharing" target="_blank">Slides</a> +
-                <a href="https://stanford.zoom.us/rec/share/tVAIImLuhBnA1aifHWfHWy8FcDwX-wcmSQRbuQ1URwGZN9wN4jYu3CrtWT_Jyq8N.Cwr5AVA8CBv_YbxU" target="_blank">Recording</a>
-              </p>
-              Readings (Required)
-              <ul>
-                <li><a href="https://arxiv.org/pdf/1805.00899.pdf" target="_blank">AI Safety via Debate</a> 
-                  - Irving & Amodei 2018<br> OpenAI preprint + <a href="https://openai.com/blog/debate/" target="_blank">Blog post</a> <br>
-                  Read the abstract, introduction and section 2 until 2.2 </li>
-                <li><a href="https://cdn.openai.com/papers/weak-to-strong-generalization.pdf" target="_blank">Weak-to-strong generalization</a> 
-                  - Burns et al. 2023<br> OpenAI preprint + <a href="https://openai.com/research/weak-to-strong-generalization" target="_blank">Blog post</a>  <br>
-                  Read the blog post, and the abstract and introduction of the paper</li>
-                <li><a href="https://www.science.org/doi/10.1126/science.adn0117" target="_blank">Managing extreme AI risks amid rapid progress</a> 
-                  - Bengio et al. 2024<br> Science publication <br></li>
-                <li><a href="https://openreview.net/forum?id=fh8EYKFKns" target="_blank">The Alignment Problem from a Deep Learning Perspective: A Position Paper </a> 
-                  - Ngo et al. 2024<br> ICLR publication <br> 
-                  Read until the end of section 4.1</li>
-              </ul>
-
-              Optional Readings (Not Required)
-              <ul>
-                <li><a href="https://arxiv.org/abs/2401.07836" target="_blank">Two Types of AI Existential Risk: Decisive and Accumulative</a> 
-                  - Kasirzadeh. 2023<br> Preprint <br></li>
-                <li><a href="https://astralcodexten.substack.com/p/biological-anchors-a-trick-that-might" target="_blank">Biological Anchors: A Trick That Might Or Might Not Work</a> 
-                  - Alexander 2022<br> Blog post <br> 
-                  Part 1 and Part 2</li>
-                <li><a href="https://arxiv.org/pdf/2211.03540.pdf" target="_blank">Measuring Progress on Scalable Oversight for Large Language Models</a> 
-                  - Bowman et al. 2022<br> Anthropic preprint <br>
-                  Read the abstract, introduction, and section 2 </li>
-                <li><a href="https://arxiv.org/pdf/2306.12001" target="_blank">An Overview of Catastrophic AI Risks</a> 
-                  - Hendrycks et al. 2023<br> Preprint <br></li>
-                <li><a href="https://arxiv.org/pdf/2311.02462" target="_blank">Position: Levels of AGI for Operationalizing Progress on the Path to AGI</a> 
-                  - Morris et al. 2024<br> ICML publication <br></li>
-                <li><a href="https://www.alignmentforum.org/posts/rxoBY9CMkqDsHt25t/eliciting-latent-knowledge-elk-distillation-summary#Toy_Scenario__The_SmartVault" target="_blank">ELK Summary</a> 
-                  - Hobbhahn 2022<br> Online forum post (That summarizes this <a href="https://www.alignmentforum.org/posts/qHCDysDnvhteW7kRd/arc-s-first-technical-report-eliciting-latent-knowledge" target="_blank">report</a>)  <br>
-                  Read only the section “Toy Scenario: The SmartVault”</li>
-                <li><a href="https://deepmindsafetyresearch.medium.com/scalable-agent-alignment-via-reward-modeling-bf4ab06dfd84" target="_blank">Scalable agent alignment via reward modeling</a> 
-                  - Leike 2018<br> Deepmind blog post </li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td></td><td>11/20/25</td><td> Deb Raji (UC Berkeley)</td>
-            <td><strong>[Guest]</strong> TBD</td>
-          </tr>
-          <tr>
-            <td></td><td colspan="3">
-              <p>Lecture 
-                <a href="" target="_blank">Recording (TBD)</a>
-              </p>
-              Readings (Required)
-              <ul>
-                None
-              </ul>
-
-              Optional Readings (Not Required)
-              <ul>
-                TBD
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td id="week10">Week 10</td><td>11/25/25</td><td><strong>[No class]</strong></td>
-            <td>Thanksgiving</td>
-          </tr>
-          <tr>
-            <td></td><td>11/27/25</td><td><strong>[No class]</strong></td>
-            <td>Thanksgiving</td>
-          </tr>
-          <tr>
-            <td id="week11">Week 11</td><td>12/02/25</td><td>Liza / Max (will leave after 30 min) </td>
-            <td><strong>[Optional]</strong> Final Project Co-Working and Feedback</td>
-          </tr>
-          <tr>
-            <td></td><td>12/04/25</td><td>Naomi / Max</td>
-            <td><strong>[Optional]</strong> Final Project Co-Working and Feedback</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="container sec" id="related">
-    <h2>Related Courses</h2>
-    Non-extensive and random order list of courses at Stanford that might be interesting if you liked CS120:
-    <ul> 
-        <li>CS 329X: Human-Centered NLP </li>
-        <li>CS 283: Governing Artificial Intelligence: Law, Policy, and Institutions</li>
-        <li>CS 281: Ethics of Artificial Intelligence</li>
-        <li>CS 21SI: AI for Social Good</li>
-        <li>CS 329H: Machine Learning from Human Preferences</li>
-        <li>CS 329T: Trustworthy Machine Learning</li>
-        <li>CS 121: Equity and Governance for Artificial Intelligence</li>
-        <li>MS&E 338: Aligning Superintelligence</li>
-        <li>STS 10SI: Introduction to AI Alignment</li>
-        <li>CS 521: Seminar on AI Safety</li>
-        <li>CS 362: Research in AI Alignment</li>
-        <li>CS 238: Decision-Making Under Uncertainty</li>
-        <li>CS 238V: Validation of Safety Critical Systems</li>
-        <li>CS 186: How to Make a Moral Agent</li>
-    </ul>
-    Do you know a course that might fit and is missing? Send any suggestions to lamparth (at) stanford (dot) edu.
-  </div>
-
-  <!-- jQuery and Bootstrap -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  </footer>
 </body>
-
 </html>
