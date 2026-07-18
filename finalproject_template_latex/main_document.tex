@@ -1,0 +1,237 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{cs120_finalproject}
+
+%%% ADD PACKAGES AS YOU NEED THEM
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage[normalem]{ulem}
+\definecolor{darkblue}{rgb}{0, 0, 0.5}
+\hypersetup{colorlinks=true, citecolor=darkblue, linkcolor=darkblue, urlcolor=darkblue}
+
+
+\title{Formatting Instructions \\  CS120 Final Project Submissions}
+
+%%% CHANGE YOUR NAME(S), EMAIL(S), AND SUNet ID(S)
+\author{Name(s): Jane Stanford \& John Doe \\
+Email(s): jane.stanford@edu, john.doe@stanford.edu\\
+SUNet ID(s): jstanford, jdoe
+}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+%%% COMMENT THIS FOR ANONYMIZATION
+\finalsubmission
+%%%
+
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+The abstract paragraph should be indented 1/2~inch (3~picas) on both left and
+right-hand margins. Use 10~point type, with a vertical spacing of 11~points.
+The word \textit{Abstract} must be centered and in point size 12. Two
+line spaces precede the abstract. The abstract must be limited to one
+paragraph.
+\end{abstract}
+
+\section{Final project submission to CS120}
+
+This document provides guidelines for your final project submission. Submissions should follow the structure of a scientific paper and adhere to the format provided in this document (if you are using LaTeX). The submission should be a 5-8 page PDF (excluding references), and appendices can be added without limitation. The goal is to be concise, rather than to reach the maximum page limit.
+
+You will need to submit a regular and anonymized PDF of your final project.
+Commenting or un-commenting the \verb|\finalsubmission| command before \verb|\begin{document}| and recompiling will create a regular or an anonymized version of your final project submission.
+
+The first two pages of your paper should include the following sections:
+\begin{itemize}
+    \item \textbf{Abstract:} A standalone summary of your paper. If you have never written an abstract, this Nature example could be helpful, but feel free to simplify and deviate as you see fit.\footnote{\url{https://www.nature.com/documents/nature-summary-paragraph.pdf}} 
+    \item \textbf{Introduction:} A concise discussion of the motivation and definition of the problem, its relevance, your approach, and key contributions.
+    \item \textbf{Related Work:} A review of existing studies on similar problems, positioning your work relative to them, and highlighting what differentiates your project.
+\end{itemize}
+
+The middle section of your paper (starting from page 3) will depend on the nature of your project. We recommend studying papers from the reading list to understand how they approach their topics. Regardless of whether your project focuses on technical aspects, socio-technical issues, or governance, it should aim to explore a topic relevant to the course content.
+
+The final half-page of your submission should include a \textbf{Discussion} section. This section should summarize your work, address its limitations, discuss potential future research directions, and highlight the generalizability of your findings.
+
+We encourage you to conduct a thorough literature review beyond the curriculum. Examining references from lecture papers and identifying works that cite them online can be helpful starting points. If you are unsure about the appropriate scope of your project, you are welcome to discuss your ideas after class or during office hours.
+
+\subsection{Style}
+
+Final project submissions must be prepared according to the instructions presented here.
+Authors are required to use the \LaTeX{} style files obtainable at the course website. Tweaking the style files may be grounds for rejection.
+
+\subsection{Retrieval of style files}
+
+Submissions must be made using \LaTeX{} and the adapted style files from the CoLM conference
+\verb+cs120_finalproject.sty+ and \verb+colm2024_conference.bst+ (to be used with \LaTeX{}2e). The file
+\verb+main_document.tex+ may be used as a ``shell'' for writing your final project. All you have to do is replace the author, title, abstract, and text of the paper with your own.
+
+The formatting instructions contained in these style files are summarized in sections \ref{gen_inst}, \ref{headings}, and \ref{others} below.
+
+\section{General formatting instructions}
+\label{gen_inst}
+
+The text must be confined within a rectangle 5.5~inches (33~picas) wide and
+9~inches (54~picas) long. The left margin is 1.5~inch (9~picas).
+Use 10~point type with a vertical spacing of 11~points. Palatino is the
+preferred typeface throughout. Paragraphs are separated by 1/2~line space,
+with no indentation.
+
+Paper title is 17~point, in small caps and left-aligned.
+All pages should start at 1~inch (6~picas) from the top of the page.
+
+Authors' names are
+set in boldface, and each name is placed above its corresponding
+address. The lead author's name is to be listed first, and
+the co-authors' names are set to follow. Authors sharing the
+same address can be on the same line.
+
+\section{Headings: first level}
+\label{headings}
+
+First level headings are in lower case (except for first word and proper nouns), bold face,
+flush left and in point size 12. One line space before the first level
+heading and 1/2~line space after the first level heading.
+
+\subsection{Headings: second level}
+
+Second level headings are in lower case (except for first word and proper nouns), bold face,
+flush left and in point size 10. One line space before the second level
+heading and 1/2~line space after the second level heading.
+
+\subsubsection{Headings: third level}
+
+Third level headings are in lower case (except for first word and proper nouns),
+flush left and in point size 10. One line space before the third level
+heading and 1/2~line space after the third level heading.
+
+\section{Citations, figures, tables, references}
+\label{others}
+
+These instructions apply to everyone, regardless of the formatter being used.
+
+\subsection{Citations within the text}
+
+Citations within the text should be based on the \texttt{natbib} package. You can use the default style that includes the authors' last names and year (with the ``et~al.'' construct
+for more than two authors), or change the natbib option to use a numerical style (e.g., ``[10]''). When the authors or the publication are included in the sentence, the citation should not be in parenthesis using \verb|\citet{}| (as
+in ``See \citet{Vaswani+2017} for more information.''). Otherwise, the citation
+should be in parenthesis using \verb|\citep{}| (as in ``Transformers are a key tool
+for developing language models~\citep{Vaswani+2017}.'').
+
+The corresponding references are to be listed in alphabetical order of
+authors, in the \textsc{References} section. As to the format of the
+references themselves, any style is acceptable as long as it is used
+consistently.
+
+\subsection{Footnotes}
+
+Indicate footnotes with a number\footnote{Sample of the first footnote} in the
+text. Place the footnotes at the bottom of the page on which they appear.
+Precede the footnote with a horizontal rule of 2~inches
+(12~picas).\footnote{Sample of the second footnote}
+
+\subsection{Figures}
+
+All artwork must be neat, clean, and legible.
+The figure number and caption always appear after the figure. Place one line space before the figure caption, and one line space after the figure. The figure caption is lower case (except for
+first word and proper nouns); figures are numbered consecutively.
+
+Make sure the figure caption does not get separated from the figure.
+Leave sufficient space to avoid splitting the figure and figure caption.
+
+\begin{figure}[h]
+\begin{center}
+%\framebox[4.0in]{$\;$}
+\fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+\end{center}
+\caption{Sample figure caption and empty (arbitrary) box as plot.}
+\end{figure}
+
+\subsection{Tables}
+
+All tables must be centered, neat, clean and legible. Do not use hand-drawn
+tables. The table number and title always appear below the table. See
+Table~\ref{sample-table}.
+
+Place one line space before the table title, one line space after the table
+title, and one line space after the table. The table title must be lower case
+(except for first word and proper nouns); tables are numbered consecutively.
+
+\begin{table}[t]
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\multicolumn{1}{c}{\bf PART}  &\multicolumn{1}{c}{\bf DESCRIPTION} \\
+\midrule
+Dendrite         &Input terminal \\
+Axon             &Output terminal \\
+Soma             &Cell body (contains cell nucleus) \\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Sample table title}\label{sample-table}
+\end{table}
+
+
+
+
+\section{Final instructions}
+Do not change any aspects of the formatting parameters in the style files.
+In particular, do not modify the width or length of the rectangle the text
+should fit into, and do not change font sizes (except perhaps in the
+\textsc{References} section; see below). Please note that pages should be
+numbered.
+
+\section{Preparing PostScript or PDF files}
+
+Please prepare PostScript or PDF files with paper size ``US Letter'', and
+not, for example, ``A4''. The -t
+letter option on dvips will produce US Letter files.
+
+Consider directly generating PDF files using \verb+pdflatex+
+(especially if you are a MiKTeX user).
+PDF figures must be substituted for EPS figures, however.
+
+Otherwise, please generate your PostScript and PDF files with the following commands:
+\begin{verbatim}
+dvips mypaper.dvi -t letter -Ppdf -G0 -o mypaper.ps
+ps2pdf mypaper.ps mypaper.pdf
+\end{verbatim}
+
+\subsection{Margins in LaTeX}
+
+Most of the margin problems come from figures positioned by hand using
+\verb+\special+ or other commands. We suggest using the command
+\verb+\includegraphics+
+from the graphicx package. Always specify the figure width as a multiple of
+the line width as in the example below using .eps graphics
+\begin{verbatim}
+   \usepackage[dvips]{graphicx} ...
+   \includegraphics[width=0.8\linewidth]{myfile.eps}
+\end{verbatim}
+or % Apr 2009 addition
+\begin{verbatim}
+   \usepackage[pdftex]{graphicx} ...
+   \includegraphics[width=0.8\linewidth]{myfile.pdf}
+\end{verbatim}
+for .pdf graphics.
+See section~4.4 in the graphics bundle documentation (\url{http://www.ctan.org/tex-archive/macros/latex/required/graphics/grfguide.ps})
+
+A number of width problems arise when LaTeX cannot properly hyphenate a
+line. Please give LaTeX hyphenation hints using the \verb+\-+ command.
+
+
+\bibliography{references}
+\bibliographystyle{colm2024_conference}
+
+\appendix
+\section{Appendix}
+You may include other additional sections here.
+
+\end{document}
