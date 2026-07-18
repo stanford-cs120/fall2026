@@ -1,310 +1,296 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Stanford CS 120: Introduction to AI Safety, Autumn 2026.">
-
-  <meta property="og:site_name" content="Stanford CS 120">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+  <meta property="og:site_name" content="Stanford CS120">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="CS 120: Introduction to AI Safety — Autumn 2026">
-  <meta property="og:description" content="Technical and socio-technical approaches to understanding, evaluating, auditing, and governing AI systems.">
+  <meta property="og:title" content="CS120: Introduction to AI Safety">
+  <meta property="og:description" content="Introduction to AI Safety — Autumn 2026">
   <meta property="og:url" content="https://stanford-cs120.github.io/fall2026/">
   <meta property="og:image" content="https://stanford-cs120.github.io/fall2026/images/stanfordlogo.png">
-
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="CS 120: Introduction to AI Safety — Autumn 2026">
-  <meta name="twitter:description" content="Technical and socio-technical approaches to understanding, evaluating, auditing, and governing AI systems.">
-  <meta name="twitter:image" content="https://stanford-cs120.github.io/fall2026/images/stanfordlogo.png">
-
-  <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/">
-  <link rel="stylesheet" href="style.css">
-  <title>Stanford CS 120 | Introduction to AI Safety | Autumn 2026</title>
+  <title>Stanford CS120 | Introduction to AI Safety</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
 
 <body>
-  <a class="skip-link" href="#main">Skip to main content</a>
-
-  <nav class="site-nav" aria-label="Primary navigation">
-    <div class="nav-inner">
-      <a class="brand" href="#top">CS 120</a>
-      <div class="nav-links">
-        <a href="#overview">Overview</a>
-        <a href="#people">People</a>
-        <a href="#logistics">Logistics</a>
-        <a href="#schedule">Schedule</a>
-        <a href="#coursework">Course work</a>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand brand" href="index.html">CS120 Home</a>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#course-navbar"
+          aria-expanded="false">
+          <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="course-navbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#course">Overview</a></li>
+          <li><a href="#instructors">Staff</a></li>
+          <li><a href="#logistics">Logistics</a></li>
+          <li><a href="#schedule-section">Schedule</a></li>
+          <li><a href="#coursework">Coursework</a></li>
+          <li><a href="#related">Related Courses</a></li>
+        </ul>
       </div>
     </div>
   </nav>
 
-  <header class="hero" id="top">
-    <div class="hero-inner">
-      <div>
-        <p class="eyebrow">Stanford University · Autumn 2026</p>
-        <h1>CS 120: Introduction to AI Safety</h1>
-        <p class="hero-subtitle">Human inputs, unintended effects, evaluation, auditability, and governance</p>
-      </div>
-      <a href="https://www.stanford.edu/" aria-label="Stanford University home page">
-        <img class="stanford-logo" src="images/stanfordlogo.png" alt="Stanford University">
-      </a>
+  <div id="header" style="text-align:center">
+    <span class="logo-left"></span>
+    <a href="https://www.stanford.edu/" target="_blank" rel="noopener noreferrer">
+      <img src="images/stanfordlogo.png" class="logo-right" alt="Stanford logo">
+    </a>
+    <h1>CS120: Introduction to AI Safety</h1>
+    <h3>Autumn 2026</h3>
+  </div>
+
+  <div class="container sec" id="course">
+    <div class="alert alert-warning" role="alert">
+      <strong>Course website under construction.</strong> Topics, readings, assignments, and policies may change before
+      the quarter begins.
     </div>
-  </header>
+    <h2>Overview</h2>
+    <p>What is safe AI, and how do we make it? CS120 explores this question, focusing on the technical and
+      socio-technical challenges of understanding, evaluating, and governing AI systems. We focus on the role of human
+      input in the training process, unintended effects of AI development and deployment, and scalable evaluation for
+      increasingly capable systems.</p>
+    <p>While primarily focusing on current solutions and their limitations through computer science publications, we
+      will also discuss the labor and institutions behind AI, how evaluation is defined and audited, what oversight of
+      AI systems could look like, and what future risks we might face. Topics will span data work, foundation models,
+      and governance, focusing on robustness, evaluation, and auditability.</p>
+    <p>You will gain insight into why ensuring AI safety is challenging through lectures, readings, quizzes, and a final
+      project. This course aims to prepare you to critically assess and contribute to safe AI development, equipping you
+      with knowledge of cutting-edge research and ongoing debates in the field. The course has no official
+      prerequisites, although familiarity with machine learning and statistics is recommended.</p>
+    <h3>Working Theory</h3>
+    <p>The course is organized around a theory that AI safety depends on how human inputs, data, and judgments are
+      applied, integrated, and decided; what unintended effects arise when models amplify and recirculate them; and
+      whether the resulting systems can be meaningfully evaluated and audited.</p>
+  </div>
 
-  <main id="main">
-    <section class="notice-wrap" aria-label="Planning notice">
-      <div class="notice">
-        <strong>Course website under construction.</strong>
-        Topics, policies, staffing, room assignment, and course-platform links are tentative and will be updated before the quarter begins.
-        <span class="last-updated">Last updated July 18, 2026.</span>
-      </div>
-    </section>
-
-    <section class="section" id="overview">
-      <div class="section-heading">
-        <p class="section-kicker">Course overview</p>
-        <h2>What is safe AI, and how do we make it?</h2>
-      </div>
-
-      <p>CS 120 explores this question through the technical and socio-technical challenges of understanding, evaluating, and governing AI systems. We focus on the role of human input in the training process, unintended effects of AI development and deployment, and scalable evaluation for increasingly capable systems.</p>
-
-      <p>Through computer science research and complementary work from adjacent fields, we will examine the labor and institutions behind AI, how evaluation is defined and audited, what oversight of AI systems could look like, and what future risks we might face. Topics span data work, foundation models, and governance, with emphasis on robustness, evaluation, and auditability.</p>
-
-      <p>Through lectures, readings, short quizzes, and a final project, students will learn to critically assess and contribute to safe AI development. There are no official prerequisites, although familiarity with machine learning and statistics is recommended.</p>
-
-      <div class="theory-card">
-        <h3>Working theory of the course</h3>
-        <p>AI safety depends on how human inputs, data, and judgments are produced and integrated; what unintended effects arise as models amplify and recirculate them; and whether the resulting systems can be meaningfully evaluated, audited, and governed.</p>
-      </div>
-
-      <div class="three-column" aria-label="Course themes">
-        <article class="theme-card">
-          <span class="theme-number">01</span>
-          <h3>Human inputs</h3>
-          <p>Who produces data and feedback? How are judgments elicited, aggregated, and translated into model behavior?</p>
-        </article>
-        <article class="theme-card">
-          <span class="theme-number">02</span>
-          <h3>Unintended effects</h3>
-          <p>How do models amplify, recirculate, or reshape inputs once they are embedded in products and institutions?</p>
-        </article>
-        <article class="theme-card">
-          <span class="theme-number">03</span>
-          <h3>Evaluation and audit</h3>
-          <p>What evidence supports safety claims, who can inspect it, and what forms of oversight are credible at scale?</p>
-        </article>
-      </div>
-
-      <h3>Learning goals</h3>
-      <ul class="check-list">
-        <li>Identify where assumptions, values, and human judgments enter the AI development lifecycle.</li>
-        <li>Analyze technical failures together with deployment context, incentives, labor, and institutional constraints.</li>
-        <li>Assess the validity and limitations of benchmarks, red-team exercises, interpretability methods, and audits.</li>
-        <li>Design or critique an evaluation, audit, or governance intervention for an AI system.</li>
-      </ul>
-    </section>
-
-    <section class="section section-tinted" id="people">
-      <div class="section-heading">
-        <p class="section-kicker">Teaching team</p>
-        <h2>People</h2>
-      </div>
-
-      <div class="people-grid">
-        <article class="person-card">
-          <img class="person-photo" src="images/zachary-robertson.jpg" alt="Placeholder for a photograph of Zachary Robertson">
-          <div>
-            <p class="person-role">Instructor</p>
-            <h3>Zachary Robertson</h3>
-            <p>Contact information and office hours will be posted before the quarter begins.</p>
-          </div>
-        </article>
-
-        <article class="person-card person-card-muted">
-          <div class="person-photo ca-placeholder" aria-hidden="true">CA</div>
-          <div>
-            <p class="person-role">Course assistants</p>
-            <h3>To be announced</h3>
-            <p>Course-assistant information will be added after staffing is confirmed.</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" id="logistics">
-      <div class="section-heading">
-        <p class="section-kicker">Current planning information</p>
-        <h2>Logistics</h2>
-      </div>
-
-      <dl class="logistics-grid">
-        <div>
-          <dt>Course</dt>
-          <dd>CS 120: Introduction to AI Safety</dd>
+  <div class="sechighlight">
+    <div class="container sec" id="instructors">
+      <div class="col-md-3">
+        <h3>Instructor</h3>
+        <div class="instructor">
+          <div class="instructorphoto"><img src="images/zachary-robertson.jpg" alt="Zachary Robertson"></div>
+          <div>Zachary Robertson</div>
         </div>
-        <div>
-          <dt>Quarter</dt>
-          <dd>Autumn 2026</dd>
-        </div>
-        <div>
-          <dt>Meeting time</dt>
-          <dd>Tuesdays and Thursdays, 11:30 a.m.–12:50 p.m. <span class="status">anticipated</span></dd>
-        </div>
-        <div>
-          <dt>Location</dt>
-          <dd>TBD; anticipated <a href="https://campus-map.stanford.edu/?id=04-510">Hewlett Teaching Center 102</a></dd>
-        </div>
-        <div>
-          <dt>Class meetings</dt>
-          <dd>September 22–December 3, 2026, excluding university no-class dates</dd>
-        </div>
-        <div>
-          <dt>Prerequisites</dt>
-          <dd>No official prerequisites; familiarity with machine learning and statistics is recommended</dd>
-        </div>
-      </dl>
-
-      <p class="small-note">The official Stanford calendar lists September 22 as the first day of Autumn Quarter instruction, November 3 as Democracy Day with no classes, November 23–27 as Thanksgiving Recess, and December 4 as the last day of classes. For this Tuesday/Thursday course, the final scheduled meeting is December 3. See the <a href="https://studentservices.stanford.edu/calendar-events/academic-calendars/future-academic-calendars/stanford-academic-calendar-2026-2027">Stanford 2026–27 Academic Calendar</a>.</p>
-    </section>
-
-    <section class="section section-tinted" id="schedule">
-      <div class="section-heading">
-        <p class="section-kicker">Provisional course map</p>
-        <h2>Tentative schedule</h2>
       </div>
-
-      <p>This schedule is a planning scaffold rather than a final syllabus. Readings, lecture titles, assignments, and any guest speakers remain to be confirmed.</p>
-
-      <div class="table-wrap" role="region" aria-label="Tentative schedule" tabindex="0">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">Week</th>
-              <th scope="col">Date</th>
-              <th scope="col">Module</th>
-              <th scope="col">Tentative topic</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td><td>Tue Sep 22</td><td>Framing</td>
-              <td>What counts as AI safety? Models, systems, and institutions</td>
-            </tr>
-            <tr>
-              <td></td><td>Thu Sep 24</td><td>Framing</td>
-              <td>How foundation models are built: data, objectives, and feedback</td>
-            </tr>
-            <tr>
-              <td>2</td><td>Tue Sep 29</td><td>Human inputs</td>
-              <td>Human feedback as training data</td>
-            </tr>
-            <tr>
-              <td></td><td>Thu Oct 1</td><td>Human inputs</td>
-              <td>Whose preferences? Subjectivity, pluralism, and aggregation</td>
-            </tr>
-            <tr>
-              <td>3</td><td>Tue Oct 6</td><td>Human inputs</td>
-              <td>Data work: collection, labeling, moderation, and labor</td>
-            </tr>
-            <tr>
-              <td></td><td>Thu Oct 8</td><td>Human inputs</td>
-              <td>Dataset decisions: curation, documentation, and provenance</td>
-            </tr>
-            <tr>
-              <td>4</td><td>Tue Oct 13</td><td>Unintended effects</td>
-              <td>Distribution shift, feedback loops, and recirculation</td>
-            </tr>
-            <tr>
-              <td></td><td>Thu Oct 15</td><td>Unintended effects</td>
-              <td>Deployment context: incentives, institutions, and downstream harms</td>
-            </tr>
-            <tr>
-              <td>5</td><td>Tue Oct 20</td><td>Evaluation</td>
-              <td>Evaluation as measurement: constructs, validity, and claims</td>
-            </tr>
-            <tr>
-              <td></td><td>Thu Oct 22</td><td>Evaluation</td>
-              <td>Benchmarks: contamination, gaming, and generalization</td>
-            </tr>
-            <tr>
-              <td>6</td><td>Tue Oct 27</td><td>Evaluation</td>
-              <td>Red teaming and adversarial evaluation</td>
-            </tr>
-            <tr>
-              <td></td><td>Thu Oct 29</td><td>Auditability</td>
-              <td>Interpretability and other evidence for audit</td>
-            </tr>
-            <tr class="no-class">
-              <td>7</td><td>Tue Nov 3</td><td>No class</td>
-              <td>Democracy Day</td>
-            </tr>
-            <tr>
-              <td></td><td>Thu Nov 5</td><td>Oversight</td>
-              <td>Human oversight and scalable supervision</td>
-            </tr>
-            <tr>
-              <td>8</td><td>Tue Nov 10</td><td>Evaluation</td>
-              <td>Evaluating increasingly capable systems</td>
-            </tr>
-            <tr>
-              <td></td><td>Thu Nov 12</td><td>Auditability</td>
-              <td>Access, documentation, and third-party evaluation</td>
-            </tr>
-            <tr>
-              <td>9</td><td>Tue Nov 17</td><td>Governance</td>
-              <td>Standards, regulation, assurance, and oversight institutions</td>
-            </tr>
-            <tr>
-              <td></td><td>Thu Nov 19</td><td>Integration</td>
-              <td>Auditing a deployed AI system: case study or guest lecture</td>
-            </tr>
-            <tr class="no-class">
-              <td>10</td><td>Tue Nov 24</td><td>No class</td>
-              <td>Thanksgiving Recess</td>
-            </tr>
-            <tr class="no-class">
-              <td></td><td>Thu Nov 26</td><td>No class</td>
-              <td>Thanksgiving Recess</td>
-            </tr>
-            <tr>
-              <td>11</td><td>Tue Dec 1</td><td>Project</td>
-              <td>Final-project workshop and peer feedback</td>
-            </tr>
-            <tr>
-              <td></td><td>Thu Dec 3</td><td>Synthesis</td>
-              <td>From human inputs to evaluable and accountable AI systems</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="col-md-3">
+        <h3>Course Assistants</h3>
+        <div class="instructor">
+          <div
+            style="height:120px; display:flex; align-items:center; justify-content:center; font-size:18px; color:#777;">
+            TBD</div>
+          <div>To be announced</div>
+        </div>
       </div>
-    </section>
-
-    <section class="section" id="coursework">
-      <div class="section-heading">
-        <p class="section-kicker">Provisional structure</p>
-        <h2>Course work</h2>
+      <div class="col-md-3"></div>
+      <div class="col-md-3">
+        <div class="instructor">
+          <div class="classlogo"><img src="images/cs120_sticker.png" class="logo-second" alt="CS120 course logo"></div>
+        </div>
       </div>
-
-      <div class="two-column">
-        <article class="info-card">
-          <h3>Readings and short quizzes</h3>
-          <p>Students should expect research papers and complementary readings from technical and socio-technical fields, accompanied by low-stakes quizzes or short responses.</p>
-        </article>
-        <article class="info-card">
-          <h3>Final project</h3>
-          <p>The course will culminate in a final project. Possible formats include an empirical evaluation, an audit or assurance design, a data or human-feedback study, a literature synthesis, or a governance analysis.</p>
-        </article>
-      </div>
-
-      <p>Exact grading weights, deadlines, team-size rules, attendance policies, late-day policies, and submission links are still under review. They will be published together so that the workload and course goals are internally consistent.</p>
-    </section>
-  </main>
-
-  <footer>
-    <div class="footer-inner">
-      <p><strong>Stanford CS 120 · Autumn 2026</strong></p>
-      <p>Course website under construction.</p>
     </div>
-  </footer>
+  </div>
+
+  <div class="container sec" id="logistics">
+    <h2>Logistics</h2>
+    <h3>Class Information</h3>
+    <ul>
+      <li><strong>Course:</strong> CS 120</li>
+      <li><strong>Quarter:</strong> Autumn 2026</li>
+      <li><strong>Meeting time:</strong> Tuesdays and Thursdays, 11:30 a.m.–12:50 p.m. (anticipated)</li>
+      <li><strong>Location:</strong> TBD; Hewlett Teaching Center 102 is anticipated</li>
+      <li><strong>Units:</strong> 3 (anticipated)</li>
+      <li><strong>Prerequisites:</strong> None officially; familiarity with machine learning and statistics is
+        recommended</li>
+      <li><strong>Course assistants, office hours, discussion forum, and submission links:</strong> To be announced</li>
+    </ul>
+  </div>
+
+  <div class="container sec" id="schedule-section">
+    <h2>Tentative Schedule</h2>
+    <p>This schedule is a working course map. Detailed readings, slides, assignments, and any guest lecturers will be
+      added as they are confirmed.</p>
+    <div class="table-responsive">
+      <table id="schedule" class="table table-hover">
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>Date</th>
+            <th>Lecturer</th>
+            <th>Topic</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Week 1</td>
+            <td>09/22/26</td>
+            <td>Robertson</td>
+            <td>What does safe AI mean?</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>09/24/26</td>
+            <td>Robertson</td>
+            <td>Foundation models and the AI development pipeline</td>
+          </tr>
+          <tr>
+            <td>Week 2</td>
+            <td>09/29/26</td>
+            <td>Robertson</td>
+            <td>Human feedback, preferences, and reward models</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>10/01/26</td>
+            <td>Robertson</td>
+            <td>Pluralism, disagreement, and preference aggregation</td>
+          </tr>
+          <tr>
+            <td>Week 3</td>
+            <td>10/06/26</td>
+            <td>Robertson</td>
+            <td>Data work, curation, and documentation</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>10/08/26</td>
+            <td>Robertson</td>
+            <td>Labor, provenance, and institutional choices</td>
+          </tr>
+          <tr>
+            <td>Week 4</td>
+            <td>10/13/26</td>
+            <td>Robertson</td>
+            <td>Unintended effects and sociotechnical failure modes</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>10/15/26</td>
+            <td>Robertson</td>
+            <td>Robustness, distribution shift, and deployment context</td>
+          </tr>
+          <tr>
+            <td>Week 5</td>
+            <td>10/20/26</td>
+            <td>Robertson</td>
+            <td>What makes an evaluation valid?</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>10/22/26</td>
+            <td>Robertson</td>
+            <td>Benchmarks, contamination, and measurement limits</td>
+          </tr>
+          <tr>
+            <td>Week 6</td>
+            <td>10/27/26</td>
+            <td>Robertson</td>
+            <td>Red teaming and adversarial evaluation</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>10/29/26</td>
+            <td>Robertson</td>
+            <td>Interpretability and evidence about model behavior</td>
+          </tr>
+          <tr>
+            <td>Week 7</td>
+            <td>11/03/26</td>
+            <td><strong>No class</strong></td>
+            <td>Democracy Day</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>11/05/26</td>
+            <td>Robertson</td>
+            <td>Human oversight and scalable supervision</td>
+          </tr>
+          <tr>
+            <td>Week 8</td>
+            <td>11/10/26</td>
+            <td>Robertson</td>
+            <td>Evaluating increasingly capable systems</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>11/12/26</td>
+            <td>Robertson / TBD</td>
+            <td>Case study or guest lecture</td>
+          </tr>
+          <tr>
+            <td>Week 9</td>
+            <td>11/17/26</td>
+            <td>Robertson</td>
+            <td>Audits, access, and third-party evaluation</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>11/19/26</td>
+            <td>Robertson</td>
+            <td>Governance, assurance, and oversight institutions</td>
+          </tr>
+          <tr>
+            <td>Week 10</td>
+            <td>11/24/26</td>
+            <td><strong>No class</strong></td>
+            <td>Thanksgiving Recess</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>11/26/26</td>
+            <td><strong>No class</strong></td>
+            <td>Thanksgiving Recess</td>
+          </tr>
+          <tr>
+            <td>Week 11</td>
+            <td>12/01/26</td>
+            <td>Robertson</td>
+            <td>Final project workshop and peer feedback</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>12/03/26</td>
+            <td>Robertson</td>
+            <td>Synthesis: building auditable and governable AI systems</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="container sec" id="coursework">
+    <h2>Coursework</h2>
+    <p>The anticipated course components are weekly readings, short quizzes, participation in lecture discussions, and a
+      final project. The final project may take the form of an empirical study, evaluation or audit, literature review,
+      or technically grounded governance analysis. Exact grading weights, deadlines, collaboration rules, and late
+      policies will be posted before enrollment decisions are required.</p>
+    <h3>Readings and Slides</h3>
+    <p>Materials from prior offerings are available to the teaching team and will be selectively revised for this
+      version of the course. Public links will be added as the syllabus is finalized.</p>
+  </div>
+
+  <div class="container sec" id="related">
+    <h2>Related Courses</h2>
+    <p>Students interested in adjacent material may also consider Stanford courses on trustworthy machine learning,
+      human-centered AI, AI governance, ethics, decision-making under uncertainty, and learning from human preferences.
+      A term-specific list will be added after the 2026–27 course catalog is finalized.</p>
+  </div>
+
+  <div id="footer" class="container">
+    <p style="text-align:center;">Stanford CS120 · Autumn 2026</p>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 </body>
+
 </html>
