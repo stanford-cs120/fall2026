@@ -1,0 +1,19 @@
+<head>
+  <meta charset="UTF-8">
+  <title>CS120 Lecture</title>
+  <script src="../sfig/internal/sfig.js"></script>
+  <script src="../sfig/internal/seedrandom.js"></script>
+  <script src="../sfig/internal/Graph.js"></script>
+  <script src="../sfig/internal/RootedTree.js"></script>
+  <script src="../sfig/internal/Outline.js"></script>
+  <script src="utils.js"></script>
+  <script>
+    // Load lecture named by ?lecture=NAME (default: mock)
+    var params = new URLSearchParams(window.location.search);
+    var name = params.get('lecture') || 'mock';
+    document.write('<scr' + 'ipt src="' + name + '.js"></scr' + 'ipt>');
+  </script>
+</head>
+
+<body onload="prez.run()">
+</body>
