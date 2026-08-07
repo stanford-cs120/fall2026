@@ -1,6 +1,6 @@
 <head>
   <meta charset="UTF-8">
-  <title>CS120 Lecture</title>
+  <title>CS120: Introduction to AI Safety — Lecture (Stanford, Fall 2026)</title>
   <script src="../sfig/internal/sfig.js"></script>
   <script src="../sfig/internal/seedrandom.js"></script>
   <script src="../sfig/internal/Graph.js"></script>
@@ -12,8 +12,51 @@
     var params = new URLSearchParams(window.location.search);
     var name = params.get('lecture') || 'mock';
     document.write('<scr' + 'ipt src="' + name + '.js"></scr' + 'ipt>');
+
+    // Browser-side overflow gate: open with #mode=print1pp&measure=1.
+    // After all slides render, compare each slide SVG's ink bbox against its
+    // viewport and dump a JSON report into a pre element (id: overflow-report).
+    // Driven headlessly via: google-chrome --headless=new --dump-dom ...
+    function measureOverflow() {
+      var TOL = 1.5;  // px slack before we call it overflow
+      var svgs = Array.prototype.slice.call(document.querySelectorAll('svg'))
+        .filter(function(s) { return (parseFloat(s.getAttribute('width')) || 0) > 100; });
+      // sfig grows the SVG viewport to contain overfilled content rather
+      // than clipping it, so overflow manifests as a slide whose SVG is
+      // larger than the deck's nominal slide size. Use the modal (most
+      // common) dimensions across the deck as nominal.
+      var dims = svgs.map(function(s) {
+        return [Math.round(parseFloat(s.getAttribute('width'))),
+                Math.round(parseFloat(s.getAttribute('height')))];
+      });
+      function mode(xs) {
+        var c = {}, best = xs[0];
+        xs.forEach(function(x) { c[x] = (c[x] || 0) + 1; if (c[x] > c[best]) best = x; });
+        return best;
+      }
+      var nomW = mode(dims.map(function(d) { return d[0]; }));
+      var nomH = mode(dims.map(function(d) { return d[1]; }));
+      var overflows = [];
+      for (var i = 0; i < svgs.length; i++) {
+        var id = (prez.slides[i] && prez.slides[i].id)
+          ? prez.slides[i].id().get() : ('svg-' + i);
+        var over = { right: dims[i][0] - nomW, bottom: dims[i][1] - nomH };
+        var bad = {};
+        for (var k in over) if (over[k] > TOL) bad[k] = over[k];
+        if (Object.keys(bad).length > 0) {
+          overflows.push({ index: i, id: id, over: bad });
+        }
+      }
+      var pre = document.createElement('pre');
+      pre.id = 'overflow-report';
+      pre.textContent = JSON.stringify(
+        { slideCount: svgs.length, nominal: [nomW, nomH], overflows: overflows },
+        null, 1);
+      document.body.appendChild(pre);
+      document.title = 'MEASURE-DONE';
+    }
   </script>
 </head>
 
-<body onload="prez.run()">
+<body onload="prez.run(window.location.hash.indexOf('measure=1') >= 0 ? measureOverflow : undefined)">
 </body>

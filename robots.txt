@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://stanford-cs120.github.io/fall2026/sitemap.xml
