@@ -7,13 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CS120: Introduction to AI Safety | Stanford | Fall 2026</title>
   <meta name="description"
-    content="Stanford CS120: Introduction to AI Safety, Fall 2026. Taught by Zachary Robertson. Lectures, readings, quizzes, and course materials on AI safety, evaluation, oversight, robustness, and governance.">
+    content="Stanford CS120: Introduction to AI Safety, Fall 2026. Taught by Zachary Robertson. Lectures, readings, quizzes, and course materials on AI safety, threat models, evaluation, auditability, and governance.">
   <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/">
   <meta property="og:site_name" content="Stanford CS120">
   <meta property="og:type" content="website">
   <meta property="og:title" content="CS120: Introduction to AI Safety — Stanford, Fall 2026">
   <meta property="og:description"
-    content="Stanford CS120: Introduction to AI Safety, Fall 2026. Taught by Zachary Robertson. Lectures, readings, quizzes, and course materials on AI safety, evaluation, oversight, robustness, and governance.">
+    content="Stanford CS120: Introduction to AI Safety, Fall 2026. Taught by Zachary Robertson. Lectures, readings, quizzes, and course materials on AI safety, threat models, evaluation, auditability, and governance.">
   <meta property="og:url" content="https://stanford-cs120.github.io/fall2026/">
   <meta property="og:image" content="https://stanford-cs120.github.io/fall2026/images/cs120_sticker.png">
   <meta property="og:image:width" content="300">
@@ -22,7 +22,7 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="CS120: Introduction to AI Safety — Stanford, Fall 2026">
   <meta name="twitter:description"
-    content="Stanford CS120: Introduction to AI Safety, Fall 2026. Taught by Zachary Robertson. Course materials on AI safety, evaluation, oversight, robustness, and governance.">
+    content="Stanford CS120: Introduction to AI Safety, Fall 2026. Taught by Zachary Robertson. Course materials on AI safety, threat models, evaluation, auditability, and governance.">
   <meta name="twitter:image" content="https://stanford-cs120.github.io/fall2026/images/cs120_sticker.png">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,300" rel="stylesheet" type="text/css">
@@ -35,7 +35,7 @@
     "name": "CS120: Introduction to AI Safety",
     "courseCode": "CS120",
     "url": "https://stanford-cs120.github.io/fall2026/",
-    "description": "What is safe AI, and how do we make it? CS120 explores the technical and socio-technical challenges of understanding, evaluating, and governing AI systems, spanning data work, foundation models, and governance, with a focus on robustness, evaluation, and auditability.",
+    "description": "What makes an AI system safe, and how do we decide? CS120 explores measurement-theoretic and institutional challenges of understanding, interpreting, and governing AI capabilities, spanning data work, foundation models, and governance, with a focus on threat models, evaluation, and auditability.",
     "provider": {
       "@type": "CollegeOrUniversity",
       "name": "Stanford University",
@@ -95,18 +95,18 @@
       the quarter begins.
     </div>
     <h2>Overview</h2>
-    <p>What is safe AI, and how do we make it? CS120 explores this question, focusing on the technical and
-      socio-technical challenges of understanding, evaluating, and governing AI systems. We focus on the role of human
-      input in the training process, unintended effects of AI development and deployment, and scalable evaluation for
-      increasingly capable systems.</p>
-    <p>While primarily focusing on current solutions and their limitations through computer science publications, we
-      will also discuss the labor and institutions behind AI, how evaluation is defined and audited, what oversight of
-      AI systems could look like, and what future risks we might face. Topics will span data work, foundation models,
-      and governance, focusing on robustness, evaluation, and auditability.</p>
-    <p>You will gain insight into why ensuring AI safety is challenging through lectures, readings, quizzes, and a final
-      project. This course aims to prepare you to critically assess and contribute to safe AI development, equipping you
-      with knowledge of cutting-edge research and ongoing debates in the field. The course has no official
-      prerequisites, although familiarity with machine learning and statistics is recommended.</p>
+    <p>What makes an AI system "safe" and how do we decide? CS120 explores this question, focusing on both measurement
+      theoretic and institutional challenges of understanding, interpreting, and governing AI capabilities. We
+      distinguish between AI-specific and systemic safety issues, from examining sycophancy and security implications
+      to the challenge of measuring capabilities and risk.</p>
+    <p>This class will look at current solutions and their limitations through CS publications, and will connect the
+      institutions behind AI, how evaluation is defined and audited, and how those factors shape the future risks we
+      might face. Topics will span data work, foundation models, and governance, focusing on threat-models, evaluation,
+      and auditability.</p>
+    <p>This course aims to prepare you to critically assess and contribute to safe AI development, equipping you with
+      knowledge of cutting-edge research and ongoing debates in the field. This course has no official requirements,
+      although we recommend some knowledge about machine learning and statistics, and will include readings, quizzes,
+      and a final project.</p>
     <h3>Working Theory</h3>
     <p>The course is organized around a theory that AI safety depends on how human inputs, data, and judgments are
       applied, integrated, and decided; what unintended effects arise when models amplify and recirculate them; and
@@ -158,8 +158,9 @@
 
   <div class="container sec" id="schedule-section">
     <h2>Tentative Schedule</h2>
-    <p>This schedule is a working course map. Detailed readings, slides, assignments, and any guest lecturers will be
-      added as they are confirmed.</p>
+    <p>This schedule is a working course map. Each 80-minute meeting pairs a technical core with a seminar-style
+      discussion, which may include guest researchers. Detailed readings, slides, assignments, and any guest lecturers
+      will be added as they are confirmed.</p>
     <div class="table-responsive">
       <table id="schedule" class="table table-hover">
         <thead>
@@ -171,77 +172,89 @@
           </tr>
         </thead>
         <tbody>
+          <tr class="active">
+            <td colspan="4"><strong>Module 1 — Framing safety and assurance</strong></td>
+          </tr>
           <tr>
             <td>Week 1</td>
             <td>09/22/26</td>
             <td>Robertson</td>
-            <td>What does safe AI mean?</td>
+            <td>What does safe AI mean? Hazards, harms, risks, reliability, alignment, and governance</td>
           </tr>
           <tr>
             <td></td>
             <td>09/24/26</td>
             <td>Robertson</td>
-            <td>Foundation models and the AI development pipeline</td>
+            <td>What is the object of assurance? Models, development pipelines, deployed systems, and institutions</td>
           </tr>
           <tr>
             <td>Week 2</td>
             <td>09/29/26</td>
             <td>Robertson</td>
-            <td>Human feedback, preferences, and reward models</td>
+            <td>What counts as an assurance claim? System boundaries, evidence, and hazard-analysis methods</td>
+          </tr>
+          <tr class="active">
+            <td colspan="4"><strong>Module 2 — Reactive model behavior and development-time optimization</strong></td>
           </tr>
           <tr>
             <td></td>
             <td>10/01/26</td>
             <td>Robertson</td>
-            <td>Pluralism, disagreement, and preference aggregation</td>
+            <td>From data and objectives to model behavior: optimization, learning, generalization, and underspecification</td>
           </tr>
           <tr>
             <td>Week 3</td>
             <td>10/06/26</td>
             <td>Robertson</td>
-            <td>Data work, curation, and documentation</td>
+            <td>Proxies and model-selection pressure: Goodhart effects, shortcut behavior, and specification failures</td>
           </tr>
           <tr>
             <td></td>
             <td>10/08/26</td>
             <td>Robertson</td>
-            <td>Labor, provenance, and institutional choices</td>
+            <td>Robustness beyond the development distribution: distribution shift, adversarial inputs, and calibration</td>
           </tr>
           <tr>
             <td>Week 4</td>
             <td>10/13/26</td>
             <td>Robertson</td>
-            <td>Unintended effects and sociotechnical failure modes</td>
+            <td>Data as specification: curation, labeling, documentation, provenance, and normative choices</td>
+          </tr>
+          <tr class="active">
+            <td colspan="4"><strong>Module 3 — Sequential decision-making and agency</strong></td>
           </tr>
           <tr>
             <td></td>
             <td>10/15/26</td>
             <td>Robertson</td>
-            <td>Robustness, distribution shift, and deployment context</td>
+            <td>From prediction to action: states, actions, policies, planning, and reinforcement learning</td>
           </tr>
           <tr>
             <td>Week 5</td>
             <td>10/20/26</td>
             <td>Robertson</td>
-            <td>What makes an evaluation valid?</td>
+            <td>Reward hacking and control-loop failures: proxy rewards, side effects, and unsafe exploration</td>
           </tr>
           <tr>
             <td></td>
             <td>10/22/26</td>
             <td>Robertson</td>
-            <td>Benchmarks, contamination, and measurement limits</td>
+            <td>Goal-directedness and long horizons: the orthogonality thesis, instrumental convergence, and goal misgeneralization</td>
+          </tr>
+          <tr class="active">
+            <td colspan="4"><strong>Module 4 — Adaptive interaction and sociotechnical dynamics</strong></td>
           </tr>
           <tr>
             <td>Week 6</td>
             <td>10/27/26</td>
             <td>Robertson</td>
-            <td>Red teaming and adversarial evaluation</td>
+            <td>Human feedback, preferences, and reward models</td>
           </tr>
           <tr>
             <td></td>
             <td>10/29/26</td>
             <td>Robertson</td>
-            <td>Interpretability and evidence about model behavior</td>
+            <td>Pluralism, disagreement, and preference aggregation</td>
           </tr>
           <tr>
             <td>Week 7</td>
@@ -253,31 +266,34 @@
             <td></td>
             <td>11/05/26</td>
             <td>Robertson</td>
-            <td>Human oversight and scalable supervision</td>
+            <td>Adaptive interaction-time hazards: sycophancy, manipulation, and preference shaping</td>
           </tr>
           <tr>
             <td>Week 8</td>
             <td>11/10/26</td>
             <td>Robertson</td>
-            <td>Evaluating increasingly capable systems</td>
+            <td>Sociotechnical production and deployment: labor, organizational incentives, data endogeneity, and externalities</td>
+          </tr>
+          <tr class="active">
+            <td colspan="4"><strong>Module 5 — Evaluation, governance, and institutional assurance</strong></td>
           </tr>
           <tr>
             <td></td>
             <td>11/12/26</td>
-            <td>Robertson / TBD</td>
-            <td>Case study or guest lecture</td>
+            <td>Robertson</td>
+            <td>What makes an evaluation valid? Construct validity, behavioral evaluation, and interpretability-based evidence</td>
           </tr>
           <tr>
             <td>Week 9</td>
             <td>11/17/26</td>
             <td>Robertson</td>
-            <td>Audits, access, and third-party evaluation</td>
+            <td>Benchmarks under optimization pressure: contamination, gaming, and endogenous evaluation</td>
           </tr>
           <tr>
             <td></td>
             <td>11/19/26</td>
             <td>Robertson</td>
-            <td>Governance, assurance, and oversight institutions</td>
+            <td>Adversarial and complementary forms of evidence: red teaming, interpretability, and evidence triangulation</td>
           </tr>
           <tr>
             <td>Week 10</td>
@@ -295,13 +311,13 @@
             <td>Week 11</td>
             <td>12/01/26</td>
             <td>Robertson</td>
-            <td>Final project workshop and peer feedback</td>
+            <td>Oversight and assurance institutions: audits, access, certification, and governance</td>
           </tr>
           <tr>
             <td></td>
             <td>12/03/26</td>
             <td>Robertson</td>
-            <td>Synthesis: building auditable and governable AI systems</td>
+            <td>Synthesis and project workshop: building an auditable and governable assurance case</td>
           </tr>
         </tbody>
       </table>
