@@ -7,13 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CS120: Introduction to AI Safety | Stanford | Fall 2026</title>
   <meta name="description"
-    content="Stanford CS120: Introduction to AI Safety, Fall 2026. Taught by Zachary Robertson. Lectures, readings, quizzes, and course materials on AI safety, threat models, evaluation, auditability, and governance.">
+    content="Stanford CS120: Introduction to AI Safety, Fall 2026. Taught by Zachary Robertson. Lectures, readings, discussion, a final project, and course materials on AI safety, assurance, evaluation, and governance.">
   <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/">
   <meta property="og:site_name" content="Stanford CS120">
   <meta property="og:type" content="website">
   <meta property="og:title" content="CS120: Introduction to AI Safety — Stanford, Fall 2026">
   <meta property="og:description"
-    content="Stanford CS120: Introduction to AI Safety, Fall 2026. Taught by Zachary Robertson. Lectures, readings, quizzes, and course materials on AI safety, threat models, evaluation, auditability, and governance.">
+    content="Stanford CS120: Introduction to AI Safety, Fall 2026. Taught by Zachary Robertson. Lectures, readings, discussion, a final project, and course materials on AI safety, assurance, evaluation, and governance.">
   <meta property="og:url" content="https://stanford-cs120.github.io/fall2026/">
   <meta property="og:image" content="https://stanford-cs120.github.io/fall2026/images/cs120_sticker.png">
   <meta property="og:image:width" content="300">
@@ -27,6 +27,11 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,300" rel="stylesheet" type="text/css">
   <link rel="stylesheet" type="text/css" href="style.css">
+  <style>
+    @media (min-width: 768px) {
+      #course-navbar .navbar-nav > li > a { padding-left: 9px; padding-right: 9px; white-space: nowrap; }
+    }
+  </style>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <script type="application/ld+json">
   {
@@ -46,6 +51,11 @@
       "courseMode": "InPerson",
       "startDate": "2026-09-22",
       "endDate": "2026-12-03",
+      "location": {
+        "@type": "Place",
+        "name": "Hewlett Teaching Center 102",
+        "address": "Stanford, CA"
+      },
       "instructor": {
         "@type": "Person",
         "name": "Zachary Robertson",
@@ -69,12 +79,12 @@
       </div>
       <div class="collapse navbar-collapse" id="course-navbar">
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#course">Overview</a></li>
           <li><a href="#instructors">Staff</a></li>
           <li><a href="#logistics">Logistics</a></li>
           <li><a href="#schedule-section">Schedule</a></li>
           <li><a href="#coursework">Coursework</a></li>
-          <li><a href="#related">Related Courses</a></li>
+          <li><a href="#project">Project</a></li>
+          <li><a href="#policies">Policies</a></li>
         </ul>
       </div>
     </div>
@@ -90,12 +100,12 @@
   </header>
 
   <div class="container sec" id="course">
-    <div class="alert alert-warning" role="alert">
-      <strong>Course website under construction.</strong> Topics, readings, assignments, and policies may change before
-      the quarter begins.
-    </div>
+    <img src="images/course_modules.png"
+      alt="Conceptual progression from model behavior to agent policy, interaction processes, and institutional ecosystems, with example AI safety failure modes."
+      style="display:block; width:100%; max-width:900px; height:auto; margin:0 auto 20px auto;">
     <h2>Overview</h2>
-    <p>What makes an AI system "safe" and how do we decide? CS120 explores this question, focusing on both measurement
+    <p>How do we know if an AI system is actually safe: not just on a benchmark, but under deployment and optimization
+      pressure? CS120 explores this question, focusing on both measurement
       theoretic and institutional challenges of understanding, interpreting, and governing AI capabilities. We
       distinguish between AI-specific and systemic safety issues, from examining sycophancy and security implications
       to the challenge of measuring capabilities and risk.</p>
@@ -105,12 +115,15 @@
       and auditability.</p>
     <p>This course aims to prepare you to critically assess and contribute to safe AI development, equipping you with
       knowledge of cutting-edge research and ongoing debates in the field. This course has no official requirements,
-      although we recommend some knowledge about machine learning and statistics, and will include readings, quizzes,
-      and a final project.</p>
+      although we recommend some knowledge about machine learning and statistics, and will include readings, short
+      written responses, and a final project.</p>
     <h3>Working Theory</h3>
-    <p>The course is organized around a theory that AI safety depends on how human inputs, data, and judgments are
-      applied, integrated, and decided; what unintended effects arise when models amplify and recirculate them; and
-      whether the resulting systems can be meaningfully evaluated and audited.</p>
+    <p>Machine learning focuses on using large amounts of data to train a model. If done properly, the resulting model
+      will be able to make usable inferences beyond the training examples, i.e., generalization. The basic shift in the
+      study of AI safety is that successful generalization is <strong>not</strong> taken as the end of the story.
+      Instead, the focus is on what types of <strong>assurance</strong> are required as optimization pressure in
+      increasingly capable systems exploits misspecification, incomplete evaluation, feedback processes, and
+      institutional structure.</p>
   </div>
 
   <div class="sechighlight">
@@ -132,12 +145,7 @@
           <div>To be announced</div>
         </div>
       </div>
-      <div class="col-md-3"></div>
-      <div class="col-md-3">
-        <div class="instructor">
-          <div class="classlogo"><img src="images/cs120_sticker.png" class="logo-second" alt="CS120 course logo"></div>
-        </div>
-      </div>
+      <div class="col-md-6"></div>
     </div>
   </div>
 
@@ -147,20 +155,33 @@
     <ul>
       <li><strong>Course:</strong> CS 120</li>
       <li><strong>Quarter:</strong> Autumn 2026</li>
-      <li><strong>Meeting time:</strong> Tuesdays and Thursdays, 11:30 a.m.–12:50 p.m. (anticipated)</li>
-      <li><strong>Location:</strong> TBD; Hewlett Teaching Center 102 is anticipated</li>
-      <li><strong>Units:</strong> 3 (anticipated)</li>
+      <li><strong>Course listing:</strong> <a
+          href="https://explorecourses.stanford.edu/search?view=catalog&amp;filter-coursestatus-Active=on&amp;page=0&amp;catalog=&amp;academicYear=&amp;q=cs120&amp;collapse="
+          target="_blank" rel="noopener noreferrer">ExploreCourses</a></li>
+      <li><strong>Meeting time:</strong> Tuesdays and Thursdays, 11:30 a.m.–12:50 p.m.</li>
+      <li><strong>Location:</strong> Hewlett Teaching Center 102</li>
+      <li><strong>Units:</strong> 3</li>
+      <li><strong>Enrollment:</strong> 65 (room capacity), with a waitlist of 15; no instructor consent required</li>
+      <li><strong>Grading basis:</strong> Letter grade only</li>
+      <li><strong>Attendance:</strong> Classes are in person</li>
       <li><strong>Prerequisites:</strong> None officially; familiarity with machine learning and statistics is
         recommended</li>
-      <li><strong>Course assistants, office hours, discussion forum, and submission links:</strong> To be announced</li>
+      <li><strong>Instructor contact:</strong> <a href="mailto:zroberts@stanford.edu">zroberts@stanford.edu</a> (a
+        course staff email will be posted once course assistants are confirmed)</li>
+      <li><strong>Course assistants:</strong> To be announced</li>
+      <li><strong>Office hours:</strong> To be announced before the first week of class</li>
+      <li><strong>Discussion forum (Ed) and submissions (Gradescope):</strong> Links to be posted before the first
+        week of class</li>
     </ul>
   </div>
 
   <div class="container sec" id="schedule-section">
     <h2>Tentative Schedule</h2>
-    <p>This schedule is a working course map. Each 80-minute meeting pairs a technical core with a seminar-style
-      discussion, which may include guest researchers. Detailed readings, slides, assignments, and any guest lecturers
-      will be added as they are confirmed.</p>
+    <p>This schedule is a working course map. Each meeting will pair a technical lecture with a seminar-style
+      discussion or group exercise, which may include a guest contribution. Any guest lectures will be added as they
+      are confirmed. Readings can be subject to change throughout the course, but will not
+      change less than 14 days in advance. Please check the schedule here rather than a printed or duplicated
+      copy.</p>
     <div class="table-responsive">
       <table id="schedule" class="table table-hover">
         <thead>
@@ -185,13 +206,25 @@
             <td></td>
             <td>09/24/26</td>
             <td>Robertson</td>
-            <td>What is the object of assurance? Models, development pipelines, deployed systems, and institutions</td>
+            <td>What is the object of assurance? Models, development pipelines, deployed systems, and institutions<br>
+              <small><strong>Readings:</strong> Amodei et al., <a href="https://arxiv.org/abs/1606.06565"
+                  target="_blank" rel="noopener noreferrer">Concrete Problems in AI Safety</a> (2016); Selbst et al.,
+                <a href="https://dl.acm.org/doi/10.1145/3287560.3287598" target="_blank"
+                  rel="noopener noreferrer">Fairness and Abstraction in Sociotechnical Systems</a> (FAT* 2019)</small>
+            </td>
           </tr>
           <tr>
             <td>Week 2</td>
             <td>09/29/26</td>
             <td>Robertson</td>
-            <td>What counts as an assurance claim? System boundaries, evidence, and hazard-analysis methods</td>
+            <td>What counts as an assurance claim? System boundaries, evidence, and hazard-analysis methods<br>
+              <small><strong>Readings:</strong> Rismani, Dobbe &amp; Moon, <a href="https://arxiv.org/abs/2410.22526"
+                  target="_blank" rel="noopener noreferrer">From Silos to Systems: Process-Oriented Hazard Analysis
+                  for AI Systems</a> (2024); Leveson &amp; Thomas, <a
+                  href="https://psas.scripts.mit.edu/home/get_file.php?name=STPA_handbook.pdf" target="_blank"
+                  rel="noopener noreferrer">STPA Handbook</a>, Ch. 2 (2018). <em>Optional:</em> Leveson, <a
+                  href="https://direct.mit.edu/books/oa-monograph/2908/Engineering-a-Safer-WorldSystems-Thinking-Applied"
+                  target="_blank" rel="noopener noreferrer">Engineering a Safer World</a>, Ch. 8 (2012)</small></td>
           </tr>
           <tr class="active">
             <td colspan="4"><strong>Module 2 — Reactive model behavior and development-time optimization</strong></td>
@@ -200,25 +233,50 @@
             <td></td>
             <td>10/01/26</td>
             <td>Robertson</td>
-            <td>From data and objectives to model behavior: optimization, learning, generalization, and underspecification</td>
+            <td>From data and objectives to model behavior: optimization, learning, generalization, and underspecification<br>
+              <small><strong>Readings:</strong> D'Amour et al., <a href="https://arxiv.org/abs/2011.03395"
+                  target="_blank" rel="noopener noreferrer">Underspecification Presents Challenges for Credibility in
+                  Modern Machine Learning</a> (2020; anchor reading, case studies optional); <a
+                  href="https://stanford-cs221.github.io/spring2026/modules/module.html#include=machine-learning/lecture1.js"
+                  target="_blank" rel="noopener noreferrer">Supervised learning I</a> (CS 221 module)</small></td>
           </tr>
           <tr>
             <td>Week 3</td>
             <td>10/06/26</td>
             <td>Robertson</td>
-            <td>Proxies and model-selection pressure: Goodhart effects, shortcut behavior, and specification failures</td>
+            <td>Proxies and model-selection pressure: Goodhart effects, shortcut behavior, and specification failures<br>
+              <small><strong>Readings:</strong> Geirhos et al., <a href="https://arxiv.org/abs/2004.07780"
+                  target="_blank" rel="noopener noreferrer">Shortcut Learning in Deep Neural Networks</a> (2020);
+                Manheim &amp; Garrabrant, <a href="https://arxiv.org/abs/1803.04585" target="_blank"
+                  rel="noopener noreferrer">Categorizing Variants of Goodhart's Law</a> (2018); Blum &amp; Hardt, <a
+                  href="https://arxiv.org/abs/1502.04585" target="_blank" rel="noopener noreferrer">The Ladder: A
+                  Reliable Leaderboard for Machine Learning Competitions</a> (2015, skim); Singhal et al., <a
+                  href="https://arxiv.org/abs/2310.03716" target="_blank" rel="noopener noreferrer">A Long Way to Go:
+                  Investigating Length Correlations in RLHF</a> (COLM 2024)</small></td>
           </tr>
           <tr>
             <td></td>
             <td>10/08/26</td>
             <td>Robertson</td>
-            <td>Robustness beyond the development distribution: distribution shift, adversarial inputs, and calibration</td>
+            <td>Robustness beyond the development distribution: distribution shift, adversarial inputs, and calibration<br>
+              <small><strong>Readings:</strong> <a
+                  href="https://stanford-cs221.github.io/spring2026/modules/module.html#include=machine-learning/lecture2.js"
+                  target="_blank" rel="noopener noreferrer">Supervised learning II</a> (CS 221 module; distributionally
+                robust optimization section); Ovadia et al., <a href="https://arxiv.org/abs/1906.02530" target="_blank"
+                  rel="noopener noreferrer">Can You Trust Your Model's Uncertainty?</a> (NeurIPS 2019); Goodfellow et
+                al., <a href="https://arxiv.org/abs/1412.6572" target="_blank" rel="noopener noreferrer">Explaining and
+                  Harnessing Adversarial Examples</a> (ICLR 2015)</small></td>
           </tr>
           <tr>
             <td>Week 4</td>
             <td>10/13/26</td>
             <td>Robertson</td>
-            <td>Data as specification: curation, labeling, documentation, provenance, and normative choices</td>
+            <td>Data as specification: curation, labeling, documentation, provenance, and normative choices<br>
+              <small><strong>Readings:</strong> Sap et al., <a href="https://arxiv.org/abs/2111.07997" target="_blank"
+                  rel="noopener noreferrer">Annotators with Attitudes</a> (NAACL 2022); Gebru et al., <a
+                  href="https://arxiv.org/abs/1803.09010" target="_blank" rel="noopener noreferrer">Datasheets for
+                  Datasets</a> (2018); OpenAI, <a href="https://openai.com/index/dall-e-2-pre-training-mitigations/"
+                  target="_blank" rel="noopener noreferrer">DALL-E 2 Pre-Training Mitigations</a> (2022)</small></td>
           </tr>
           <tr class="active">
             <td colspan="4"><strong>Module 3 — Sequential decision-making and agency</strong></td>
@@ -227,19 +285,33 @@
             <td></td>
             <td>10/15/26</td>
             <td>Robertson</td>
-            <td>From prediction to action: states, actions, policies, planning, and reinforcement learning</td>
+            <td>From prediction to action: states, actions, policies, planning, and reinforcement learning<br>
+              <small><strong>Readings:</strong> <a
+                  href="https://stanford-cs221.github.io/spring2026/modules/module.html#include=mdps/mdp1.js"
+                  target="_blank" rel="noopener noreferrer">Markov Decision Processes I</a> (CS 221 module); Ouyang et
+                al., <a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener noreferrer">Training
+                  language models to follow instructions with human feedback</a> (2022)</small></td>
           </tr>
           <tr>
             <td>Week 5</td>
             <td>10/20/26</td>
             <td>Robertson</td>
-            <td>Reward hacking and control-loop failures: proxy rewards, side effects, and unsafe exploration</td>
+            <td>Reward hacking and control-loop failures: proxy rewards, side effects, and unsafe exploration<br>
+              <small><strong>Readings:</strong> Krakovna et al., <a
+                  href="https://www.deepmind.com/blog/specification-gaming-the-flip-side-of-ai-ingenuity"
+                  target="_blank" rel="noopener noreferrer">Specification gaming: the flip side of AI ingenuity</a>
+                (DeepMind blog); Shah et al., <a href="https://arxiv.org/abs/2210.01790" target="_blank"
+                  rel="noopener noreferrer">Goal Misgeneralization</a> (2022)</small></td>
           </tr>
           <tr>
             <td></td>
             <td>10/22/26</td>
             <td>Robertson</td>
-            <td>Goal-directedness and long horizons: the orthogonality thesis, instrumental convergence, and goal misgeneralization</td>
+            <td>Goal-directedness and long horizons: the orthogonality thesis, instrumental convergence, and goal misgeneralization<br>
+              <small><strong>Readings:</strong> Bostrom, <a href="https://nickbostrom.com/superintelligentwill.pdf"
+                  target="_blank" rel="noopener noreferrer">The Superintelligent Will</a> (2012); <a
+                  href="https://www.youtube.com/watch?v=87DyyMV0kCY" target="_blank" rel="noopener noreferrer">Black
+                  Hat 2026: The OpenAI Hacking Incident</a> (video, 40 min)</small></td>
           </tr>
           <tr class="active">
             <td colspan="4"><strong>Module 4 — Adaptive interaction and sociotechnical dynamics</strong></td>
@@ -248,13 +320,18 @@
             <td>Week 6</td>
             <td>10/27/26</td>
             <td>Robertson</td>
-            <td>Human feedback, preferences, and reward models</td>
+            <td>Human feedback, preferences, and reward models<br>
+              <small><strong>Readings:</strong> Lambert, <a href="https://arxiv.org/abs/2504.12501" target="_blank"
+                  rel="noopener noreferrer">Reinforcement Learning from Human Feedback</a> (RLHF Book), Ch. 5 (Reward
+                Modeling) and Ch. 11 (Preference Data)</small></td>
           </tr>
           <tr>
             <td></td>
             <td>10/29/26</td>
             <td>Robertson</td>
-            <td>Pluralism, disagreement, and preference aggregation</td>
+            <td>Pluralism, disagreement, and preference aggregation<br>
+              <small><strong>Readings:</strong> Lambert, <a href="https://arxiv.org/abs/2504.12501" target="_blank"
+                  rel="noopener noreferrer">RLHF Book</a>, Ch. 10 (The Nature of Preferences)</small></td>
           </tr>
           <tr>
             <td>Week 7</td>
@@ -266,13 +343,28 @@
             <td></td>
             <td>11/05/26</td>
             <td>Robertson</td>
-            <td>Adaptive interaction-time hazards: sycophancy, manipulation, and preference shaping</td>
+            <td>Adaptive interaction-time hazards: sycophancy, manipulation, and preference shaping<br>
+              <small><strong>Readings:</strong> Cheng, Lee, Khadpe, Yu, Han &amp; Jurafsky, <a
+                  href="https://www.science.org/doi/10.1126/science.aec8352" target="_blank"
+                  rel="noopener noreferrer">Sycophantic AI decreases prosocial intentions and promotes dependence</a>
+                (Science, 2026); <a href="https://arxiv.org/abs/2605.21778" target="_blank"
+                  rel="noopener noreferrer">What counts as Sycophancy?</a> (2026); Kaffee, Pistilli &amp; Jernite,
+                INTIMA (ICLR 2026), selected sections. <em>Optional:</em> Hong et al., Measuring Sycophancy of Language
+                Models in Multi-turn Dialogues (Findings of EMNLP 2025)</small></td>
           </tr>
           <tr>
             <td>Week 8</td>
             <td>11/10/26</td>
             <td>Robertson</td>
-            <td>Sociotechnical production and deployment: labor, organizational incentives, data endogeneity, and externalities</td>
+            <td>Sociotechnical production and deployment: labor, organizational incentives, data endogeneity, and externalities<br>
+              <small><strong>Readings:</strong> Veselovsky et al., <a href="https://doi.org/10.48550/arXiv.2306.07899"
+                  target="_blank" rel="noopener noreferrer">Artificial Artificial Artificial Intelligence: Crowd
+                  Workers Widely Use Large Language Models for Text Production Tasks</a> (2023); Perrigo, <a
+                  href="https://time.com/6247678/openai-chatgpt-kenya-workers/" target="_blank"
+                  rel="noopener noreferrer">OpenAI Used Kenyan Workers on Less Than $2 Per Hour to Make ChatGPT Less
+                  Toxic</a> (TIME, 2023); <a href="https://meta.stackoverflow.com/questions/433864/do-you-agree-with-gergely-that-stack-overflow-is-almost-dead"
+                  target="_blank" rel="noopener noreferrer">Do you agree with Gergely that Stack Overflow is almost
+                  dead?</a> (Meta Stack Overflow)</small></td>
           </tr>
           <tr class="active">
             <td colspan="4"><strong>Module 5 — Evaluation, governance, and institutional assurance</strong></td>
@@ -326,21 +418,207 @@
 
   <div class="container sec" id="coursework">
     <h2>Coursework</h2>
-    <p>The anticipated course components are weekly readings, short quizzes, participation in lecture discussions, and a
-      final project. The final project may take the form of an empirical study, evaluation or audit, literature review,
-      or technically grounded governance analysis. Exact grading weights, deadlines, collaboration rules, and late
-      policies will be posted before enrollment decisions are required.</p>
-    <h3>Readings and Slides</h3>
-    <p>Materials from prior offerings are available to the teaching team and will be selectively revised for this
-      version of the course. Public links will be added as the syllabus is finalized.</p>
+    <p>Each week, students are expected to do the required readings and submit short written responses. Towards the
+      end of the quarter, students will need to submit a final project and two peer reviews. Final projects can range
+      from running experiments to writing literature reviews and policy recommendations to accommodate for different
+      backgrounds.</p>
+
+    <h3>Reading responses and definitional checks</h3>
+    <p>The checks consist of reading posts due before class, a post-class debrief on who and what you engaged with
+      during the discussion period, and some homework. The homework will quiz basic definitions; we reserve the right
+      to do this because terminology is unusually important in this course. There will be roughly 30 of these due over
+      the quarter, and the lowest five are dropped. No late days apply to checks. Submissions are on Gradescope.</p>
+
+    <h3>Participation</h3>
+    <p>Each meeting will be split into a lecture and a discussion or group activity half. We grade participation in
+      the discussion portion. The discussion portion will focus on readings assigned to the meeting topic. The general
+      flow will consist of prompts, small group nearest-neighbor discussion, large group synthesis, and repeat.
+      Attendance will be taken at the start and end of class. However, generally, participation will be based on
+      second half participation. Posted slides and lecture notes / recordings will be made available. How
+      participation is recorded will be posted before the first week of class.</p>
+
+    <h3>Grading</h3>
+    <p>The percentages below are the grading breakdown for the course. They will be published as a single coherent
+      package with the late policy for project milestones and the assignment calendar before the end of Week 2.</p>
+    <ul>
+      <li><strong>Reading responses and definitional checks:</strong> 25% (lowest five dropped)</li>
+      <li><strong>Discussion participation:</strong> 10%</li>
+      <li><strong>Mid-quarter evaluation/audit plan (project proposal):</strong> 15%</li>
+      <li><strong>Final project:</strong> 40%</li>
+      <li><strong>Peer review:</strong> 10%</li>
+    </ul>
+
+    <h3>Deadlines</h3>
+    <p>All times are Pacific. Dates marked TBA will be fixed and announced on Ed and here before the end of Week 2.</p>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Week</th>
+            <th scope="col">Deliverable</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1–11</td>
+            <td>Reading response (before class) and discussion debrief (after class)</td>
+            <td>Each class meeting</td>
+          </tr>
+          <tr>
+            <td>5–7</td>
+            <td>Mid-quarter evaluation/audit plan (project proposal)</td>
+            <td>TBA</td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td>Project workshop and structured peer feedback (in class)</td>
+            <td>Tue Dec 1</td>
+          </tr>
+          <tr>
+            <td>Finals</td>
+            <td>Final project due</td>
+            <td>Dec 7–11 (exact date TBA)</td>
+          </tr>
+          <tr>
+            <td>Finals</td>
+            <td>Peer reviews due</td>
+            <td>TBA (after the project deadline, before university grade submission)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <div class="container sec" id="related">
-    <h2>Related Courses</h2>
-    <p>Students interested in adjacent material may also consider Stanford courses on trustworthy machine learning,
-      human-centered AI, AI governance, ethics, decision-making under uncertainty, and learning from human preferences.
-      A term-specific list will be added after the 2026–27 course catalog is finalized.</p>
+  <div class="sechighlight">
+    <div class="container sec" id="project">
+      <h2>Final Project</h2>
+      <p>The final project probes a concrete AI-safety problem by constructing and evaluating an assurance claim. To
+        accommodate different backgrounds, several forms are allowed, but one common rubric applies:</p>
+      <ul>
+        <li>an empirical model or system evaluation;</li>
+        <li>an audit or assurance protocol;</li>
+        <li>a study of data work or human-feedback processes;</li>
+        <li>a replication or critique of a published evaluation result;</li>
+        <li>a technical-governance or institutional analysis grounded in a concrete system.</li>
+      </ul>
+      <p>Regardless of your project's focus, it must follow the structure of a scientific paper, and every project
+        should state the safety claim, human inputs, deployment context, evaluation validity, access limits,
+        unintended effects, and limitations.</p>
+      <h3>Example Projects</h3>
+      <ul>
+        <li><strong>Model behavior:</strong> Audit whether an evaluation of sycophancy, robustness, or another model
+          behavior actually measures the construct it claims to measure.</li>
+        <li><strong>Agents and interaction:</strong> Red-team a tool-using agent, characterize its failure modes, and
+          develop an assurance case around the observed risks and mitigations.</li>
+        <li><strong>Evaluation and institutions:</strong> Analyze what an external evaluator or auditor can
+          legitimately conclude about an AI system given limited access to models, data, deployment context, or
+          internal evidence.</li>
+      </ul>
+      <h3>Milestones</h3>
+      <ul>
+        <li><strong>Mid-quarter evaluation/audit plan (15%).</strong> A brief plan in which students identify: the
+          system and safety claim; affected stakeholders; the construct and measurement strategy; likely gaming,
+          contamination, or access problems; evidence the evaluator cannot obtain; and how the result would inform a
+          decision. This becomes the proposal for the final project.</li>
+        <li><strong>Project workshop (Tue Dec 1).</strong> Structured peer feedback in class.</li>
+        <li><strong>Final project (40%).</strong> Due during the end-quarter examination period, Dec 7–11.</li>
+        <li><strong>Peer review (10%).</strong> Each student will be assigned two final projects to review. The peer
+          review should be one page long, submitted as a pdf, and anonymized, such that we can share it with the
+          original project authors.</li>
+      </ul>
+      <h3>Format</h3>
+      <ul>
+        <li>You can submit a final project alone or as a group of up to three. We strongly recommend working in
+          groups of three, as this usually increases the quality and scope of the project. For groups of students, we
+          expect a more comprehensive project and more than 6 pages.</li>
+        <li>5–8 page PDF, excluding references; appendices can be added without limitation. The goal is to be concise,
+          not to reach the maximum page limit.</li>
+        <li>It is not sufficient to only cite papers from the curriculum. You are expected to explore further related
+          works.</li>
+        <li>You will need to submit a regular and anonymized PDF of your final project. For projects involving code,
+          a complementary GitHub repository.</li>
+        <li>LaTeX and Google Docs templates and a Project Tips and Guide document will be posted by Week 3.</li>
+      </ul>
+    </div>
   </div>
+
+  <div class="container sec" id="policies">
+    <h2>Policies</h2>
+
+    <h3>Communication</h3>
+    <p>We will use Ed for all communications. Make a public Ed post whenever possible. For extra sensitive matters,
+      you can email the instructor; a course staff email will be posted once course assistants are confirmed.</p>
+
+    <h3>Academic accommodations</h3>
+    <p>Students who may need an academic accommodation based on the impact of a disability must initiate the request
+      with the <a href="https://oae.stanford.edu/" target="_blank" rel="noopener noreferrer">Office of Accessible
+        Education (OAE)</a>. Professional staff will evaluate the request with required documentation, recommend
+      reasonable accommodations, and prepare an Accommodation Letter for faculty dated in the current quarter in which
+      the request is being made. Students should contact the OAE as soon as possible since timely notice is needed to
+      coordinate accommodations. The OAE is located at 563 Salvatierra Walk (phone: 723-1066). Send your OAE letter
+      to the teaching team by the end of Week 3. Only accommodations explicitly stated in your current OAE letter will
+      be accommodated; the teaching team will not be able to approve any retroactive accommodation requests. If you
+      need course materials in an alternate format, please contact the instructor early so we can coordinate with
+      the OAE.</p>
+
+    <h3>Collaboration and the Honor Code</h3>
+    <p>Please read <a href="https://communitystandards.stanford.edu/policies-guidance/honor-code" target="_blank"
+        rel="noopener noreferrer">Stanford's honor code policy</a>. In the context of CS120, you are free to form
+      study groups and discuss readings and projects. However, you must write up responses and projects from scratch
+      independently, and you must acknowledge in your submission all the students you discussed with. Looking at or
+      showing another student's writeup, discussing a response in such detail that your writeup is almost identical
+      to another student's, and looking at solutions from previous years are considered honor code violations.
+      Anyone violating the honor code policy will be referred to the Office of Community Standards. If you think you
+      violated the policy (it can happen, especially under time pressure!), please reach out to us; the consequences
+      will be much less severe than if we approach you.</p>
+
+    <h3>Generative AI policy</h3>
+    <p>You cannot use AI to write your responses. This is the same as the requirement that students must complete
+      their own write-ups: each student is expected to submit their own solutions to every CS120 check, project, and
+      peer review.</p>
+    <p>You may use generative AI tools such as Co-Pilot and ChatGPT as you would use a human collaborator. This means
+      that you may not directly ask generative AI tools for answers or copy solutions, and you must acknowledge
+      generative AI tools as collaborators. Additionally, you may not use generative AI tools to "check" your work,
+      even if you wrote it yourself, as this is equivalent to having another student look at your answers. The use of
+      generative AI tools to substantially complete an assignment (e.g. by directly copying) is prohibited and will
+      result in honor code violations. We will be checking students' submissions to enforce this policy.</p>
+    <p>If you use generative AI tools, you must provide a transcript of the interaction (for example, a shared
+      conversation link or screenshots) with that submission. This applies to every submission: if you use an AI tool
+      for all thirty responses, we expect thirty links. You may not use generative AI tools that do not support
+      attribution or transcript sharing. For example, using an agentic coding tool such as Codex or Claude Code to
+      build a repository from a project proposal is not allowed. For the final project, we may also review commit
+      history for evidence of overreliance on AI tools. See Stanford's <a
+        href="https://communitystandards.stanford.edu/generative-ai-policy-guidance" target="_blank"
+        rel="noopener noreferrer">Generative AI Policy Guidance</a> for the university-wide baseline.</p>
+
+    <h3>Auditing</h3>
+    <p>You are welcome to audit the class! Please reach out to the instructor if you want to audit the class to
+      ensure we do not reach the capacity of the classroom. Please note that auditing is only allowed for matriculated
+      undergraduates, matriculated graduate/professional students, postdoctoral scholars, visiting scholars, Stanford
+      faculty, and Stanford staff. Non-Stanford students cannot audit the course. Audited courses are not recorded on
+      an academic transcript and no official records are maintained for auditors.</p>
+
+    <h3>Inclusion</h3>
+    <p>The CS120 teaching staff is committed to creating an inclusive and supportive learning environment for all
+      students. Please be respectful to your fellow students, course CAs, and instructors. If you see any problems,
+      please reach out to us early.</p>
+
+    <h3>Well-being</h3>
+    <p>If you are experiencing personal, academic, or relationship problems and would like someone to talk to, reach
+      out to Counseling and Psychological Services (CAPS) by calling 650-723-3785 or through the Vaden patient portal.
+      For more information, visit <a href="https://vaden.stanford.edu/caps-and-wellness" target="_blank"
+        rel="noopener noreferrer">vaden.stanford.edu/caps-and-wellness</a>.</p>
+
+    <h3>Changes to this syllabus</h3>
+    <p>Stanford as an institution is committed to the highest quality education, and as your teaching team, our first
+      priority is to uphold your educational experience. To that end we are committed to following the syllabus as
+      written here, including through short- or long-term disruptions, such as public health emergencies, natural
+      disasters, or protests and demonstrations. However, there may be extenuating circumstances that necessitate some
+      changes. Should adjustments be necessary, we will communicate clearly and promptly to ensure you understand the
+      expectations and are positioned for successful learning.</p>
+  </div>
+
 
   <div id="footer" class="container">
     <p style="text-align:center;">Stanford CS120 · Autumn 2026</p>

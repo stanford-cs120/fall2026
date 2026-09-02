@@ -402,6 +402,83 @@ G.getEvolutionOfModels = function(i, selectDescription) {
   _)).recMouseShowHide(false);
 }
 
+////////////////////////////////////////////////////////////
+// CS120 recurring diagrams
+
+// Generic ladder: rungs laid out left to right over an arrow, each rung a
+// colored column with sub-items above a bold label. Generalizes CS 221's
+// getEvolutionOfModels. rungs: [{label, subs: [...]}, ...]; i selects the
+// build prefix (9 = all); opts.select highlights the matching label
+// (roadmap "you are here" mode); opts.left / opts.right caption the arrow.
+G.ladderDiagram = function(rungs, i, opts) {
+  opts = opts || {};
+  var colors = [[red, redbold], [green, greenbold], [blue, bluebold], [purple, purplebold]];
+  function select(x) {
+    x = std(x);
+    if (opts.select && x.content().get().match(opts.select)) return frameBox(x).padding(5).bg.strokeWidth(4).end;
+    return x;
+  }
+  var items = [i, xtable];
+  rungs.forEach(function(rung, k) {
+    var col = colors[k % colors.length];
+    var column = (rung.subs || []).map(function(s) { return select(text(col[0](s)).scale(0.8)); });
+    column.push(select(col[1](rung.label)));
+    items.push(_, pause(), ytable.apply(null, column).center().margin(10));
+  });
+  items.push(_);
+  return parentCenter(overlay(
+    ytable(
+      selectPrefix.apply(null, items).margin(50).yjustify('r').scale(0.8),
+      rightArrow(750).strokeWidth(5).showLevel(0),
+      xtable(
+        text(opts.left || '').scale(0.6),
+        text(opts.right || '').scale(0.6),
+      _).margin(550).showLevel(0),
+    _).center(),
+  _)).recMouseShowHide(false);
+}
+
+// Four levels of expressiveness (course note, Module 0). Examples as sub-items.
+G.expressivenessLadder = function(i, selectDescription) {
+  return ladderDiagram([
+    {label: 'Reflex', subs: ['image classifier', 'spam filter']},
+    {label: 'State', subs: ['chess engine', 'LLM with tool loop']},
+    {label: 'Variable', subs: ['routing', 'airline scheduling']},
+    {label: 'Logic', subs: ['theorem prover', 'access control']},
+  ], i, {select: selectDescription, left: 'Low-level', right: 'High-level'});
+}
+
+// What optimization pressure exploits, by unit of analysis (module table).
+// Module openers call pressureLadder(9, 'Agent policy') for roadmap mode.
+G.pressureLadder = function(i, selectDescription) {
+  return ladderDiagram([
+    {label: 'Model behavior', subs: ['shortcut learning', 'miscalibration']},
+    {label: 'Agent policy', subs: ['reward hacking', 'specification gaming']},
+    {label: 'Interaction process', subs: ['sycophancy', 'feedback-loop amplification']},
+    {label: 'Institutional ecosystem', subs: ['benchmark gaming', 'endogenous evaluation']},
+  ], i, {select: selectDescription, left: 'Model', right: 'Institution'});
+}
+
+// Three stages of implementation: modeling -> learning -> inference.
+// opts.subs: three optional captions; opts.select: stage label to highlight.
+G.stagesDiagram = function(opts) {
+  opts = opts || {};
+  var names = ['Modeling', 'Learning', 'Inference'];
+  // Neutral palette: the ladder diagrams own red/green/blue/purple (one per
+  // rung), so stage labels are black bold on a light fill to avoid implying
+  // a stage-to-rung mapping when both diagrams share a slide.
+  var labels = names.map(function(n) { return bold(n); });
+  function box(k) {
+    var content = opts.subs ? ytable(labels[k], text(opts.subs[k]).scale(0.7)).center().ymargin(6) : labels[k];
+    var b = frameBox(content).bg.fillColor('#F3E8B6').end;
+    if (opts.select && names[k].match(opts.select)) b.bg.strokeWidth(4).end;
+    return b;
+  }
+  return parentCenter(xtable(
+    box(0), thickRightArrow(60), box(1), thickRightArrow(60), box(2),
+  _).center().xmargin(15));
+}
+
 G.dirname = function(path) {
   const tokens = path.split(/\//);
   return tokens.slice(0, tokens.length - 1).join('/');

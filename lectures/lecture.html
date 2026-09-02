@@ -6,12 +6,16 @@
   <script src="../sfig/internal/Graph.js"></script>
   <script src="../sfig/internal/RootedTree.js"></script>
   <script src="../sfig/internal/Outline.js"></script>
-  <script src="utils.js"></script>
+  <script>
+// Dev cache-busting: force fresh utils.js/lecture.js when served from localhost.
+var bust = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? '?v=' + Date.now() : '';
+document.write('<scr' + 'ipt src="utils.js' + bust + '"></scr' + 'ipt>');
+</script>
   <script>
     // Load lecture named by ?lecture=NAME (default: mock)
     var params = new URLSearchParams(window.location.search);
     var name = params.get('lecture') || 'mock';
-    document.write('<scr' + 'ipt src="' + name + '.js"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt src="' + name + '.js' + bust + '"></scr' + 'ipt>');
 
     // Browser-side overflow gate: open with #mode=print1pp&measure=1.
     // After all slides render, compare each slide SVG's ink bbox against its
