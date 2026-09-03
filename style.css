@@ -266,6 +266,24 @@ h3 {
     text-align: left;
   }
 
+  /* Bootstrap's .table-responsive forces nowrap + a scroll frame below 768px.
+     We stack the table into cards instead, so undo both. */
+  .table-responsive {
+    border: 0;
+    overflow-x: visible;
+    overflow-y: visible;
+    width: 100%;
+  }
+
+  .table-responsive > .table > thead > tr > th,
+  .table-responsive > .table > tbody > tr > th,
+  .table-responsive > .table > tfoot > tr > th,
+  .table-responsive > .table > thead > tr > td,
+  .table-responsive > .table > tbody > tr > td,
+  .table-responsive > .table > tfoot > tr > td {
+    white-space: normal;
+  }
+
   /* Force table to not be like tables anymore */
   table,
   thead,
@@ -286,55 +304,80 @@ h3 {
   /* Make each row look like a card */
   table tr {
     margin-bottom: 20px;
+    border: 1px solid #ccc;
     border-bottom: 2px solid #ddd;
     box-shadow: 2px 2px 1px #dadada;
   }
 
-  tr {
-    border: 1px solid #ccc;
-  }
-
-  /* Behave  like a "row" */
-  td {
+  /* Behave like a "row": label stacked above the content */
+  .table > tbody > tr > td {
     border: none;
     border-bottom: 1px solid #eee;
-    position: relative;
-    padding-left: 50%;
+    padding: 6px 10px 8px 10px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
   }
 
-  /* Position table header as data labels */
+  .table > tbody > tr > td:last-child {
+    border-bottom: none;
+  }
+
+  td a {
+    overflow-wrap: anywhere;
+  }
+
   td:before {
-    top: 6px;
-    left: 6px;
-    width: 45%;
-    padding-right: 10px;
-    white-space: nowrap;
+    display: block;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #8c1515;
+    margin-bottom: 2px;
   }
 
-  /* Label the data */
-  #schedule td:nth-of-type(1) {
-    font-weight: 500;
+  /* Hide the blank "Week" cell on the second meeting of a week */
+  td:empty {
+    display: none;
   }
 
+  /* Module header rows are plain bands, no label */
+  #schedule tr.active td {
+    padding: 8px 10px;
+  }
+
+  #schedule tr.active td:before {
+    content: none;
+  }
+
+  /* Label the schedule data */
   #schedule td:nth-of-type(1):before {
-    content: "Date:";
-    font-weight: 300;
-  }
-
-  #schedule td:nth-of-type(2) {
-    font-weight: 500;
+    content: "Week";
   }
 
   #schedule td:nth-of-type(2):before {
-    content: "Description:";
-    font-weight: 300;
+    content: "Date";
+  }
+
+  #schedule td:nth-of-type(3):before {
+    content: "Lecturer";
   }
 
   #schedule td:nth-of-type(4):before {
-    content: "Events:";
+    content: "Topic";
   }
 
-  #schedule td:nth-of-type(5):before {
-    content: "Deadlines:";
+  /* Label the deadlines data */
+  #deadlines td:nth-of-type(1):before {
+    content: "Week";
+  }
+
+  #deadlines td:nth-of-type(2):before {
+    content: "Deliverable";
+  }
+
+  #deadlines td:nth-of-type(3):before {
+    content: "Date";
   }
 }
