@@ -1,0 +1,12 @@
+COURSE_RECONSTRUCTION_PLAN.md
+sfig_presentation_style_guide.md
+extract-pptx-assets.py
+llm.md
+
+# Authoring workspace and local artifacts; lectures/ is public.
+/lecture_materials_cs120/
+/lectures/build/
+*.info
+__pycache__/
+/scratch.py
+/test_lectures/

@@ -12,10 +12,14 @@ var bust = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? '?v=' + Date.n
 document.write('<scr' + 'ipt src="utils.js' + bust + '"></scr' + 'ipt>');
 </script>
   <script>
-    // Load lecture named by ?lecture=NAME (default: mock)
+    // Published lectures only. Without a name, show the materials index.
     var params = new URLSearchParams(window.location.search);
-    var name = params.get('lecture') || 'mock';
-    document.write('<scr' + 'ipt src="' + name + '.js' + bust + '"></scr' + 'ipt>');
+    var name = params.get('lecture');
+    if (!name || !/^[A-Za-z0-9][A-Za-z0-9_-]*$/.test(name)) {
+      window.location.replace('index.html');
+    } else {
+      document.write('<scr' + 'ipt src="' + name + '.js' + bust + '"></scr' + 'ipt>');
+    }
 
     // Browser-side overflow gate: open with #mode=print1pp&measure=1.
     // After all slides render, compare each slide SVG's ink bbox against its
@@ -62,5 +66,5 @@ document.write('<scr' + 'ipt src="utils.js' + bust + '"></scr' + 'ipt>');
   </script>
 </head>
 
-<body onload="prez.run(window.location.hash.indexOf('measure=1') >= 0 ? measureOverflow : undefined)">
+<body onload="if (window.prez) prez.run(window.location.hash.indexOf('measure=1') >= 0 ? measureOverflow : undefined)">
 </body>

@@ -29,7 +29,11 @@
   <link rel="stylesheet" type="text/css" href="style.css">
   <style>
     @media (min-width: 768px) {
-      #course-navbar .navbar-nav > li > a { padding-left: 9px; padding-right: 9px; white-space: nowrap; }
+      #course-navbar .navbar-nav>li>a {
+        padding-left: 9px;
+        padding-right: 9px;
+        white-space: nowrap;
+      }
     }
   </style>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -136,7 +140,13 @@
               Robertson</a></div>
         </div>
       </div>
-      <div class="col-md-9"></div>
+      <div class="col-md-6">
+        <h3>Course Assistant</h3>
+        <div class="instructor">
+          <div class="instructorphoto"><img src="images/milan.jpg" alt="Milan"></div>
+          <div><a href="https://milanganai.github.io" target="_blank" rel="noopener noreferrer">Milan Ganai</a></div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -158,9 +168,9 @@
       <li><strong>Prerequisites:</strong> None officially; familiarity with machine learning and statistics is
         recommended</li>
       <li><strong>Instructor contact:</strong> <a href="mailto:zroberts@stanford.edu">zroberts@stanford.edu</a> (a
-        course staff email will be posted once course assistants are confirmed)</li>
-      <li><strong>Course assistants:</strong> To be announced</li>
-      <li><strong>Office hours:</strong> To be announced before the first week of class</li>
+        course staff email will be posted when available)</li>
+      <li><strong>Course assistants:</strong> Milan</li>
+      <li><strong>Office hours:</strong> Wednesdays, 2:00–3:00 p.m., Gates 315</li>
       <li><strong>Discussion forum:</strong> <a href="https://edstem.org/us/courses/105348/discussion" target="_blank"
           rel="noopener noreferrer">Ed</a></li>
       <li><strong>Course site:</strong> <a href="https://canvas.stanford.edu/courses/231381" target="_blank"
@@ -172,6 +182,9 @@
 
   <div class="container sec" id="schedule-section">
     <h2>Tentative Schedule</h2>
+    <p><a href="lectures/index.html">Course materials</a> collects published lecture slides and PDFs.
+      <a href="lectures/notes/index.html">Course notes</a> will accumulate into a course reader.
+    </p>
     <p>This schedule is a working course map. Each meeting will pair a technical lecture with a seminar-style
       discussion or group exercise, which may include a guest contribution. Any guest lectures will be added as they
       are confirmed. Readings can be subject to change throughout the course, but will not
@@ -219,7 +232,8 @@
                   href="https://psas.scripts.mit.edu/home/get_file.php?name=STPA_handbook.pdf" target="_blank"
                   rel="noopener noreferrer">STPA Handbook</a>, Ch. 2 (2018). <em>Optional:</em> Leveson, <a
                   href="https://direct.mit.edu/books/oa-monograph/2908/Engineering-a-Safer-WorldSystems-Thinking-Applied"
-                  target="_blank" rel="noopener noreferrer">Engineering a Safer World</a>, Ch. 8 (2012)</small></td>
+                  target="_blank" rel="noopener noreferrer">Engineering a Safer World</a>, Ch. 8 (2012)</small>
+            </td>
           </tr>
           <tr class="active">
             <td colspan="4"><strong>Module 2 — Reactive model behavior and development-time optimization</strong></td>
@@ -228,18 +242,21 @@
             <td></td>
             <td>10/01/26</td>
             <td>Robertson</td>
-            <td>From data and objectives to model behavior: optimization, learning, generalization, and underspecification<br>
+            <td>From data and objectives to model behavior: optimization, learning, generalization, and
+              underspecification<br>
               <small><strong>Readings:</strong> D'Amour et al., <a href="https://arxiv.org/abs/2011.03395"
                   target="_blank" rel="noopener noreferrer">Underspecification Presents Challenges for Credibility in
                   Modern Machine Learning</a> (2020; anchor reading, case studies optional); <a
                   href="https://stanford-cs221.github.io/spring2026/modules/module.html#include=machine-learning/lecture1.js"
-                  target="_blank" rel="noopener noreferrer">Supervised learning I</a> (CS 221 module)</small></td>
+                  target="_blank" rel="noopener noreferrer">Supervised learning I</a> (CS 221 module)</small>
+            </td>
           </tr>
           <tr>
             <td>Week 3</td>
             <td>10/06/26</td>
             <td>Robertson</td>
-            <td>Proxies and model-selection pressure: Goodhart effects, shortcut behavior, and specification failures<br>
+            <td>Proxies and model-selection pressure: Goodhart effects, shortcut behavior, and specification
+              failures<br>
               <small><strong>Readings:</strong> Geirhos et al., <a href="https://arxiv.org/abs/2004.07780"
                   target="_blank" rel="noopener noreferrer">Shortcut Learning in Deep Neural Networks</a> (2020);
                 Manheim &amp; Garrabrant, <a href="https://arxiv.org/abs/1803.04585" target="_blank"
@@ -247,20 +264,23 @@
                   href="https://arxiv.org/abs/1502.04585" target="_blank" rel="noopener noreferrer">The Ladder: A
                   Reliable Leaderboard for Machine Learning Competitions</a> (2015, skim); Singhal et al., <a
                   href="https://arxiv.org/abs/2310.03716" target="_blank" rel="noopener noreferrer">A Long Way to Go:
-                  Investigating Length Correlations in RLHF</a> (COLM 2024)</small></td>
+                  Investigating Length Correlations in RLHF</a> (COLM 2024)</small>
+            </td>
           </tr>
           <tr>
             <td></td>
             <td>10/08/26</td>
             <td>Robertson</td>
-            <td>Robustness beyond the development distribution: distribution shift, adversarial inputs, and calibration<br>
+            <td>Robustness beyond the development distribution: distribution shift, adversarial inputs, and
+              calibration<br>
               <small><strong>Readings:</strong> <a
                   href="https://stanford-cs221.github.io/spring2026/modules/module.html#include=machine-learning/lecture2.js"
                   target="_blank" rel="noopener noreferrer">Supervised learning II</a> (CS 221 module; distributionally
                 robust optimization section); Ovadia et al., <a href="https://arxiv.org/abs/1906.02530" target="_blank"
                   rel="noopener noreferrer">Can You Trust Your Model's Uncertainty?</a> (NeurIPS 2019); Goodfellow et
                 al., <a href="https://arxiv.org/abs/1412.6572" target="_blank" rel="noopener noreferrer">Explaining and
-                  Harnessing Adversarial Examples</a> (ICLR 2015)</small></td>
+                  Harnessing Adversarial Examples</a> (ICLR 2015)</small>
+            </td>
           </tr>
           <tr>
             <td>Week 4</td>
@@ -271,7 +291,8 @@
                   rel="noopener noreferrer">Annotators with Attitudes</a> (NAACL 2022); Gebru et al., <a
                   href="https://arxiv.org/abs/1803.09010" target="_blank" rel="noopener noreferrer">Datasheets for
                   Datasets</a> (2018); OpenAI, <a href="https://openai.com/index/dall-e-2-pre-training-mitigations/"
-                  target="_blank" rel="noopener noreferrer">DALL-E 2 Pre-Training Mitigations</a> (2022)</small></td>
+                  target="_blank" rel="noopener noreferrer">DALL-E 2 Pre-Training Mitigations</a> (2022)</small>
+            </td>
           </tr>
           <tr class="active">
             <td colspan="4"><strong>Module 3 — Sequential decision-making and agency</strong></td>
@@ -285,7 +306,8 @@
                   href="https://stanford-cs221.github.io/spring2026/modules/module.html#include=mdps/mdp1.js"
                   target="_blank" rel="noopener noreferrer">Markov Decision Processes I</a> (CS 221 module); Ouyang et
                 al., <a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener noreferrer">Training
-                  language models to follow instructions with human feedback</a> (2022)</small></td>
+                  language models to follow instructions with human feedback</a> (2022)</small>
+            </td>
           </tr>
           <tr>
             <td>Week 5</td>
@@ -296,17 +318,20 @@
                   href="https://www.deepmind.com/blog/specification-gaming-the-flip-side-of-ai-ingenuity"
                   target="_blank" rel="noopener noreferrer">Specification gaming: the flip side of AI ingenuity</a>
                 (DeepMind blog); Shah et al., <a href="https://arxiv.org/abs/2210.01790" target="_blank"
-                  rel="noopener noreferrer">Goal Misgeneralization</a> (2022)</small></td>
+                  rel="noopener noreferrer">Goal Misgeneralization</a> (2022)</small>
+            </td>
           </tr>
           <tr>
             <td></td>
             <td>10/22/26</td>
             <td>Robertson</td>
-            <td>Goal-directedness and long horizons: the orthogonality thesis, instrumental convergence, and goal misgeneralization<br>
+            <td>Goal-directedness and long horizons: the orthogonality thesis, instrumental convergence, and goal
+              misgeneralization<br>
               <small><strong>Readings:</strong> Bostrom, <a href="https://nickbostrom.com/superintelligentwill.pdf"
                   target="_blank" rel="noopener noreferrer">The Superintelligent Will</a> (2012); <a
                   href="https://www.youtube.com/watch?v=87DyyMV0kCY" target="_blank" rel="noopener noreferrer">Black
-                  Hat 2026: The OpenAI Hacking Incident</a> (video, 40 min)</small></td>
+                  Hat 2026: The OpenAI Hacking Incident</a> (video, 40 min)</small>
+            </td>
           </tr>
           <tr class="active">
             <td colspan="4"><strong>Module 4 — Adaptive interaction and sociotechnical dynamics</strong></td>
@@ -318,7 +343,8 @@
             <td>Human feedback, preferences, and reward models<br>
               <small><strong>Readings:</strong> Lambert, <a href="https://arxiv.org/abs/2504.12501" target="_blank"
                   rel="noopener noreferrer">Reinforcement Learning from Human Feedback</a> (RLHF Book), Ch. 5 (Reward
-                Modeling) and Ch. 11 (Preference Data)</small></td>
+                Modeling) and Ch. 11 (Preference Data)</small>
+            </td>
           </tr>
           <tr>
             <td></td>
@@ -326,7 +352,8 @@
             <td>Robertson</td>
             <td>Pluralism, disagreement, and preference aggregation<br>
               <small><strong>Readings:</strong> Lambert, <a href="https://arxiv.org/abs/2504.12501" target="_blank"
-                  rel="noopener noreferrer">RLHF Book</a>, Ch. 10 (The Nature of Preferences)</small></td>
+                  rel="noopener noreferrer">RLHF Book</a>, Ch. 10 (The Nature of Preferences)</small>
+            </td>
           </tr>
           <tr>
             <td>Week 7</td>
@@ -350,21 +377,25 @@
                   Behavior</a> (ICLR 2026), selected sections. <em>Optional:</em> Hong et al., <a
                   href="https://aclanthology.org/2025.findings-emnlp.121/" target="_blank"
                   rel="noopener noreferrer">Measuring Sycophancy of Language Models in Multi-turn Dialogues</a>
-                (Findings of EMNLP 2025)</small></td>
+                (Findings of EMNLP 2025)</small>
+            </td>
           </tr>
           <tr>
             <td>Week 8</td>
             <td>11/10/26</td>
             <td>Robertson</td>
-            <td>Sociotechnical production and deployment: labor, organizational incentives, data endogeneity, and externalities<br>
+            <td>Sociotechnical production and deployment: labor, organizational incentives, data endogeneity, and
+              externalities<br>
               <small><strong>Readings:</strong> Veselovsky et al., <a href="https://doi.org/10.48550/arXiv.2306.07899"
                   target="_blank" rel="noopener noreferrer">Artificial Artificial Artificial Intelligence: Crowd
                   Workers Widely Use Large Language Models for Text Production Tasks</a> (2023); Perrigo, <a
                   href="https://time.com/6247678/openai-chatgpt-kenya-workers/" target="_blank"
                   rel="noopener noreferrer">OpenAI Used Kenyan Workers on Less Than $2 Per Hour to Make ChatGPT Less
-                  Toxic</a> (TIME, 2023); <a href="https://meta.stackoverflow.com/questions/433864/do-you-agree-with-gergely-that-stack-overflow-is-almost-dead"
+                  Toxic</a> (TIME, 2023); <a
+                  href="https://meta.stackoverflow.com/questions/433864/do-you-agree-with-gergely-that-stack-overflow-is-almost-dead"
                   target="_blank" rel="noopener noreferrer">Do you agree with Gergely that Stack Overflow is almost
-                  dead?</a> (Meta Stack Overflow)</small></td>
+                  dead?</a> (Meta Stack Overflow)</small>
+            </td>
           </tr>
           <tr class="active">
             <td colspan="4"><strong>Module 5 — Evaluation, governance, and institutional assurance</strong></td>
@@ -373,7 +404,8 @@
             <td></td>
             <td>11/12/26</td>
             <td>Robertson</td>
-            <td>What makes an evaluation valid? Construct validity, behavioral evaluation, and interpretability-based evidence</td>
+            <td>What makes an evaluation valid? Construct validity, behavioral evaluation, and interpretability-based
+              evidence</td>
           </tr>
           <tr>
             <td>Week 9</td>
@@ -385,7 +417,8 @@
             <td></td>
             <td>11/19/26</td>
             <td>Robertson</td>
-            <td>Adversarial and complementary forms of evidence: red teaming, interpretability, and evidence triangulation</td>
+            <td>Adversarial and complementary forms of evidence: red teaming, interpretability, and evidence
+              triangulation</td>
           </tr>
           <tr>
             <td>Week 10</td>
@@ -430,20 +463,33 @@
       the lowest five are dropped. No late days apply to checks. Homework and project check-ins are submitted on
       Gradescope.</p>
 
+    <h3 id="attendance">Attendance</h3>
+    <p>Attendance and participation are assessed separately. Discussion participation contributes 10% of the course
+      grade. Students may miss three class meetings without explanation; these absences do not trigger an
+      attendance-related grade cap. Students with more than three counted absences cannot receive a final course
+      grade higher than B+. Approved excused absences and absences covered by academic accommodations do not count
+      toward this threshold. The three-absence allowance does not itself award participation credit for missed
+      discussion work.</p>
+
     <h3>Participation</h3>
     <p>Each meeting will be split into a lecture and a discussion or group activity half. We grade participation in
       the discussion portion. The discussion portion will focus on readings assigned to the meeting topic. The general
       flow will consist of prompts, small group nearest-neighbor discussion, large group synthesis, and repeat.</p>
     <p><strong>Discussion tickets.</strong> At the start of the discussion half you receive a ticket: a worksheet with
       the day's prompts, space for short responses, and a unique code. Fill it out during discussion, then submit the
-      code and your responses (a photo or scan of the sheet, or a typed version) to Gradescope by the end of that
-      week. Codes are graded automatically. If two students submit the same code, neither receives credit, even if
-      Gradescope initially assigns it. Three absences over the quarter are uncredited and require no excuse. Posted
-      slides and lecture notes / recordings will be made available for missed lecture halves.</p>
+      code and your responses (a photo or scan of the sheet, or a typed version) to Gradescope by that week's posted
+      deadline. The code records attendance; your responses provide evidence of discussion participation. Codes are
+      checked automatically for attendance. If two students submit the same code, neither receives attendance credit
+      for that code, even if Gradescope initially assigns it. Posted slides and lecture notes / recordings will be
+      made available for missed lecture halves.</p>
+    <p><strong>First attendance-ticket assignment:</strong> Opens Tuesday, September 22, at 11:30 a.m. and is due
+      Sunday, September 27, at 12:00 p.m. (noon) Pacific.</p>
 
     <h3>Grading</h3>
     <p>The percentages below are the grading breakdown for the course. They will be published as a single coherent
       package with the late policy for project milestones and the assignment calendar before the end of Week 2.</p>
+    <p>The <a href="#attendance">attendance-related final-grade cap</a> applies in addition to this weighted
+      breakdown.</p>
     <ul>
       <li><strong>Reading responses and definitional checks:</strong> 25% (lowest five dropped)</li>
       <li><strong>Discussion participation:</strong> 10%</li>
@@ -466,8 +512,13 @@
         <tbody>
           <tr>
             <td>1–11</td>
-            <td>Reading post (before class) and discussion ticket (by end of that week)</td>
+            <td>Reading post (before class) and discussion ticket (by that week's posted deadline)</td>
             <td>Each class meeting</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>First-meeting attendance ticket</td>
+            <td>Sun Sep 27, 12:00 p.m. (noon)</td>
           </tr>
           <tr>
             <td>5–7</td>
@@ -554,7 +605,7 @@
     <p>We will use <a href="https://edstem.org/us/courses/105348/discussion" target="_blank"
         rel="noopener noreferrer">Ed</a> for all communications. Make a public Ed post whenever possible. For extra
       sensitive matters,
-      you can email the instructor; a course staff email will be posted once course assistants are confirmed.</p>
+      you can email the instructor; a course staff email will be posted when available.</p>
 
     <h3>Academic accommodations</h3>
     <p>Students who may need an academic accommodation based on the impact of a disability must initiate the request

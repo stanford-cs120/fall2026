@@ -438,7 +438,7 @@ G.ladderDiagram = function(rungs, i, opts) {
   _)).recMouseShowHide(false);
 }
 
-// Four levels of expressiveness (course note, Module 0). Examples as sub-items.
+// Four levels of expressiveness (course note, Module 1). Examples as sub-items.
 G.expressivenessLadder = function(i, selectDescription) {
   return ladderDiagram([
     {label: 'Reflex', subs: ['image classifier', 'spam filter']},
@@ -457,6 +457,55 @@ G.pressureLadder = function(i, selectDescription) {
     {label: 'Interaction process', subs: ['sycophancy', 'feedback-loop amplification']},
     {label: 'Institutional ecosystem', subs: ['benchmark gaming', 'endogenous evaluation']},
   ], i, {select: selectDescription, left: 'Model', right: 'Institution'});
+}
+
+/*
+ * Course progression: Module 1 uses an unhighlighted overview of Modules 2–5.
+ * Keep the labels here so slide diagrams and exported note figures agree.
+ */
+G.courseProgressionModules = function() {
+  return [
+    {number: 2, unit: 'Model behavior', examples: ['shortcut learning', 'miscalibration']},
+    {number: 3, unit: 'Agent policy', examples: ['reward hacking', 'specification gaming']},
+    {number: 4, unit: 'Interaction process', examples: ['sycophancy', 'feedback-loop amplification']},
+    {number: 5, unit: 'Institutional ecosystem', examples: ['benchmark gaming', 'endogenous evaluation']},
+  ];
+}
+
+// Slide usage: parentCenter(courseProgressionDiagram(3)).
+// Omit currentModule, or pass null or 1, for the overview. No Module 1 panel.
+// Return an ordinary block (not a slide) so the exporter can crop it tightly.
+G.courseProgressionDiagram = function(currentModule) {
+  var modules = courseProgressionModules();
+  if (currentModule != null && currentModule !== 1 &&
+      !modules.some(function(m) { return m.number === currentModule; }))
+    throw new Error('courseProgressionDiagram: expected module 1–5, null, or no argument');
+
+  var colors = [red, green, blue, purple];
+  var panels = modules.map(function(m, k) {
+    var title = ytable.apply(null, m.unit.split(' ').map(function(word) {
+      return nowrapText(colors[k](bold(word))).fontSize(24);
+    })).center().ymargin(1);
+    var examples = ytable.apply(null, m.examples.map(function(example) {
+      return nowrapText(example).fontSize(16);
+    })).center().ymargin(7);
+    var contents = ytable(
+      nowrapText('Module ' + m.number).fontSize(18),
+      title,
+      examples,
+    ).center().ymargin(14);
+    // Reserve identical geometry in every state. Only the selected panel's
+    // outline is visible; its weight distinguishes selection without color.
+    return frame(contents).padding(12).bg
+      .width(218).height(196).fillColor('white')
+      .strokeWidth(4).strokeColor(currentModule === m.number ? 'black' : 'white').end;
+  });
+
+  return ytable(
+    xtable.apply(null, panels).center().xmargin(18),
+    rightArrow(900).strokeWidth(3),
+    nowrapText('Course sequence, not a hierarchy').fontSize(16),
+  ).center().ymargin(12).recMouseShowHide(false);
 }
 
 // Three stages of implementation: modeling -> learning -> inference.

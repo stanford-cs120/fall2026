@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Framing Safety and Assurance | Stanford CS120</title>
+  <meta name="description" content="Framing Safety and Assurance — CS120, Autumn 2026.">
+  <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/lectures/notes/m1_t1.html">
+  <link rel="stylesheet" href="../materials.css">
+  
+<script>
+window.MathJax = {
+  tex: {inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']]},
+  options: {ignoreHtmlClass: '.*', processHtmlClass: 'arithmatex'}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><a href="../../index.html">Stanford CS120 · Autumn 2026</a></header>
+<main id="main">
+  <nav aria-label="Course materials">
+    <a href="../../lectures/index.html">All course materials</a> ·
+    <a href="../../lectures/notes/index.html">Course notes</a>
+  </nav>
+  <h1>Framing Safety and Assurance</h1>
+  <p class="meta">Class meeting: 2026-09-22</p>
+  <article>
+<p><strong>Module 1: Framing Safety and Assurance.</strong></p>
+<p><img alt="Course sequence: Module 2, Model behavior; Module 3, Agent policy; Module 4, Interaction process; Module 5, Institutional ecosystem. No module is highlighted in this overview; the sequence is not a hierarchy." src="images/course-progression-overview.svg" /></p>
+<p>This is a course about AI safety. Part of the course is organized by adapting a pedagogical abstraction from Stanford's CS 221, <em>Artificial Intelligence: Principles and Techniques</em>, which organizes AI systems into a <a href="https://stanford-cs221.github.io/spring2026/modules/module.html#include=general%2Fcourse-content.js&amp;slideId=paradigm&amp;level=0">basic paradigm</a> of increasingly expressive representations and their instantiation as artifacts.</p>
+<p>What makes this course distinct is that it asks different questions, and the use of the abstraction shifts accordingly. Machine learning focuses on using large amounts of data to train a model. Types of AI systems can likewise be organized by the expressiveness of their representation. However, the stages of instantiation are mostly fixed: modeling, learning, and inference. If done properly, the resulting model will be able to make usable inferences beyond the training examples, i.e., generalization. This can be formalized with statistics and probability theory.</p>
+<p>The basic shift in the study of AI safety is that successful generalization is <strong>not</strong> taken as the end of the story. Instead, the focus is on what types of <strong>assurance</strong> are required as optimization pressure in increasingly capable systems exploits misspecification, incomplete evaluation, feedback processes, and institutional structure.</p>
+<p>Ultimately, evaluation itself is an object of optimization. Institutions, groups of individuals, and environments shape norms and influence what is considered sufficiently "safe." These groups can game the specification of what is considered safe and can influence how the evaluation of safety is carried out or interpreted. Classical safety asks whether a system is acceptable; this course also asks when the process for deciding acceptability itself becomes an object of optimization. Who defines, measures, and assesses "safety" will become a central aspect of the AI safety problem as the course progresses.</p>
+<p>Fixing a unit of analysis fixes which artifact or system's behavior must be assured. The interest here extends beyond certifying statistical generalization. Assurance consists of identifying <strong>hazards</strong> and characterizing the <strong>risk</strong> that potential harms are realized by the system.</p>
+<p>These terms are distinguished in causal order. A failure is a component or process departing from its intended behavior. A hazard is a system condition or mechanism that is a source of potential harm; it is often what a failure leaves behind. Risk is the chance and severity that a hazard is realized as harm, and it depends on operating conditions. A harm is a realized outcome that is negative to interests. While the hazard may originate from a generalization failure - i.e. spurious or shortcut learning - the potential harms and their mitigation require assurance beyond generalization. Finally, the nature of the appropriate assurance also depends on the expressiveness and context of the relevant system implementation.</p>
+<p>Consider a content filter trained on crowd-sourced toxicity labels. Shortcut learning that fits dialect as a proxy for toxicity is a failure. The resulting spurious correlation in the deployed filter is a hazard. The risk depends on prevalence of the dialect versus toxicity, the scale of the deployment, and the impact of wrongful filtering. One potential harm could be systematic filtering of content from speakers of that particular dialect. The risk of this harm would depend on the operating conditions of that filter.</p>
+<p>Four levels of expressiveness are recognized. <strong>Reflex-based systems</strong> simply perform a fixed sequence of operations on a given input. Examples include image classifiers, spam filters, and thermostat-like control systems. <strong>State-based systems</strong> model the state of a world and transitions between states which are triggered by actions. Examples include factory-line robots, chess engines, and LLMs with simple tool-use loops. <strong>Variable-based systems</strong> represent a desired solution as an assignment subject to constraints or other factors. Examples include Uber routing, airline scheduling, and object tracking. Finally, <strong>logic-based systems</strong> represent knowledge, rules, and constraints as logical formulas and derive consequences using explicit inference rules. Examples include theorem provers, expert systems, and access-control management systems.</p>
+<p>Three stages of implementation are also recognized. <strong>Modeling</strong> sets the architecture of the AI system and determines which aspects can be adjusted. <strong>Learning</strong> determines how the system is adjusted, whether through data, optimization, prompt iteration, or other forms of adaptation. <strong>Inference</strong> determines how the system is deployed or used for its end purpose. The stages locate where hazards enter: a hazard may be introduced by a modeling choice, amplified by a learning procedure, and realized as harm only at inference in deployment.</p>
+<p>With these abstractions in place, the recurring question of the course has a simple slogan:</p>
+<blockquote>
+<p>What must be assured for this module, and what can optimization pressure exploit?</p>
+</blockquote>
+<p>The aim is to break down assurance by unit of analysis, hazards, and potential harms, with case studies based on typical systems.</p>
+<p>The four modules that follow each study one unit of analysis: reactive model behavior and development-time optimization (module 2), sequential decision-making and agency (module 3), adaptive interaction and sociotechnical dynamics (module 4), and evaluation, governance, and institutional assurance (module 5). Later modules inherit rather than replace the hazards introduced in earlier ones.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Module</th>
+<th>Unit of analysis</th>
+<th>Failure Modes</th>
+<th>Hazards</th>
+<th>Potential Harms</th>
+<th>Typical Systems</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">2</td>
+<td>Model behavior</td>
+<td>shortcut learning, adversarial vulnerability, miscalibration, distribution-shift failure</td>
+<td>spurious correlations, untested inputs, evaluation blind spots</td>
+<td>wrongful filtering or denial, unequal error burdens, unsafe decisions, degraded reliability</td>
+<td>classifier, content filter</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>Agent policy</td>
+<td>reward hacking, specification gaming, unsafe exploration, instrumental subgoals</td>
+<td>proxy rewards, world-model errors, side-effects, long horizons</td>
+<td>physical or economic damage, resource loss, policy violations, irreversible side-effects</td>
+<td>chess engine, robot planner, tool-using LLM</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>Interaction process</td>
+<td>sycophancy, manipulation, preference shaping, feedback-loop amplification</td>
+<td>human bias, feedback channels, strategic responses, non-stationarity</td>
+<td>distorted decisions, loss of autonomy, entrenched inequities, degraded information environments</td>
+<td>recommender, team coordinator, assistant</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>Institutional ecosystem</td>
+<td>benchmark gaming, endogenous evaluation, regulatory capture, coordination failure</td>
+<td>metric definitions, evaluator dependence, jurisdiction gaps, opportunities to externalize costs</td>
+<td>systemic externalities, weakened oversight, concentrated power, persistent unsafe deployment</td>
+<td>platform market, regulatory deployment, benchmarking organization</td>
+</tr>
+</tbody>
+</table>
+<p>This course will progress through each of the four modules one at a time. However, it should be emphasized that each unit of analysis is a perspective, not a declaration of exclusive categories. For example, it is possible for an RL agent to use reflexes to navigate an environment. Similarly, assurance will not always cleanly reduce to one module of analysis. Finally, we emphasize the modules are neither exclusive categories nor hierarchical.</p>
+<p>In summary, the basic vocabulary of hazards, potential harms, and risks was introduced. Beyond the organizing modules, there are two further questions to be addressed. First, what is the object of assurance? Second, what counts as an assurance claim? These will be the subject of the subsequent notes in this module.</p>
+</article>
+</main>
+<footer>CS120: Introduction to AI Safety · Stanford University</footer>
+</body>
+</html>
