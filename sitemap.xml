@@ -7,26 +7,26 @@
   <!-- Add URLs for course materials here as they are published. -->
   <url>
     <loc>https://stanford-cs120.github.io/fall2026/lectures/index.html</loc>
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-09-21</lastmod>
   </url>
   <url>
     <loc>https://stanford-cs120.github.io/fall2026/lectures/notes/index.html</loc>
-    <lastmod>2026-09-17</lastmod>
-  </url>
-  <url>
-    <loc>https://stanford-cs120.github.io/fall2026/lectures/lecture.html?lecture=m0_t1</loc>
-    <lastmod>2026-09-15</lastmod>
-  </url>
-  <url>
-    <loc>https://stanford-cs120.github.io/fall2026/lectures/pdf/m0_t1-1pp.pdf</loc>
-    <lastmod>2026-09-15</lastmod>
-  </url>
-  <url>
-    <loc>https://stanford-cs120.github.io/fall2026/lectures/pdf/m0_t1-6pp.pdf</loc>
-    <lastmod>2026-09-15</lastmod>
+    <lastmod>2026-09-21</lastmod>
   </url>
   <url>
     <loc>https://stanford-cs120.github.io/fall2026/lectures/notes/m1_t1.html</loc>
     <lastmod>2026-09-17</lastmod>
+  </url>
+  <url>
+    <loc>https://stanford-cs120.github.io/fall2026/lectures/lecture.html?lecture=m1_t1</loc>
+    <lastmod>2026-09-21</lastmod>
+  </url>
+  <url>
+    <loc>https://stanford-cs120.github.io/fall2026/lectures/pdf/m1_t1-1pp.pdf</loc>
+    <lastmod>2026-09-21</lastmod>
+  </url>
+  <url>
+    <loc>https://stanford-cs120.github.io/fall2026/lectures/pdf/m1_t1-6pp.pdf</loc>
+    <lastmod>2026-09-21</lastmod>
   </url>
 </urlset>
