@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What is the object of assurance? | Stanford CS120</title>
+  <meta name="description" content="What is the object of assurance? — CS120, Autumn 2026.">
+  <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/lectures/notes/m1_t2.html">
+  <link rel="stylesheet" href="../materials.css">
+  
+<script>
+window.MathJax = {
+  tex: {inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']]},
+  options: {ignoreHtmlClass: '.*', processHtmlClass: 'arithmatex'}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><a href="../../index.html">Stanford CS120 · Autumn 2026</a></header>
+<main id="main">
+  <nav aria-label="Course materials">
+    <a href="../../lectures/index.html">All course materials</a> ·
+    <a href="../../lectures/notes/index.html">Course notes</a>
+  </nav>
+  <h1>What is the object of assurance?</h1>
+  <p class="meta">Class meeting: 2026-09-23</p>
+  <article>
+<p><strong>Module 1: What is the object of assurance?</strong></p>
+<p>Safety claims require specifying the intended system under consideration. It is tempting to ask, "Is AI safe?" because discourse often benefits from productive ambiguity. Indeed, AI at a system-level is a bit of a moving target in terms of deployment, capabilities, and operating conditions. A system boundary attempts to separate which parts of the system are the <strong>object of assurance</strong> and which parts are treated as part of its environment. </p>
+<p>The object of assurance is the bounded artifact, system, or institution about which a claim is actually made. This is distinct from the <strong>unit of analysis</strong>, which provides a representation for generating well-specified claims. System boundaries are then specifications of the variables intended to be modeled in a system, not inherent factorizations of the world. A system boundary helps determine which hazards are plainly visible, which aspects are treated as endogenous, and ultimately which claims are falsifiable. </p>
+<blockquote>
+<p><strong>Key principle:</strong> choose a system boundary narrow enough to analyze, but broad enough to contain the variables and interactions relevant to the claim.</p>
+</blockquote>
+<p>In this course, there are three stages of implementation: modeling, learning, and inference. There are also the institutions that develop, evaluate, or regulate them. We consider a previous example system: a content filter trained on crowd-sourced toxicity labels. Let's consider what it means to treat each stage as an object of assurance.</p>
+<p><strong>Running example.</strong></p>
+<p>A platform trains a classifier to identify toxic comments. Human annotators provide toxicity labels and the resulting data is used to train a classifier model. At inference time, a decision rule is used to choose which comments are shown and which are filtered for moderation. Any user is able to appeal a moderation decision. The platform is able to retrain or adjust the model periodically. </p>
+<p>Earlier, we identified a potential hazard. The classifier learns a spurious correlation between dialect and toxicity resulting in a high-false positive rate for comments in that dialect. A potential harm is the systematic flagging of non-toxic comments written by speakers of that dialect. </p>
+<p>However, "where" is the relevant safety problem located?</p>
+<p><strong>Models as object of assurance.</strong></p>
+<p>The most tightly scoped object of assurance is the trained (reflex) model itself. This specifies the system boundary, and represents the object of assurance as a function</p>
+<div class="arithmatex">\[
+f: \mathcal{X} \to \mathcal{Y}
+\]</div>
+<p>which maps a comment <span class="arithmatex">\(x \in \mathcal{X}\)</span> to a toxicity score <span class="arithmatex">\(y \in \mathcal{Y}\)</span>. The annotation process, platform and moderation policy, and users are then treated as part of the environment. </p>
+<p>This considers the model through a <strong>black-box</strong> interface. We might instead assume <strong>white-box</strong> access to parameters, architecture, or internal activations. Either way, such an object boundary scopes assurance claims, the question is what useful assurances remain.</p>
+<p>For example, we might ask for an assurance about the false-positive rate between different linguistic groups, calibration compared to human annotators, or even whether the function is "overfit." All of these require <em>additional</em> assumptions about access to evaluation or training data. However, the key principle is satisfied: the boundary is narrow, but can contain relevant interactions to input/output comparisons. </p>
+<p>The reason this distinction matters is that we do not include development or deployment in the object of assurance. So we must make assumptions about the evaluation process through which we obtain human annotations. Often claims lie outside this boundary: evidence that concerns one object of assurance while the claim is about another. These might take the shape of model-level evaluation outcomes used to justify qualities about development or deployment.</p>
+<p>Selbst et al. describe these sorts of failures as abstraction traps [2]. Of course, while abstraction is necessary for analysis, it can also erase interactions responsible for the claim under investigation. This is why well-scoped abstractions are key to making justifiable claims. </p>
+<p><strong>Development pipelines as objects of assurance.</strong></p>
+<p>The object of assurance can be expanded to include activities such as data collection, annotation, or model and objective selection. </p>
+<p>In the content filtering example, an observed dialect correlation may originate from several places. Crowd workers may systematically assign higher toxicity scores to particular dialects. The sampling procedure may underrepresent or misrepresent certain associations. The training process itself could also prioritize aggregate metrics over certain subgroups. </p>
+<p>Here is a familiar claim that becomes available with learning as the object of assurance: generalization. We can compare performance during training with performance on a validation set. The difference between performance is the generalization gap. Formal claims about a learning procedure become attainable using probabilistic or statistical learning theoretic methods.</p>
+<p>However, even at this point, generalization does not yet imply good performance under realistic deployment conditions. Assurance of the model, the process that produced it, and the performance in the intended setting remain distinct problems.</p>
+<p><strong>Deployed systems as objects of assurance.</strong></p>
+<p>The boundary can be expanded yet again to include the system in which the model is actually used. The content filter is no longer an isolated scoring function or a well-fit classifier. Now the model is used at inference time for decision-making using its predictions. Those predictions feed into decision-rules for moderation, inform the moderation policy and appeal process, and ultimately begin to affect future training data as the implicit norms users rely on are partially determined by the model itself.</p>
+<p>Amodei et al.'s <em>Concrete Problems in AI Safety</em> illustrates the importance of preserving awareness of system boundaries when abstracting [1]. They identify five recurring sources of accident risk: negative side effects, reward hacking, scalable supervision, safe exploration, and robustness to distribution shift. Viewed through the lens of system boundaries, these problems do not all live within the same object of assurance. Reward hacking is about the relationship between the objective and the behavior it induces. On the other hand, scalable supervision is concerned with the process through which behavior is evaluated. These problems may interact, but the underlying object of concern nevertheless shifts. The taxonomy therefore can be read as suggesting a useful factorization of an AI system: a collection of objects and interactions about which assurance claims might be made. </p>
+<p>Returning to the content-filter example, the relevant system boundary may include not just a classifier model, but also its decision rule, its role in the moderation process, and downstream user effects on future training data. This generates new hazards which are only visible because different components interact. </p>
+<p>At this point the AI system is naturally understood as a <strong>sociotechnical system:</strong> its behavior is produced through technical components interacting with people, social context, and organizational procedures. Whether a classifier's false-positive rate causes harm becomes something that depends on the system the model is embedded within. Is the moderation process consequential i.e. can users be banned or otherwise penalized? Do users respond to moderation through changed engagement e.g. leaving the platform? The deployment context contains feedback loops that lie outside the model or learning boundary.</p>
+<p>This is the central concern of <em>Fairness and Abstraction in Sociotechnical Systems.</em> Selbst et al. argue that properties attributed to technical systems can depend on the social context in which the system is embedded [2]. These interactions often vanish when the technical artifact is abstracted from its original context. </p>
+<p><strong>The role of institutions.</strong></p>
+<p>Institutions, in this context, are organizations and processes that specify, develop, deploy, evaluate, or regulate other organizations or processes. These types of institutions are important because they concern the process by which safety judgements are produced and legitimized. As an example, they may produce and legitimize a claim that a particular evaluation process reliably detects a specified class of safety-critical hazards before they become harmful. </p>
+<p>This raises additional questions. Who chooses the evaluation criteria? What incentives does an evaluator or platform have? Are incidents documented and does the organization have accountability for responding? Finally, who has the authority to pause or remediate a deployment after evidence of a hazard?</p>
+<p>On the other hand, just because institutions provide coverage of scope does not mean they should always be included in the system boundary. This choice should be made intentionally, and it should be always be kept in mind that claims about an institution cannot be justified solely based on technical artifacts it oversees. </p>
+<p><strong>Boundary Misspecification.</strong></p>
+<p>Ultimately, there is no universally correct system boundary. Moreover, given an intended claim, a boundary can nonetheless be inadequate. The boundaries we considered, and the problems that arose, are illustrations of what happens when the specified boundary does not contain the necessary mechanisms or sufficient access to observational evidence to support the intended claim. </p>
+<p>This returns us to the key principle. Choose a system boundary narrow enough to analyze, but broad enough to contain the variables and interactions relevant to the intended claim. Once that is fixed, the next question becomes more precise: what exactly are we claiming about it, and what evidence would justify that claim?</p>
+<p><strong>References.</strong></p>
+<p>[1] Amodei, Dario, et al. “Concrete Problems in AI Safety.” arXiv preprint arXiv:1606.06565, 2016.</p>
+<p>[2] Selbst, Andrew D., et al. "Fairness and abstraction in sociotechnical systems." <em>Proceedings of the conference on fairness, accountability, and transparency</em>. 2019.</p>
+</article>
+</main>
+<footer>CS120: Introduction to AI Safety · Stanford University</footer>
+</body>
+</html>
