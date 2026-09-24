@@ -12,7 +12,7 @@ if (typeof global != 'undefined') {
   sfig.serverSide = true;
 } else {
   sfig.serverSide = false;
-  require = function() { }  // Do nothing
+  require = function () { }  // Do nothing
 }
 
 ////////////////////////////////////////////////////////////
@@ -35,7 +35,7 @@ sfig.enableMouseWheel = true;  // Whether allow mouse wheel to scroll
 
 sfig.missingPaths = [];  // Will be filled up with image paths that we can't load
 
-sfig.wideScreen = function() {
+sfig.wideScreen = function () {
   const s = 0.65;  // Scale to make it more compatible with the default 800x600 screen
   sfig.Slide.defaults.setProperty('width', 1600 * s);
   sfig.Slide.defaults.setProperty('height', 900 * s);
@@ -46,25 +46,25 @@ sfig.wideScreen = function() {
 // In Metapost, down is increasing y (sfig.serverSide = true).
 if (!sfig.serverSide) sfig.downSign = 1;  // SVG
 else sfig.downSign = -1;  // Metapost
-sfig.up = function(x) { return -x * sfig.downSign; };
-sfig.down = function(x) { return x * sfig.downSign; };
+sfig.up = function (x) { return -x * sfig.downSign; };
+sfig.down = function (x) { return x * sfig.downSign; };
 
 ////////////////////////////////////////////////////////////
 // Simple functions
 
-(function() {
+(function () {
   // Usage: importMethods(this)
   // Will import all the necessary methods into the namespace.
-  sfig.importMethods = function(target, names) {
-    names.forEach(function(name) {
+  sfig.importMethods = function (target, names) {
+    names.forEach(function (name) {
       var method = sfig[name];
-      if (method == null) sfig.throwException('Can\'t import '+name+' because it doesn\'t exist');
+      if (method == null) sfig.throwException('Can\'t import ' + name + ' because it doesn\'t exist');
       target[name] = method;
     });
   }
 
   // Import everything in sfig.
-  sfig.importAllMethods = function(target) {
+  sfig.importAllMethods = function (target) {
     for (var name in sfig) {
       if (name == "Image") continue;  // Conflicts with the Image object.
       target[name] = sfig[name];
@@ -75,11 +75,11 @@ sfig.down = function(x) { return x * sfig.downSign; };
   // Ignored if in function arguments.  Useful as the final argument so all
   // real arguments can have a trailing comma (easier to shuffle things
   // around).
-  sfig._ = {'IGNORED' : true};
+  sfig._ = { 'IGNORED': true };
 
   // Recursively remove the IGNORE object from x.
   // [_, 3, [5, _]] => [3, [5]]
-  sfig_.removeIgnoreObject = function(x) {
+  sfig_.removeIgnoreObject = function (x) {
     if (x instanceof Array) {
       var newx = [];
       for (var i = 0; i < x.length; i++) {
@@ -93,47 +93,47 @@ sfig.down = function(x) { return x * sfig.downSign; };
 
   // Usage: let(x = 4, y = 5)
   // Allows definitions in the middle of function calls.
-  sfig.let = function() { return _; }
+  sfig.let = function () { return _; }
 
   // Concatenate strings
-  sfig.cat = function() { return sfig_.removeIgnoreObject(Array.prototype.slice.call(arguments)).join(''); }
+  sfig.cat = function () { return sfig_.removeIgnoreObject(Array.prototype.slice.call(arguments)).join(''); }
 
   var arrowCursor = '';
   sfig.defaultCursor = arrowCursor;
-  sfig.setArrowCursor = function() {  // Arrow
+  sfig.setArrowCursor = function () {  // Arrow
     document.documentElement.style.cursor = arrowCursor;
   }
-  sfig.setPointerCursor = function() {  // Hand
+  sfig.setPointerCursor = function () {  // Hand
     document.documentElement.style.cursor = 'pointer';
   }
-  sfig.resetCursor = function() {
+  sfig.resetCursor = function () {
     document.documentElement.style.cursor = sfig.defaultCursor;
   }
-  sfig.isCursorHidden = function() {
+  sfig.isCursorHidden = function () {
     return document.documentElement.style.cursor == 'none';
   }
-  sfig.hideCursor = function() {
+  sfig.hideCursor = function () {
     document.documentElement.style.cursor = 'none';
   }
-  sfig.setLaserPointerCursor = function() {  // Change default cursor
+  sfig.setLaserPointerCursor = function () {  // Change default cursor
     if (sfig.serverSide) return;
-    sfig.defaultCursor = 'url("'+sfig.getInternalDir()+'/../images/red-pencil.png"), auto';
+    sfig.defaultCursor = 'url("' + sfig.getInternalDir() + '/../images/red-pencil.png"), auto';
     sfig.resetCursor();
   }
 
-  sfig.identity = function(x) { return x; };
+  sfig.identity = function (x) { return x; };
 
-  sfig.isNumber = function(x) { return typeof(x) == 'number'; }
-  sfig.isString = function(x) { return typeof(x) == 'string'; }
-  sfig.isFunction = function(x) { return typeof(x) == 'function'; }
+  sfig.isNumber = function (x) { return typeof (x) == 'number'; }
+  sfig.isString = function (x) { return typeof (x) == 'string'; }
+  sfig.isFunction = function (x) { return typeof (x) == 'function'; }
 
-  sfig.isUpperCase = function(x) {
+  sfig.isUpperCase = function (x) {
     for (var i = 0; i < x.length; i++)
       if (!(x[i] >= 'A' && x[i] <= 'Z'))
         return false;
     return true;
   }
-  sfig.smallCaps = function(s) {
+  sfig.smallCaps = function (s) {
     return s.toUpperCase();  // For now, the best we can do because s could be embedded in math.
     /*var t = '';
     for (var i = 0; i < s.length; i++)
@@ -142,15 +142,15 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   // Shorthand methods for debugging
-  sfig.L = function() {
+  sfig.L = function () {
     if (arguments.length == 1)
       console.log(arguments[0]);
     else
       console.log(arguments);
   }
-  sfig.S = function(x) {
+  sfig.S = function (x) {
     if (x instanceof SVGRect) return sfig_.rectToString(x);
-    if (x instanceof SVGMatrix) return 'matrix('+[x.a, x.b, x.c, x.d, x.e, x.f].join(' ')+')';
+    if (x instanceof SVGMatrix) return 'matrix(' + [x.a, x.b, x.c, x.d, x.e, x.f].join(' ') + ')';
     if (x instanceof sfig.Block) return x.toString(true);
     if (x instanceof sfig.Thunk) return x.get();
     if (x instanceof Array) return x.map(S);
@@ -161,32 +161,32 @@ sfig.down = function(x) { return x * sfig.downSign; };
 ////////////////////////////////////////////////////////////
 // Generic utility functions.
 
-(function() {
-  var PropertyChanger = sfig.PropertyChanger = function(name, operation) {
+(function () {
+  var PropertyChanger = sfig.PropertyChanger = function (name, operation) {
     this.name = name;
     this.operation = operation;
   }
-  PropertyChanger.prototype.toString = function() {
+  PropertyChanger.prototype.toString = function () {
     return 'PropertyChanger[' + this.name + ']';
   }
 
-  sfig.pause = function(n) {
+  sfig.pause = function (n) {
     if (n == null) n = 1;
-    return new sfig.PropertyChanger('pause('+n+')', function(env) {
+    return new sfig.PropertyChanger('pause(' + n + ')', function (env) {
       env.showLevel = env.showLevel.add(n);
     });
   }
 
-  sfig.showLevel = function(n) {
-    return new sfig.PropertyChanger('showLevel('+n+')', function(env) {
+  sfig.showLevel = function (n) {
+    return new sfig.PropertyChanger('showLevel(' + n + ')', function (env) {
       env.showLevel = n;
     });
   }
 
   // Arguments which are not Blocks, but are kept in tact during standarization.
-  sfig.AuxiliaryInfo = function() { }
+  sfig.AuxiliaryInfo = function () { }
 
-  sfig.throwException = function(message) {
+  sfig.throwException = function (message) {
     console.log(new Error().stack);
     throw message;
   }
@@ -195,17 +195,17 @@ sfig.down = function(x) { return x * sfig.downSign; };
   // sometimes passed with _'s and raw strings.  Remove all instances of _, and
   // make sure every item is either an Block, a PropertyChanger, AuxiliaryInfo, or
   // an array of these things.
-  sfig.std = function(item) {
+  sfig.std = function (item) {
     if (item == null) { sfig.throwException('Null not allowed'); }
-    if (item instanceof Function) sfig.throwException('Function not allowed (did you mean to call it?): '+item);
-    if (item instanceof sfig.Thunk) sfig.throwException('Thunk not allowed: '+item);
+    if (item instanceof Function) sfig.throwException('Function not allowed (did you mean to call it?): ' + item);
+    if (item instanceof sfig.Thunk) sfig.throwException('Thunk not allowed: ' + item);
     if (item instanceof sfig.Block) return item;
     if (item instanceof sfig.AuxiliaryInfo) return item;
     if (item instanceof sfig.PropertyChanger) return item;
     if (typeof HTMLElement != 'undefined' && item instanceof HTMLElement) return sfig.text(item);
-    var type = typeof(item);
+    var type = typeof (item);
     if (type == 'string') return sfig.text(item);
-    if (type == 'number') return sfig.text(''+item);  // Convert strings and numbers to text
+    if (type == 'number') return sfig.text('' + item);  // Convert strings and numbers to text
     if (item.length != null) {  // Array and Arguments
       var newList = [];
       for (var i = 0; i < item.length; i++) {
@@ -219,19 +219,19 @@ sfig.down = function(x) { return x * sfig.downSign; };
     sfig.throwException('Invalid: ' + item);
   }
 
-  sfig_.javascriptEscape = function(s) { return '\'' + s.replace(/'/g, '\\\'') + '\''; }
+  sfig_.javascriptEscape = function (s) { return '\'' + s.replace(/'/g, '\\\'') + '\''; }
 
   // Create an element with the desired attributes.
-  sfig_.newElem = function(type) {
+  sfig_.newElem = function (type) {
     if (typeof document == 'undefined') return null;  // Happens on server side
     return document.createElement(type);
   }
   sfig_.svgns = 'http://www.w3.org/2000/svg';
-  sfig_.newSvgElem = function(type) {
+  sfig_.newSvgElem = function (type) {
     if (typeof document == 'undefined') return null;  // Happens on server side
     return document.createElementNS(sfig_.svgns, type);
   }
-  sfig_.newSvg = function() {
+  sfig_.newSvg = function () {
     return sfig_.newSvgElem('svg', {
       id: 'svg',
       xmlns: sfig_.svgns,
@@ -239,56 +239,56 @@ sfig.down = function(x) { return x * sfig.downSign; };
     });
   }
 
-  sfig_.mergeInto = function(target, source) {
+  sfig_.mergeInto = function (target, source) {
     for (var key in source) target[key] = source[key];
     return target;
   }
 
-  sfig_.rectToString = function(r) { return r.x+','+r.y+';'+r.width+'x'+r.height; }
+  sfig_.rectToString = function (r) { return r.x + ',' + r.y + ';' + r.width + 'x' + r.height; }
   sfig_.svg = sfig_.newSvg();
 
-  sfig_.robustMin = function(a, b) {
+  sfig_.robustMin = function (a, b) {
     if (a == null) return b;
     if (b == null) return a;
     return Math.min(a, b);
   }
 
-  sfig_.robustMax = function(a, b) {
+  sfig_.robustMax = function (a, b) {
     if (a == null) return b;
     if (b == null) return a;
     return Math.max(a, b);
   }
 
-  sfig_.shiftMatrix = function(xshift, yshift) {
+  sfig_.shiftMatrix = function (xshift, yshift) {
     var ctm = sfig_.svg.createSVGMatrix();
     ctm.e = xshift;
     ctm.f = yshift;
     return ctm;
   }
 
-  sfig_.scaleMatrix = function(xscale, yscale) {
+  sfig_.scaleMatrix = function (xscale, yscale) {
     var ctm = sfig_.svg.createSVGMatrix();
     ctm.a = xscale;
     ctm.d = yscale;
     return ctm;
   }
 
-  sfig_.translateElem = function(elem, x, y) {
+  sfig_.translateElem = function (elem, x, y) {
     var transformed = sfig_.newSvgElem('g');
-    transformed.setAttribute('transform', 'translate('+x+','+y+')');
+    transformed.setAttribute('transform', 'translate(' + x + ',' + y + ')');
     transformed.appendChild(elem);
     return transformed;
   }
 
   // x is either already an HTMLElement or a string which is to be parsed as such
-  sfig_.ensureHTMLElement = function(x) {
+  sfig_.ensureHTMLElement = function (x) {
     if (x instanceof HTMLElement) return x;
     var div = sfig_.newElem('div');
     div.innerHTML = x;
     return div;
   }
 
-  sfig_.addTooltipToElem = function(elem, str) {
+  sfig_.addTooltipToElem = function (elem, str) {
     var title = sfig_.newSvgElem('title');
     title.textContent = str;
     elem.appendChild(title);
@@ -296,23 +296,23 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   var codeToKey = {
-    8 : 'backspace',
-    9 : 'tab',
-    10 : 'enter',
-    13 : 'enter',
-    27 : 'escape',
-    32 : 'space',
-    33 : 'page_up',
-    34 : 'page_down',
-    35 : 'end',
-    36 : 'home',
-    37 : 'left',
-    38 : 'up',
-    39 : 'right',
-    40 : 'down',
+    8: 'backspace',
+    9: 'tab',
+    10: 'enter',
+    13: 'enter',
+    27: 'escape',
+    32: 'space',
+    33: 'page_up',
+    34: 'page_down',
+    35: 'end',
+    36: 'home',
+    37: 'left',
+    38: 'up',
+    39: 'right',
+    40: 'down',
     191: '/'
   };
-  sfig_.eventToKey = function(event) {
+  sfig_.eventToKey = function (event) {
     var key = '';
     if (event.ctrlKey) key += '-ctrl';
     if (event.altKey) key += '-alt';
@@ -326,13 +326,13 @@ sfig.down = function(x) { return x * sfig.downSign; };
   // Creates subarrays dynamically as necessary.
 
   // Append |value| to the list vector[i].
-  sfig_.vectorPushInto = function(vector, i, value) {
+  sfig_.vectorPushInto = function (vector, i, value) {
     if (!vector[i]) vector[i] = [];
     vector[i].push(value);
   }
 
   // Append |value| to the list matrix[r][c].
-  sfig_.matrixPushInto = function(matrix, r, c, value) {
+  sfig_.matrixPushInto = function (matrix, r, c, value) {
     var row = matrix[r];
     if (row == null) row = matrix[r] = [];
     if (!row[c]) row[c] = [];
@@ -340,37 +340,37 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   // Set matrix[r][c] to |value|.
-  sfig_.matrixSetValue = function(matrix, r, c, value) {
+  sfig_.matrixSetValue = function (matrix, r, c, value) {
     var row = matrix[r];
     if (row == null) row = matrix[r] = [];
     row[c] = value;
   }
 
   // Return a function that dispatches to |func| with |arg| as the first argument.
-  sfig_.funcPrependArg = function(func, arg) {
-    return function(x) { return func(arg, x); }
+  sfig_.funcPrependArg = function (func, arg) {
+    return function (x) { return func(arg, x); }
   }
 
   // Note: assume |func| takes a callback.  Inject end timing code before the callback.
-  sfig_.measureTime = function(name, func, callback) {
+  sfig_.measureTime = function (name, func, callback) {
     var startTime, endTime;
     if (sfig.enableTiming) startTime = new Date().getTime();
     if (sfig.enableProfiling) console.profile([name]);
-    func(function() {
+    func(function () {
       if (sfig.enableProfiling) console.profileEnd();
       if (sfig.enableTiming) endTime = new Date().getTime();
-      if (sfig.enableTiming) console.log(name + ' time: '+(endTime-startTime));
+      if (sfig.enableTiming) console.log(name + ' time: ' + (endTime - startTime));
       callback();
     });
   }
-  sfig_.performOperation = function(name, func, callback) {
+  sfig_.performOperation = function (name, func, callback) {
     if (sfig.enableProfiling || sfig.enableTiming)
       sfig_.measureTime(name, func, callback);
     else
       func(callback);
   }
 
-  sfig_.inheritsFrom = function(className, childClass, parentClass) {
+  sfig_.inheritsFrom = function (className, childClass, parentClass) {
     if (parentClass != Object) {
       childClass.prototype = new parentClass();
       childClass.prototype.constructor = parentClass;
@@ -384,11 +384,11 @@ sfig.down = function(x) { return x * sfig.downSign; };
     childClass.prototype.myClass = childClass;
   }
 
-  sfig_.atan2Degrees = function(y, x) { return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360; }
-  sfig_.cosDegrees = function(angle) { return Math.cos(angle / 180 * Math.PI); }
-  sfig_.sinDegrees = function(angle) { return Math.sin(angle / 180 * Math.PI); }
+  sfig_.atan2Degrees = function (y, x) { return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360; }
+  sfig_.cosDegrees = function (angle) { return Math.cos(angle / 180 * Math.PI); }
+  sfig_.sinDegrees = function (angle) { return Math.sin(angle / 180 * Math.PI); }
 
-  sfig_.rotateDegrees = function(p, angle) {
+  sfig_.rotateDegrees = function (p, angle) {
     var cos = sfig_.cosDegrees(angle);
     var sin = sfig_.sinDegrees(angle);
     var x = p[0], y = p[1];
@@ -396,14 +396,14 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   // Make sure angle is in the range [0, 360)
-  sfig_.stdDegrees = function(angle) {
+  sfig_.stdDegrees = function (angle) {
     if (angle < 0) return 360 - (-angle % 360);
     return angle % 360;
   }
 
   // Input: '#a=b'
   // Output: {'a': 'b'}
-  sfig_.parseUrlParams = function(href) {
+  sfig_.parseUrlParams = function (href) {
     var params = {};
     var items = href.split(/[#&]/);
     for (var i = 1; i < items.length; i++) {
@@ -415,7 +415,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
 
   // Input: {'a': 'b'}
   // Output: '#a=b'
-  sfig_.serializeUrlParams = function(params) {
+  sfig_.serializeUrlParams = function (params) {
     var str = '';
     var first = true;
     for (var name in params) {
@@ -428,18 +428,18 @@ sfig.down = function(x) { return x * sfig.downSign; };
 
   sfig_.urlParams = {};
 
-  sfig_.parseUrlParamsFromLocation = function() {
+  sfig_.parseUrlParamsFromLocation = function () {
     sfig_.urlHash = window.location.hash;
     sfig_.urlParams = sfig_.parseUrlParams(sfig_.urlHash);
   }
-  sfig_.serializeUrlParamsToLocation = function() {
+  sfig_.serializeUrlParamsToLocation = function () {
     sfig_.urlHash = sfig_.serializeUrlParams(sfig_.urlParams);
     window.location.hash = sfig_.urlHash;
   }
 
   // Set the display mode, reloading the page if necessary.
   // Return whether we changed anything.
-  sfig_.setDisplayMode = function(newMode) {
+  sfig_.setDisplayMode = function (newMode) {
     if (sfig_.urlParams.mode != newMode) {
       sfig_.urlParams.mode = newMode;
       sfig_.serializeUrlParamsToLocation();
@@ -448,7 +448,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     }
     return false;
   }
-  sfig_.getDisplayMode = function() { return sfig_.urlParams.mode; }
+  sfig_.getDisplayMode = function () { return sfig_.urlParams.mode; }
   sfig_.DISPLAYMODE_DEFAULT = null;
   sfig_.DISPLAYMODE_FULLSCREEN = 'fullScreen';
   sfig_.DISPLAYMODE_OUTLINE = 'outline';
@@ -463,48 +463,48 @@ sfig.down = function(x) { return x * sfig.downSign; };
 //   - value [primitive value]
 //   - func, args [depends on other Thunks] (can still have cached value)
 
-(function() {
+(function () {
   // Usage: don't call this function directly.
   // When we call .get() on a thunk, we either get the value or func(args)
-  var Thunk = sfig.Thunk = function() {
+  var Thunk = sfig.Thunk = function () {
     this.usedBy = []; // Thunks that use this
   }
 
-  Thunk.prototype.toString = function() {
+  Thunk.prototype.toString = function () {
     if (this.func != null)
-      return this.name + '(' + this.args.map(function(arg) { return arg.toString(); }).join(',') + ')';
+      return this.name + '(' + this.args.map(function (arg) { return arg.toString(); }).join(',') + ')';
     else
       return (this.name != null ? this.name + '=' : '') + this.value;
   }
 
-  Thunk.prototype.log = function(name) {
+  Thunk.prototype.log = function (name) {
     if (name != null) this.name = name;
-    this.hookFunc = function(name, value) { console.log('thunk', name, value); };
+    this.hookFunc = function (name, value) { console.log('thunk', name, value); };
     return this;
   }
 
-  Thunk.prototype.exists = function() { return this.value != null || this.func != null; }
+  Thunk.prototype.exists = function () { return this.value != null || this.func != null; }
 
   // If value exists, return it.
   // Otherwise, recursively compute it and cache it.
-  Thunk.prototype.get = function() {
+  Thunk.prototype.get = function () {
     // Compute value if it doesn't exist.
     if (this.value == null && this.func != null) {
-      this.value = this.func.apply(null, this.args.map(function(arg) { return arg.get(); }));
-      if (this.value instanceof sfig.Thunk) sfig.throwException('Value is thunk: '+this.value);
+      this.value = this.func.apply(null, this.args.map(function (arg) { return arg.get(); }));
+      if (this.value instanceof sfig.Thunk) sfig.throwException('Value is thunk: ' + this.value);
       if (this.hookFunc != null) this.hookFunc(this.name, this.value);
     }
     return this.value;
   }
 
   // Set the value to the desired value.
-  Thunk.prototype.set = function(newValue) {
+  Thunk.prototype.set = function (newValue) {
     this.invalidate();
 
     // If function, remove dependendence on arguments anymore.
     if (this.func != null) {
       var self = this;
-      this.args.forEach(function(arg) {
+      this.args.forEach(function (arg) {
         var i = arg.usedBy.indexOf(self);
         if (i == -1) sfig.throwException('Inconsistent state');
         arg.usedBy.splice(i, 1);
@@ -526,45 +526,45 @@ sfig.down = function(x) { return x * sfig.downSign; };
     return this;
   }
 
-  Thunk.prototype.invalidate = function() {
+  Thunk.prototype.invalidate = function () {
     if (this.value == null) return;  // Already invalidated
     this.value = null;
-    this.usedBy.forEach(function(client) { client.invalidate(); });
+    this.usedBy.forEach(function (client) { client.invalidate(); });
   }
 
-  Thunk.prototype.getOrElse = function(defaultValue) {
+  Thunk.prototype.getOrElse = function (defaultValue) {
     var value = this.get();
     if (value == null) return defaultValue;
     return value;
   }
 
-  Thunk.prototype.getOrDie = function() {
+  Thunk.prototype.getOrDie = function () {
     var value = this.get();
-    if (value == null) sfig.throwException('Null value from '+this+' (maybe not available if Block isn\'t rendered yet)');
+    if (value == null) sfig.throwException('Null value from ' + this + ' (maybe not available if Block isn\'t rendered yet)');
     return value;
   }
 
-  Thunk.prototype.getNonnegativeOrDie = function() {
+  Thunk.prototype.getNonnegativeOrDie = function () {
     var value = this.getOrDie();
-    if (!(value >= 0)) sfig.throwException('Negative value from '+this+': '+value);
+    if (!(value >= 0)) sfig.throwException('Negative value from ' + this + ': ' + value);
     return value;
   }
 
-  sfig.tconstant = function(value) {
+  sfig.tconstant = function (value) {
     var thunk = new Thunk();
     thunk.value = value;
     return thunk;
   }
 
-  sfig.tvalue = function(name, value) {
-    if (value instanceof Thunk) sfig.throwException('Value can\'t be thunk: '+value);
+  sfig.tvalue = function (name, value) {
+    if (value instanceof Thunk) sfig.throwException('Value can\'t be thunk: ' + value);
     var thunk = new Thunk();
     thunk.name = name;
     thunk.value = value;
     return thunk;
   }
 
-  var tfunc = sfig.tfunc = function(name, func, args) {
+  var tfunc = sfig.tfunc = function (name, func, args) {
     var thunk = new Thunk();
     thunk.name = name;
     thunk.func = func;
@@ -578,55 +578,55 @@ sfig.down = function(x) { return x * sfig.downSign; };
     return thunk;
   }
 
-  var orElse = function(a, b) { return a != null ? a : b; }
-  var andThen = function(a, b) { return a != null ? b : null; }
+  var orElse = function (a, b) { return a != null ? a : b; }
+  var andThen = function (a, b) { return a != null ? b : null; }
 
-  Thunk.prototype.orElse = function(x) { return tfunc('orElse', orElse, [this, x]); }
-  Thunk.prototype.andThen = function(x) { return tfunc('andThen', andThen, [this, x]); }
+  Thunk.prototype.orElse = function (x) { return tfunc('orElse', orElse, [this, x]); }
+  Thunk.prototype.andThen = function (x) { return tfunc('andThen', andThen, [this, x]); }
 
-  var charAtOrLast = function(str, i, x) { return str != null && i != null ? (i < str.length ? str[i] : str[str.length-1]) : x; }
-  Thunk.prototype.charAtOrLast = function(i, x) { return tfunc('charAtOrLast', charAtOrLast, [this, i, x]); }
+  var charAtOrLast = function (str, i, x) { return str != null && i != null ? (i < str.length ? str[i] : str[str.length - 1]) : x; }
+  Thunk.prototype.charAtOrLast = function (i, x) { return tfunc('charAtOrLast', charAtOrLast, [this, i, x]); }
 
-  var apply = function(x, f) { return x == null || f == null ? null : f(x); }
-  Thunk.prototype.apply = function(f) { return tfunc('apply', apply, [this, f]); }
+  var apply = function (x, f) { return x == null || f == null ? null : f(x); }
+  Thunk.prototype.apply = function (f) { return tfunc('apply', apply, [this, f]); }
 
   // Can override if needed.
-  Thunk.abs = function(a) { return Math.abs(a); }
-  Thunk.add = function(a, b) { return a == null || b == null ? null : a + b; }
-  Thunk.sub = function(a, b) { return a == null || b == null ? null : a - b; }
-  Thunk.mul = function(a, b) { return a == null || b == null ? null : a * b; }
-  Thunk.div = function(a, b) { return a == null || b == null ? null : a / b; }
+  Thunk.abs = function (a) { return Math.abs(a); }
+  Thunk.add = function (a, b) { return a == null || b == null ? null : a + b; }
+  Thunk.sub = function (a, b) { return a == null || b == null ? null : a - b; }
+  Thunk.mul = function (a, b) { return a == null || b == null ? null : a * b; }
+  Thunk.div = function (a, b) { return a == null || b == null ? null : a / b; }
   Thunk.min = sfig_.robustMin;
   Thunk.max = sfig_.robustMax;
-  Thunk.and = function(a, b) { return a && b; }
-  Thunk.or = function(a, b) { return a || b; }
-  Thunk.not = function(a) { return !a; }
-  Thunk.cond = function(test, a, b) { return test ? a : b; } // Note: in Javascript, null, false, 0, '' are all false
+  Thunk.and = function (a, b) { return a && b; }
+  Thunk.or = function (a, b) { return a || b; }
+  Thunk.not = function (a) { return !a; }
+  Thunk.cond = function (test, a, b) { return test ? a : b; } // Note: in Javascript, null, false, 0, '' are all false
 
-  Thunk.addHalf = function(a, b) { return a == null || b == null ? null : a + b/2; }
-  Thunk.up = function(a, b) { return a == null || b == null ? null : a - b * sfig.downSign; }
-  Thunk.down = function(a, b) { return a == null || b == null ? null : a + b * sfig.downSign; }
-  Thunk.downHalf = function(a, b) { return a == null || b == null ? null : a + b/2 * sfig.downSign; }
+  Thunk.addHalf = function (a, b) { return a == null || b == null ? null : a + b / 2; }
+  Thunk.up = function (a, b) { return a == null || b == null ? null : a - b * sfig.downSign; }
+  Thunk.down = function (a, b) { return a == null || b == null ? null : a + b * sfig.downSign; }
+  Thunk.downHalf = function (a, b) { return a == null || b == null ? null : a + b / 2 * sfig.downSign; }
 
-  Thunk.prototype.abs = function() { return tfunc('abs', Thunk.abs, [this]); }
-  Thunk.prototype.add = function(x) { return tfunc('add', Thunk.add, [this, x]); }
-  Thunk.prototype.sub = function(x) { return tfunc('sub', Thunk.sub, [this, x]); }
-  Thunk.prototype.mul = function(x) { return tfunc('mul', Thunk.mul, [this, x]); }
-  Thunk.prototype.div = function(x) { return tfunc('div', Thunk.div, [this, x]); }
-  Thunk.prototype.min = function(x) { return tfunc('min', Thunk.min, [this, x]); }
-  Thunk.prototype.max = function(x) { return tfunc('max', Thunk.max, [this, x]); }
-  Thunk.prototype.and = function(x) { return tfunc('and', Thunk.and, [this, x]); }
-  Thunk.prototype.or = function(x) { return tfunc('or', Thunk.or, [this, x]); }
-  Thunk.prototype.not = function() { return tfunc('not', Thunk.not, [this]); }
-  Thunk.prototype.cond = function(a, b) { return tfunc('not', Thunk.cond, [this, a, b]); }
-  Thunk.prototype.up = function(x) { return tfunc('up', Thunk.up, [this, x]); }
-  Thunk.prototype.down = function(x) { return tfunc('down', Thunk.down, [this, x]); }
+  Thunk.prototype.abs = function () { return tfunc('abs', Thunk.abs, [this]); }
+  Thunk.prototype.add = function (x) { return tfunc('add', Thunk.add, [this, x]); }
+  Thunk.prototype.sub = function (x) { return tfunc('sub', Thunk.sub, [this, x]); }
+  Thunk.prototype.mul = function (x) { return tfunc('mul', Thunk.mul, [this, x]); }
+  Thunk.prototype.div = function (x) { return tfunc('div', Thunk.div, [this, x]); }
+  Thunk.prototype.min = function (x) { return tfunc('min', Thunk.min, [this, x]); }
+  Thunk.prototype.max = function (x) { return tfunc('max', Thunk.max, [this, x]); }
+  Thunk.prototype.and = function (x) { return tfunc('and', Thunk.and, [this, x]); }
+  Thunk.prototype.or = function (x) { return tfunc('or', Thunk.or, [this, x]); }
+  Thunk.prototype.not = function () { return tfunc('not', Thunk.not, [this]); }
+  Thunk.prototype.cond = function (a, b) { return tfunc('not', Thunk.cond, [this, a, b]); }
+  Thunk.prototype.up = function (x) { return tfunc('up', Thunk.up, [this, x]); }
+  Thunk.prototype.down = function (x) { return tfunc('down', Thunk.down, [this, x]); }
 })();
 
 ////////////////////////////////////////////////////////////
 // Properties: The base class for all high-level objects.
-(function() {
-  var Properties = sfig.Properties = function() {
+(function () {
+  var Properties = sfig.Properties = function () {
     // Mapping from property name to a Thunk representing the value
     this.properties = {};
     if (this.myClass.defaults != null) this.from(this.myClass.defaults, true);
@@ -636,7 +636,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
   // Copy properties of |source| to |this| by value.
   // get = false -> copy by reference
   // get = true -> copy by value
-  Properties.prototype.from = function(source, get) {
+  Properties.prototype.from = function (source, get) {
     for (var name in source.properties) {
       var value = source.getProperty(name);
       if (get) value = value.get();
@@ -645,28 +645,28 @@ sfig.down = function(x) { return x * sfig.downSign; };
     return this;
   }
 
-  Properties.prototype.setEnd = function(block) {
-    if (this.end != null) sfig.throwException(this+' already has end: '+this.end+', but tried to set to '+block);
+  Properties.prototype.setEnd = function (block) {
+    if (this.end != null) sfig.throwException(this + ' already has end: ' + this.end + ', but tried to set to ' + block);
     this.end = block;
   }
 
   // Get the property (returns a Thunk); create it it doesn't exist.
-  Properties.prototype.getProperty = function(name) {
+  Properties.prototype.getProperty = function (name) {
     var v = this.properties[name];
     if (v == null) v = this.properties[name] = sfig.tvalue(name, null);
     return v;
   }
 
   // Set the property to a new value (either constant or thunk).
-  Properties.prototype.setProperty = function(name, newValue) {
+  Properties.prototype.setProperty = function (name, newValue) {
     var v = this.properties[name];
     if (v == null) v = this.properties[name] = sfig.tvalue(name, null);
-    if (newValue == null) sfig.throwException('Can\'t set '+name+' to null');
+    if (newValue == null) sfig.throwException('Can\'t set ' + name + ' to null');
     v.set(newValue);
     return this;
   }
 
-  Properties.prototype.toString = function(recurse) {
+  Properties.prototype.toString = function (recurse) {
     var str = this.className;
     for (var name in this.properties) {
       var value = this.properties[name];
@@ -676,28 +676,28 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   // Add property with given name to the given class |constructor|.
-  sfig_.addProperty = function(constructor, name, defaultValue, description) {
-    if (arguments.length != 4) sfig.throwException('Wrong number of arguments: '+Array.prototype.slice.call(arguments));
+  sfig_.addProperty = function (constructor, name, defaultValue, description) {
+    if (arguments.length != 4) sfig.throwException('Wrong number of arguments: ' + Array.prototype.slice.call(arguments));
     if (defaultValue != null) constructor.defaults.setProperty(name, defaultValue);
 
-    if (constructor.prototype[name]) sfig.throwException(constructor.prototype.className+' already has property '+name);
-    constructor.prototype[name] = function(newValue) {
+    if (constructor.prototype[name]) sfig.throwException(constructor.prototype.className + ' already has property ' + name);
+    constructor.prototype[name] = function (newValue) {
       if (arguments.length == 0) {
         return this.getProperty(name);
       } else if (arguments.length == 1) {
         return this.setProperty(name, newValue);
       } else
-        sfig.throwException('Wrong number of arguments to '+name+': '+Array.prototype.slice.call(arguments));
+        sfig.throwException('Wrong number of arguments to ' + name + ': ' + Array.prototype.slice.call(arguments));
     }
   }
 
   // Add property with given name to the given class |constructor|.
-  sfig_.addMapProperty = function(constructor, name, defaultValue, description) {
-    if (arguments.length != 4) sfig.throwException('Wrong number of arguments: '+Array.prototype.slice.call(arguments));
+  sfig_.addMapProperty = function (constructor, name, defaultValue, description) {
+    if (arguments.length != 4) sfig.throwException('Wrong number of arguments: ' + Array.prototype.slice.call(arguments));
     if (defaultValue != null) constructor.defaults.setProperty(name, defaultValue);
 
-    if (constructor.prototype[name]) sfig.throwException(constructor.prototype.className+' already has property '+name);
-    constructor.prototype[name] = function(key, newValue) {
+    if (constructor.prototype[name]) sfig.throwException(constructor.prototype.className + ' already has property ' + name);
+    constructor.prototype[name] = function (key, newValue) {
       if (arguments.length == 0) {
         return this.getProperty(name);
       } else if (arguments.length == 2) {
@@ -706,23 +706,23 @@ sfig.down = function(x) { return x * sfig.downSign; };
         map[key] = newValue;
         return this.setProperty(name, map);
       } else {
-        sfig.throwException('Wrong number of arguments to '+name+': '+Array.prototype.slice.call(arguments));
+        sfig.throwException('Wrong number of arguments to ' + name + ': ' + Array.prototype.slice.call(arguments));
       }
     }
   }
 
   // Add property with given names to the given class |constructor|.
   // |name| is a pair property (e.g., shift) which modifies the same variables as |name1| and |name2|.
-  sfig_.addPairProperty = function(constructor, name, name1, name2, defaultValue1, defaultValue2, description) {
-    if (arguments.length != 7) sfig.throwException('Wrong number of arguments: '+Array.prototype.slice.call(arguments));
-    if (constructor.prototype[name]) sfig.throwException(constructor.prototype.className+' already has property '+name);
-    if (constructor.prototype[name1]) sfig.throwException(constructor.prototype.className+' already has property '+name1);
-    if (constructor.prototype[name2]) sfig.throwException(constructor.prototype.className+' already has property '+name2);
+  sfig_.addPairProperty = function (constructor, name, name1, name2, defaultValue1, defaultValue2, description) {
+    if (arguments.length != 7) sfig.throwException('Wrong number of arguments: ' + Array.prototype.slice.call(arguments));
+    if (constructor.prototype[name]) sfig.throwException(constructor.prototype.className + ' already has property ' + name);
+    if (constructor.prototype[name1]) sfig.throwException(constructor.prototype.className + ' already has property ' + name1);
+    if (constructor.prototype[name2]) sfig.throwException(constructor.prototype.className + ' already has property ' + name2);
 
     if (defaultValue1 != null) constructor.defaults.setProperty(name1, defaultValue1);
     if (defaultValue2 != null) constructor.defaults.setProperty(name2, defaultValue2);
 
-    constructor.prototype[name] = function(newValue1, newValue2) {
+    constructor.prototype[name] = function (newValue1, newValue2) {
       if (arguments.length == 0) { // Getter
         return [this.getProperty(name1), this.getProperty(name2)];
       } else if (arguments.length == 1) {  // Setter ...property(2)
@@ -730,56 +730,56 @@ sfig.down = function(x) { return x * sfig.downSign; };
       } else if (arguments.length == 2) { // Setter ...property(2, 3)
         return this.setProperty(name1, newValue1) && this.setProperty(name2, newValue2);
       } else {
-        sfig.throwException('Wrong number of arguments to '+name+': '+Array.prototype.slice.call(arguments));
+        sfig.throwException('Wrong number of arguments to ' + name + ': ' + Array.prototype.slice.call(arguments));
       }
     }
-    constructor.prototype[name1] = function(newValue1) {
+    constructor.prototype[name1] = function (newValue1) {
       if (arguments.length == 0) { // Getter
         return this.getProperty(name1);
       } else if (arguments.length == 1) { // Setter
         return this.setProperty(name1, newValue1);
       } else {
-        sfig.throwException('Wrong number of arguments to '+name+': '+Array.prototype.slice.call(arguments));
+        sfig.throwException('Wrong number of arguments to ' + name + ': ' + Array.prototype.slice.call(arguments));
       }
     }
-    constructor.prototype[name2] = function(newValue2) {
+    constructor.prototype[name2] = function (newValue2) {
       if (arguments.length == 0) { // Getter
         return this.getProperty(name2);
       } else if (arguments.length == 1) { // Setter
         return this.setProperty(name2, newValue2);
       } else {
-        sfig.throwException('Wrong number of arguments to '+name2+': '+arguments);
+        sfig.throwException('Wrong number of arguments to ' + name2 + ': ' + arguments);
       }
     }
   }
 
   // Add a read-only property which is only available after .
-  sfig_.addDerivedProperty = function(constructor, name, func, argNames, description) {
-    if (constructor.prototype[name]) sfig.throwException(constructor.prototype.className+' already has property '+name);
-    constructor.prototype[name] = function() {
+  sfig_.addDerivedProperty = function (constructor, name, func, argNames, description) {
+    if (constructor.prototype[name]) sfig.throwException(constructor.prototype.className + ' already has property ' + name);
+    constructor.prototype[name] = function () {
       if (arguments.length != 0)
-        sfig.throwException('Derived property '+name+' is read-only, unable to set to '+Array.prototype.slice.call(arguments));
+        sfig.throwException('Derived property ' + name + ' is read-only, unable to set to ' + Array.prototype.slice.call(arguments));
       var v = this.properties[name];
       if (v == null) {
         // Compute and cache the result.
         var self = this;
-        v = this.properties[name] = sfig.tfunc(name, func, argNames.map(function(argName) { return self[argName](); }));
+        v = this.properties[name] = sfig.tfunc(name, func, argNames.map(function (argName) { return self[argName](); }));
       }
       return v;
     }
   }
 
-  sfig_.removeProperty = function(constructor, name) {
-    if (!constructor.prototype[name]) sfig.throwException(constructor.prototype.className+' doesn\'t have property '+name);
+  sfig_.removeProperty = function (constructor, name) {
+    if (!constructor.prototype[name]) sfig.throwException(constructor.prototype.className + ' doesn\'t have property ' + name);
     delete constructor.prototype[name];
   }
 })();
 
 ////////////////////////////////////////////////////////////
 
-(function() {
+(function () {
   // Stores the animation properties.
-  var Animate = sfig.Animate = function() {
+  var Animate = sfig.Animate = function () {
     Animate.prototype.constructor.call(this);
   }
   sfig_.inheritsFrom('Animate', Animate, sfig.Properties);
@@ -790,7 +790,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
   // A Block is in one of two stages:
   //   1) Construction and setting of properties.
   //   2) Rendering: sets initDependencies/children, elem/rendering properties, state (if root)
-  var Block = sfig.Block = function() {
+  var Block = sfig.Block = function () {
     Block.prototype.constructor.call(this);
 
     this.animate = new sfig.Animate();
@@ -800,7 +800,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
   };
   sfig_.inheritsFrom('Block', Block, sfig.Properties);
 
-  Block.prototype.getRoot = function() {
+  Block.prototype.getRoot = function () {
     var block = this;
     while (block.parent != null) block = block.parent;
     return block;
@@ -808,7 +808,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
 
   // Go back to stage one (remove all rendering information).
   // TODO: quite possible that there's a memory leak with Thunks.
-  Block.prototype.resetRender = function() {
+  Block.prototype.resetRender = function () {
     // Recurse.
     if (this.children != null)
       for (var i = 0; i < this.children.length; i++) this.children[i].resetRender();
@@ -836,24 +836,24 @@ sfig.down = function(x) { return x * sfig.downSign; };
     }
   }
 
-  Block.prototype.ensureRendered = function() {
+  Block.prototype.ensureRendered = function () {
     if (this.elem == null) sfig.throwException('Not rendered yet: ' + this.toString(true));
   }
 
-  Block.prototype.addInitDependency = function(item) {
+  Block.prototype.addInitDependency = function (item) {
     if (item instanceof sfig.Block) {
       this.initDependencies.push(item);
     } else {
-      sfig.throwException('Invalid: '+item);
+      sfig.throwException('Invalid: ' + item);
     }
   }
 
-  Block.prototype.addChild = function(item) {
+  Block.prototype.addChild = function (item) {
     if (item instanceof sfig.Block) {
       item.freeze();  // When child is added, its properties are frozen
-      if (this.children == null) sfig.throwException('Children not initialized yet for '+item);
+      if (this.children == null) sfig.throwException('Children not initialized yet for ' + item);
       this.children.push(item);
-      if (item.parent != null) sfig.throwException('Already has parent, trying to give another: '+item);
+      if (item.parent != null) sfig.throwException('Already has parent, trying to give another: ' + item);
       item.parent = this;
       if (!item.showLevel().exists()) {  // Only propagate to/from item if its level is specified
         // env -> item
@@ -864,13 +864,13 @@ sfig.down = function(x) { return x * sfig.downSign; };
     } else if (item instanceof sfig.PropertyChanger) {
       item.operation(this.env);
     } else {
-      sfig.throwException('Invalid: '+item);
+      sfig.throwException('Invalid: ' + item);
     }
   }
 
   // Take some of the salient properties from |source|.
   // Use case: |this| is an edge connected to the |source| node.
-  Block.prototype.mimic = function(source) {
+  Block.prototype.mimic = function (source) {
     this.showLevel(source.showLevel());
     this.hideLevel(source.hideLevel());
     this.orphan(source.orphan());
@@ -879,7 +879,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
 
   // For all children, recursively take their appendices and add them as children.
   // The appendix feature allows one to add content locally and have it show up later (good for labels and dropdowns).
-  Block.prototype.closeAppendices = function() {
+  Block.prototype.closeAppendices = function () {
     this.freeze();
     var self = this;
     function gather(block) {
@@ -902,7 +902,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
   sfig_.addProperty(Block, 'replace', null, 'Object to hide when this object is shown.');
 
   // Transforms
-  [Block, Animate].forEach(function(constructor) {
+  [Block, Animate].forEach(function (constructor) {
     sfig_.addPairProperty(constructor, 'shift', 'xshift', 'yshift', null, null, 'Move object by this distance.');
     sfig_.addPairProperty(constructor, 'scale', 'xscale', 'yscale', null, null, 'Change size by this factor.');
 
@@ -915,9 +915,9 @@ sfig.down = function(x) { return x * sfig.downSign; };
       constructor.prototype.yshiftBy = constructor.prototype.yshift;
     } else {
       // Metapost
-      constructor.prototype.shiftBy = function(dx, dy) { return this.shift(dx, dy instanceof sfig.Thunk ? dy.mul(sfig.downSign) : dy * sfig.downSign); }
+      constructor.prototype.shiftBy = function (dx, dy) { return this.shift(dx, dy instanceof sfig.Thunk ? dy.mul(sfig.downSign) : dy * sfig.downSign); }
       constructor.prototype.xshiftBy = constructor.prototype.xshift;
-      constructor.prototype.yshiftBy = function(dy) { return this.yshift(dy instanceof sfig.Thunk ? dy.mul(sfig.downSign) : dy * sfig.downSign); }
+      constructor.prototype.yshiftBy = function (dy) { return this.yshift(dy instanceof sfig.Thunk ? dy.mul(sfig.downSign) : dy * sfig.downSign); }
     }
 
     sfig_.addProperty(constructor, 'rotate', null, 'Number of degrees to rotate clockwise.');
@@ -932,12 +932,12 @@ sfig.down = function(x) { return x * sfig.downSign; };
 
   // Style of stroke
   sfig_.addProperty(Block, 'strokeDasharray', null, 'List of dash lengths.');
-  Block.prototype.dashed = function() { return this.strokeDasharray([5, 2]); }
-  Block.prototype.dotted = function() { return this.strokeDasharray([1, 5]); }
+  Block.prototype.dashed = function () { return this.strokeDasharray([5, 2]); }
+  Block.prototype.dotted = function () { return this.strokeDasharray([1, 5]); }
 
   // Levels
   sfig_.addPairProperty(Block, 'level', 'showLevel', 'hideLevel', null, null, 'Levels at which this object is available.');
-  Block.prototype.numLevels = function(n) { return this.hideLevel(this.showLevel().add(n)); } // How long to display this object
+  Block.prototype.numLevels = function (n) { return this.hideLevel(this.showLevel().add(n)); } // How long to display this object
 
   sfig_.addProperty(Block, 'mouseShowHide', null, 'When mouse enters, show/hide when shift-key is not pressed/pressed.');
   sfig_.addProperty(Block, 'atomicMouseShowHide', null, 'When mouse over any part of this block, show everything');
@@ -946,9 +946,9 @@ sfig.down = function(x) { return x * sfig.downSign; };
   sfig_.addPairProperty(Block, 'parentPivot', 'xparentPivot', 'yparentPivot', null, null, 'Pivot used by parent.');
 
   // Justify with respect to parent.
-  sfig.parentCenter = function(block) { return sfig.std(block).xparentPivot(0); }
-  sfig.parentLeft = function(block) { return sfig.std(block).xparentPivot(-1); }
-  sfig.parentRight = function(block) { return sfig.std(block).xparentPivot(+1); }
+  sfig.parentCenter = function (block) { return sfig.std(block).xparentPivot(0); }
+  sfig.parentLeft = function (block) { return sfig.std(block).xparentPivot(-1); }
+  sfig.parentRight = function (block) { return sfig.std(block).xparentPivot(+1); }
 
   sfig_.addProperty(Block, 'cursor', null, 'What cursor to use when mouseover.');
   sfig_.addProperty(Block, 'tooltip', null, 'String to display when mouseover.');
@@ -975,11 +975,11 @@ sfig.down = function(x) { return x * sfig.downSign; };
   sfig_.addDerivedProperty(Block, 'xmiddle', sfig.Thunk.addHalf, ['left', 'realWidth'], 'Middle x-coordinate');
   sfig_.addDerivedProperty(Block, 'ymiddle', sfig.Thunk.addHalf, ['top', 'realHeight'], 'Middle y-coordinate');
 
-  Block.prototype.middle = function() { return [this.xmiddle(), this.ymiddle()]; }
+  Block.prototype.middle = function () { return [this.xmiddle(), this.ymiddle()]; }
 
   // Return the point of where a ray from the center leaving with given angle would intersect
   // the boundaries.  By default, assume rectangular boundaries.
-  Block.prototype.clipPoint = function(angle) {
+  Block.prototype.clipPoint = function (angle) {
     // If there is a unique non-orphaned child, then delegate to that
     var c;
     for (var i = 0; i < this.children.length; i++) {
@@ -1030,7 +1030,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     return [this.left().get() + mx + dx, this.top().get() + my + dy];
   }
 
-  Block.prototype.recMouseShowHide = function(value, setIfMissing) {
+  Block.prototype.recMouseShowHide = function (value, setIfMissing) {
     // Recursively set the mouseShowHide property on all descendents.
     // Note: this should be the last property set, because this freezes everything.
     this.freeze();  // Make children accessible
@@ -1044,9 +1044,9 @@ sfig.down = function(x) { return x * sfig.downSign; };
     return this;
   }
 
-  Block.prototype.elemString = function() { return new XMLSerializer().serializeToString(this.elem); }
+  Block.prototype.elemString = function () { return new XMLSerializer().serializeToString(this.elem); }
 
-  Block.prototype.setElemStyles = function() {
+  Block.prototype.setElemStyles = function () {
     // If this is set, then we initially set the opacity and then clear it when
     // mouse enters with the shift key.
     const mouseShowHide = this.mouseShowHide().exists() ? this.mouseShowHide().get() : sfig_.urlParams.defaultMouseShowHide;
@@ -1117,7 +1117,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
       // Exception: some elements (e.g., Graph) use tooltips,
       // which have a <title>[tooltip]</title> child.
       return elem.childElementCount === 0 ||
-          elem.childElementCount === 1 && elem.children[0].tagName === 'title';
+        elem.childElementCount === 1 && elem.children[0].tagName === 'title';
     }
 
     function recursivelySetStyles(elem, isTop, defaultStrokeColor) {
@@ -1171,7 +1171,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
       // only at the leaves.
       if (mouseShowHide && (atomicMouseShowHide ? isTop : isLeaf(elem))) {
         // Set the true strokeOpacity and fillOpacity when mouse enters
-        elem.onmouseenter = function(e) {
+        elem.onmouseenter = function (e) {
           if (e.ctrlKey) {  // Allows us to move over regions without making changes
             return;
           }
@@ -1181,7 +1181,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
 
         let ancestorElem = elem;  // Keep track of ancestor
         // If click, then move `ancestorElem` up and apply show/hide to that.
-        elem.onclick = function(e) {
+        elem.onclick = function (e) {
           const hide = e.shiftKey;
           // Go up unary chains
           while (ancestorElem.parentElement && ancestorElem.parentElement.childElementCount === 1) {
@@ -1252,7 +1252,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   // Call this function when change properties of this Block and want to propagate to elem.
-  Block.prototype.updateElem = function() {
+  Block.prototype.updateElem = function () {
     this.setElemStyles(this.elem);
     return this;
   }
@@ -1267,7 +1267,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   // Set this.elem to the rendered element and update all the bounding boxes recursively.
-  Block.prototype.applyTransforms = function(state) {
+  Block.prototype.applyTransforms = function (state) {
     // Perform transforms (remember to update the bounding boxes recursively).
     var transforms = [];
     var ctm = sfig_.svg.createSVGMatrix();
@@ -1277,7 +1277,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     var xshift = this.xshift().getOrElse(0);
     var yshift = this.yshift().getOrElse(0);
     if (xshift != 0 || yshift != 0) {
-      transforms.push('translate('+xshift+','+yshift+')');
+      transforms.push('translate(' + xshift + ',' + yshift + ')');
       //ctm = sfig_.shiftMatrix(xshift, yshift);
       ctm.e = xshift;
       ctm.f = yshift;
@@ -1286,7 +1286,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     var xscale = this.xscale().getOrElse(1);
     var yscale = this.yscale().getOrElse(1);
     if (xscale != 1 || yscale != 1) {
-      transforms.push('scale('+xscale+','+yscale+')');
+      transforms.push('scale(' + xscale + ',' + yscale + ')');
       //ctm = sfig_.scaleMatrix(xscale, yscale);
       ctm.a = xscale;
       ctm.d = yscale;
@@ -1294,18 +1294,18 @@ sfig.down = function(x) { return x * sfig.downSign; };
 
     var rotate = this.rotate().getOrElse(0);
     if (rotate != 0) {
-      transforms.push('rotate('+rotate+','+this.xrotatePivot().getOrElse(0)+','+this.yrotatePivot().getOrElse(0)+')');
+      transforms.push('rotate(' + rotate + ',' + this.xrotatePivot().getOrElse(0) + ',' + this.yrotatePivot().getOrElse(0) + ')');
       ctm = null;
     }
 
     var xskew = this.xskew().getOrElse(0);
     if (xskew != 0) {
-      transforms.push('skewX('+xskew+')');
+      transforms.push('skewX(' + xskew + ')');
       ctm = null;
     }
     var yskew = this.yskew().getOrElse(0);
     if (yskew != 0) {
-      transforms.push('skewY('+yskew+')');
+      transforms.push('skewY(' + yskew + ')');
       ctm = null;
     }
 
@@ -1322,14 +1322,14 @@ sfig.down = function(x) { return x * sfig.downSign; };
         // By default, the bounding box does not include half of the stroke.
         // Adjust it so it includes the entire element.
         var s = getStrokeWidth(this.elem);
-        this.left(bbox.x - s/2);
-        this.top(bbox.y - s/2);
+        this.left(bbox.x - s / 2);
+        this.top(bbox.y - s / 2);
         this.realWidth(bbox.width + s);
         this.realHeight(bbox.height + s);
       } else {  // Recursive case
         var x0, y0, x1, y1;
-        this.children.forEach(function(child) {
-          if (child.elem == null) sfig.throwException('Child not rendered: '+child);
+        this.children.forEach(function (child) {
+          if (child.elem == null) sfig.throwException('Child not rendered: ' + child);
           if (!child.orphan().get()) {
             x0 = sfig_.robustMin(x0, child.left().get());
             y0 = sfig_.robustMin(y0, child.top().get());
@@ -1337,7 +1337,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
             y1 = sfig_.robustMax(y1, child.bottom().get());
           }
         });
-        if (x0 != null) this.left(x0).top(y0).realWidth(x1-x0).realHeight(y1-y0);
+        if (x0 != null) this.left(x0).top(y0).realWidth(x1 - x0).realHeight(y1 - y0);
         //sfig.L('update', this, x0, this.left().get());
       }
     }
@@ -1346,7 +1346,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     if (ctm == null) {
       // Fix for Chrome 48 removing getTransformToElement
       // https://github.com/cpettitt/dagre-d3/issues/202
-      SVGElement.prototype.getTransformToElement = SVGElement.prototype.getTransformToElement || function(elem) {
+      SVGElement.prototype.getTransformToElement = SVGElement.prototype.getTransformToElement || function (elem) {
         return elem.getScreenCTM().inverse().multiply(this.getScreenCTM());
       };
 
@@ -1360,7 +1360,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     //sfig.L(this.toString(), this.left().get(), this.realWidth().get(), this.xmiddle().get());
   }
 
-  Block.prototype.updateBBox = function(ctm) {
+  Block.prototype.updateBBox = function (ctm) {
     var x = this.left().get(), y = this.top().get(), width = this.realWidth().get(), height = this.realHeight().get();
 
     // Optimization: only have translate and scale, can solve simpler
@@ -1374,7 +1374,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
       // Because of rotations, need to compute where all the four corners go.
       var x0, y0, x1, y1;
       var p = sfig_.svg.createSVGPoint();
-      [[0,0], [1,0], [0, 1], [1,1]].forEach(function(s) {
+      [[0, 0], [1, 0], [0, 1], [1, 1]].forEach(function (s) {
         p.x = x + width * s[0];
         p.y = y + height * s[1];
         p = p.matrixTransform(ctm);
@@ -1384,7 +1384,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
         y1 = sfig_.robustMax(y1, p.y);
       });
 
-      if (x0 != null) this.left(x0).top(y0).realWidth(x1-x0).realHeight(y1-y0);
+      if (x0 != null) this.left(x0).top(y0).realWidth(x1 - x0).realHeight(y1 - y0);
     }
 
     // Recurse
@@ -1393,16 +1393,16 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   // reverse: whether we're going through the slides backwards in time (false by default)
-  Block.prototype.show = function(reverse) {
+  Block.prototype.show = function (reverse) {
     this.elem.style.display = null;
     if (!reverse && this.replace().get() != null) this.replace().get().hide(reverse);
     if (!reverse && this.onShow().get() != null) this.onShow().get()();
   }
-  Block.prototype.hide = function(reverse) {
+  Block.prototype.hide = function (reverse) {
     this.elem.style.display = 'none';
     if (reverse && this.replace().get() != null) this.replace().get().show(reverse);
   }
-  Block.prototype.toggleShowHide = function(reverse) {
+  Block.prototype.toggleShowHide = function (reverse) {
     // TODO: in Firefox, this messes up MathJax
     // Recursively set the display to whatever is opposite of what the top level is.
     // Return whether it's shown
@@ -1416,7 +1416,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     return target == null;
   }
 
-  Block.prototype.startAnimate = function() {
+  Block.prototype.startAnimate = function () {
     // TODO: Animating Text (which is a foreignObject) in Firefox doesn't work (but works in Chrome)
     if (sfig.enableAnimations) {
       for (var i = 0; i < this.elem.childElementCount; i++) {
@@ -1428,7 +1428,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     }
   }
 
-  Block.prototype.resetAnimate = function() {
+  Block.prototype.resetAnimate = function () {
     // Don't need to do anything
   }
 
@@ -1463,7 +1463,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     return true;
   }
 
-  Block.prototype.addAnimations = function(elem) {
+  Block.prototype.addAnimations = function (elem) {
     var from = this.animate;
     var to = this;
     var duration = this.animate.duration().getOrElse(sfig.defaultAnimateDuration);
@@ -1479,36 +1479,36 @@ sfig.down = function(x) { return x * sfig.downSign; };
     if (from.xshift().get() != null || from.yshift().get() != null) {
       var xfromValue = from.xshift().getOrElse(0) - to.xshift().getOrElse(0);
       var yfromValue = from.yshift().getOrElse(0) - to.yshift().getOrElse(0);
-      var fromValue = xfromValue+','+yfromValue;
+      var fromValue = xfromValue + ',' + yfromValue;
       var toValue = '0,0';
       this.hasAnimation |= addAnimateTransform(elem, 'translate', fromValue, toValue, duration);
     }
 
     if (from.xscale().get() != null || from.yscale().get() != null) {
-      var fromValue = from.xscale().getOrElse(1)+','+from.yscale().getOrElse(1);
-      var toValue = to.xscale().getOrElse(1)+','+to.yscale().getOrElse(1);
+      var fromValue = from.xscale().getOrElse(1) + ',' + from.yscale().getOrElse(1);
+      var toValue = to.xscale().getOrElse(1) + ',' + to.yscale().getOrElse(1);
       this.hasAnimation |= addAnimateTransform(elem, 'scale', fromValue, toValue, duration);
     }
   }
 
   // Create the children and set any remaining properties based on others.
   // Default: do nothing.
-  Block.prototype.createChildren = function() { }
+  Block.prototype.createChildren = function () { }
 
   // Look at all the properties and children and create the SVG elem property.
   // Default: just collect children into a single group.
-  Block.prototype.renderElem = function(state, callback) {
+  Block.prototype.renderElem = function (state, callback) {
     var group = sfig_.newSvgElem('g');
-    this.children.forEach(function(block) {
-      if (block.elem == null) sfig.throwException('No elem for '+block);
+    this.children.forEach(function (block) {
+      if (block.elem == null) sfig.throwException('No elem for ' + block);
       group.appendChild(block.elem);
     });
     this.elem = group;
     callback();
   }
 
-  Block.prototype.postRender = function(state) {
-    if (this.elem == null) sfig.throwException('renderElem didn\'t return anything: '+this);
+  Block.prototype.postRender = function (state) {
+    if (this.elem == null) sfig.throwException('renderElem didn\'t return anything: ' + this);
     this.setElemStyles();
     this.applyTransforms(state);
 
@@ -1543,7 +1543,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
         var partElem = document.getElementById(key);
         var self = this;
         //partElem.style.pointerEvents = 'all';
-        partElem.onclick = function() { partOnClick[key](self, partElem); };
+        partElem.onclick = function () { partOnClick[key](self, partElem); };
       }
     }
 
@@ -1551,7 +1551,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     this.addToLevelIndices(state);
   }
 
-  Block.prototype.addToLevelIndices = function(state) {
+  Block.prototype.addToLevelIndices = function (state) {
     // Index level to this element so we can quickly show/hide as we change levels.
     var showLevel = this.showLevel().get();
     var hideLevel = this.hideLevel().get();
@@ -1569,7 +1569,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   // Called (either manually or automatically) when we're done setting properties.
-  Block.prototype.freeze = function() {
+  Block.prototype.freeze = function () {
     // Create children if they don't exist.
     if (this.children == null) {
       this.initDependencies = [];
@@ -1579,7 +1579,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     return this;
   }
 
-  Block.prototype.render = function(state, callback) {
+  Block.prototype.render = function (state, callback) {
     // Recursively go through children and get all blocks in the order they should be rendered.
     function recursiveGetBlocks(block, blocks) {
       if (block.getBlocksVisited) return;
@@ -1622,62 +1622,62 @@ sfig.down = function(x) { return x * sfig.downSign; };
     process();
   }
 
-  Block.prototype.toString = function(recurse) {
+  Block.prototype.toString = function (recurse) {
     var str = this.className;
     for (var name in this.properties) {
       var value = this.properties[name];
       if (value.value != null) str += ',' + name + '=' + value.value;
     }
     if (recurse && this.children && this.children.length != 0) {
-      str += '['+this.children.map(function(block) { return block.toString(recurse); }).join(' ')+']';
+      str += '[' + this.children.map(function (block) { return block.toString(recurse); }).join(' ') + ']';
     }
     return str;
   }
 
-  Block.prototype.log = function(indent) {
+  Block.prototype.log = function (indent) {
     if (indent == null) indent = '';
     console.log(indent + this.toString());
-    this.children.forEach(function(child) { child.log(indent + '  '); });
+    this.children.forEach(function (child) { child.log(indent + '  '); });
   }
 
-  Block.prototype.setPointerWhenMouseOver = function() { return this.cursor('pointer'); }
+  Block.prototype.setPointerWhenMouseOver = function () { return this.cursor('pointer'); }
 
-  Block.prototype.linkToUrl = function(url) {
-    this.onClick(function() { window.open(url); });
+  Block.prototype.linkToUrl = function (url) {
+    this.onClick(function () { window.open(url); });
     return this.setPointerWhenMouseOver();
   }
 
-  Block.prototype.linkToInternal = function(prez, slideId, level) {
-    this.onClick(function(block, event) {
+  Block.prototype.linkToInternal = function (prez, slideId, level) {
+    this.onClick(function (block, event) {
       if (event.ctrlKey)
         sfig_.goToPresentation(sfig_.currPresentationName(), slideId, level, true);
       else
-        prez.setSlideIdAndLevel(slideId, level, function() { sfig.resetCursor(); });
+        prez.setSlideIdAndLevel(slideId, level, function () { sfig.resetCursor(); });
     });
     return this.setPointerWhenMouseOver();
   }
 
   // Parallel setPointerWhenMouseOver() and linkToInternal() for divs.
   // Need these to modify the links of HTML elements which are not represented by a block.
-  sfig.divSetPointerWhenMouseOver = function(div) {
-    div.onmouseover = function() { sfig.setPointerCursor(); };
-    div.onmouseout = function() { sfig.resetCursor(); };
+  sfig.divSetPointerWhenMouseOver = function (div) {
+    div.onmouseover = function () { sfig.setPointerCursor(); };
+    div.onmouseout = function () { sfig.resetCursor(); };
     return div;
   }
 
-  sfig.divLinkToInternal = function(div, prez, slideId, level) {
+  sfig.divLinkToInternal = function (div, prez, slideId, level) {
     div = sfig_.ensureHTMLElement(div);
-    div.onclick = function(event) {
+    div.onclick = function (event) {
       if (event.ctrlKey)
         sfig_.goToPresentation(sfig_.currPresentationName(), slideId, level, true);
       else
-        prez.setSlideIdAndLevel(slideId, level, function() { sfig.resetCursor(); });
+        prez.setSlideIdAndLevel(slideId, level, function () { sfig.resetCursor(); });
     };
     return sfig.divSetPointerWhenMouseOver(div);
   }
 
-  Block.prototype.linkToExternal = function(name, slideId, level, extraUrlParams) {
-    this.onClick(function() { sfig_.goToPresentation(name, slideId, level, true, extraUrlParams); });
+  Block.prototype.linkToExternal = function (name, slideId, level, extraUrlParams) {
+    this.onClick(function () { sfig_.goToPresentation(name, slideId, level, true, extraUrlParams); });
     return this.setPointerWhenMouseOver();
   }
 })();
@@ -1689,15 +1689,15 @@ sfig.down = function(x) { return x * sfig.downSign; };
 ////////////////////////////////////////////////////////////
 // Text
 
-(function() {
-  var Text = sfig.Text = function() {
+(function () {
+  var Text = sfig.Text = function () {
     Text.prototype.constructor.call(this);
   };
   sfig_.inheritsFrom('Text', Text, sfig.Block);
 
   // TODO: disadvantage with building bulleted lists this way is that it must
   // be text all rendered at once (can't put pause()).
-  Text.bulletize = function(content) {
+  Text.bulletize = function (content) {
     if (content instanceof Array) {
       var result = sfig_.newElem('div');
       if (content[0]) result.appendChild(sfig_.ensureHTMLElement(content[0]));
@@ -1723,14 +1723,14 @@ sfig.down = function(x) { return x * sfig.downSign; };
 
   Text.fontsLoaded = false;
 
-  Text.prototype.updateElem = function() {
+  Text.prototype.updateElem = function () {
     // Just replace the text - assume that it doesn't change the width.
     var div = this.elem.childNodes[0];
     div.innerHTML = this.content().getOrDie();
     Block.prototype.updateElem.call(this);
   }
 
-  Text.prototype.renderElem = function(state, callback) {
+  Text.prototype.renderElem = function (state, callback) {
     var self = this;
 
     if (this.language().exists()) {
@@ -1830,28 +1830,28 @@ sfig.down = function(x) { return x * sfig.downSign; };
   // only scale font down, not the width
   //Text.prototype.scaleFont = function(s) { return this.fontSize(Math.round(this.fontSize().get() / s)); }
   // Make font smaller, but keep the width the same
-  Text.prototype.scaleFont = function(s) { return this.scale(s).width(Text.defaults.getProperty('width').get() / s); }
+  Text.prototype.scaleFont = function (s) { return this.scale(s).width(Text.defaults.getProperty('width').get() / s); }
 
-  sfig.text = function(content) { return new Text().content(content); }
-  sfig.bulletedText = function(content) { return sfig.text(content).bulleted(true); }
-  sfig.nowrapText = function(content) { return sfig.text(content).autowrap(false); }
-  sfig.chineseText = function(content) { return sfig.text(content).language('chinese'); }
-  sfig.arabicText = function(content) { return sfig.text(content).language('arabic'); }
+  sfig.text = function (content) { return new Text().content(content); }
+  sfig.bulletedText = function (content) { return sfig.text(content).bulleted(true); }
+  sfig.nowrapText = function (content) { return sfig.text(content).autowrap(false); }
+  sfig.chineseText = function (content) { return sfig.text(content).language('chinese'); }
+  sfig.arabicText = function (content) { return sfig.text(content).language('arabic'); }
 })();
 
 ////////////////////////////////////////////////////////////
 // TextBox: allow user to enter text.
 
-(function() {
+(function () {
   // Select doesn't work in Chrome:
   // http://code.google.com/p/chromium/issues/detail?id=116566
   // No problem in Firefox.
-  var TextBox = sfig.TextBox = function() {
+  var TextBox = sfig.TextBox = function () {
     TextBox.prototype.constructor.call(this);
   };
   sfig_.inheritsFrom('TextBox', TextBox, sfig.Block);
 
-  TextBox.prototype.renderElem = function(state, callback) {
+  TextBox.prototype.renderElem = function (state, callback) {
     var self = this;
     var numCols = this.numCols().get();
     var numRows = this.numRows().get();
@@ -1872,20 +1872,20 @@ sfig.down = function(x) { return x * sfig.downSign; };
     }
     text.style.fontSize = this.fontSize().getOrDie();
 
-    text.onfocus = function() {
+    text.onfocus = function () {
       sfig_.keysEnabled = false;
       // Works: when we call refresh() and focus on a text box, the cursor stays the same.
       // Doesn't work: when move out of text area and come back, doesn't maintain position.
       text.setSelectionRange(self.selectionStart().get(), self.selectionEnd().get());
     };
-    text.onblur = function() {
+    text.onblur = function () {
       self.selectionStart(text.selectionStart);
       self.selectionEnd(text.selectionEnd);
       // TODO: Doesn't give focus back to body properly
       sfig_.keysEnabled = true;
     };
 
-    text.onkeypress = function(event) {
+    text.onkeypress = function (event) {
       var key = sfig_.eventToKey(event);
       if (key == 'ctrl-enter' || (self.numRows().get() == 1 && key == 'enter')) {
         self.content(text.value);  // Set the text
@@ -1916,19 +1916,19 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   // Return whether the textbox has changed.
-  TextBox.prototype.updateContent = function() {
+  TextBox.prototype.updateContent = function () {
     var newContent = this.textElem.value;
     if (newContent == this.content().get()) return false;
     this.content(newContent);
     return true;
   }
 
-  TextBox.prototype.focusFunc = function() {
+  TextBox.prototype.focusFunc = function () {
     var self = this;
-    return function() { self.focus(); };
+    return function () { self.focus(); };
   }
 
-  TextBox.prototype.focus = function() { return this.textElem.focus(); }
+  TextBox.prototype.focus = function () { return this.textElem.focus(); }
 
   sfig_.addProperty(TextBox, 'content', null, 'The string to be displayed.');
   sfig_.addPairProperty(TextBox, 'selection', 'selectionStart', 'selectionEnd', 0, 0, 'Where the cursor is');
@@ -1940,29 +1940,29 @@ sfig.down = function(x) { return x * sfig.downSign; };
 
   sfig_.addPairProperty(TextBox, 'size', 'numCols', 'numRows', 50, 1, 'Size of the text box');
 
-  sfig.textBox = function() { return new TextBox(); }
+  sfig.textBox = function () { return new TextBox(); }
 })();
 
 ////////////////////////////////////////////////////////////
 // Raw: creates SVG DOM elements directly.
 
-(function() {
-  var Raw = sfig.Raw = function() {
+(function () {
+  var Raw = sfig.Raw = function () {
     Raw.prototype.constructor.call(this);
   };
   sfig_.inheritsFrom('Raw', Raw, sfig.Block);
 
-  sfig.stringToElem = function(str) {
+  sfig.stringToElem = function (str) {
     // TODO: doesn't work for MathJax
     var div = sfig_.newElem('div');
-    str = '<svg xmlns="'+sfig_.svgns+'" verison="1.1"><g>' + str + '</g></svg>';
+    str = '<svg xmlns="' + sfig_.svgns + '" verison="1.1"><g>' + str + '</g></svg>';
     div.innerHTML = str;
     var svg = div.firstChild;
-    if (svg.childElementCount != 1) sfig.throwException('Expected one element, but got '+div);
+    if (svg.childElementCount != 1) sfig.throwException('Expected one element, but got ' + div);
     return svg.firstChild;
   }
 
-  Raw.prototype.renderElem = function(state, callback) {
+  Raw.prototype.renderElem = function (state, callback) {
     var content = this.content().get();
     if (content instanceof Function) content = content();
     this.elem = content;
@@ -1973,11 +1973,11 @@ sfig.down = function(x) { return x * sfig.downSign; };
   // Call |addTo| on a non-SVG element (<div/>) of the desired size.
   // If rendered thing is an svg, just pull it out (e.g., for Grafico).
   // Otherwise, add it as as a foreignObject.
-  sfig.rawAddHtml = function(width, height, addTo) {
-    return raw(function() {
+  sfig.rawAddHtml = function (width, height, addTo) {
+    return raw(function () {
       var div = sfig_.newElem('div');
-      div.style.width = width+'px';
-      div.style.height = height+'px';
+      div.style.width = width + 'px';
+      div.style.height = height + 'px';
       var body = document.body;
       body.appendChild(div);
       addTo(div);
@@ -1999,28 +1999,28 @@ sfig.down = function(x) { return x * sfig.downSign; };
   };
 
   // Call |addTo| on an SVG element (<g/>) and return it (e.g., for d3)
-  sfig.rawAddSvg = function(addTo) {
-    return sfig.raw(function() {
+  sfig.rawAddSvg = function (addTo) {
+    return sfig.raw(function () {
       var g = sfig_.newSvgElem('g');
       addTo(g);
       return g;
     });
   };
 
-  sfig.raw = function(content) { return new Raw().content(content); }
-  sfig.nil = function(content) { return new Raw().content(sfig_.newSvgElem('g')); }
+  sfig.raw = function (content) { return new Raw().content(content); }
+  sfig.nil = function (content) { return new Raw().content(sfig_.newSvgElem('g')); }
 })();
 
 ////////////////////////////////////////////////////////////
 // Image
 
-(function() {
-  var Image = sfig.Image = function() {
+(function () {
+  var Image = sfig.Image = function () {
     Image.prototype.constructor.call(this);
   };
   sfig_.inheritsFrom('Image', Image, sfig.Block);
 
-  Image.prototype.renderElem = function(state, callback) {
+  Image.prototype.renderElem = function (state, callback) {
     var href = this.href().getOrDie();
     if (href.substr(-4) == '.pdf') {
       // Not quite ready: doesn't work very nicely
@@ -2060,13 +2060,13 @@ sfig.down = function(x) { return x * sfig.downSign; };
       img = new window.Image();
       img.src = path;
       var self = this;
-      img.onerror = function() {
+      img.onerror = function () {
         sfig.L('Unable to load: ' + path);
         sfig.missingPaths.push(path);
         self.elem = sfig_.newSvgElem('image');
         callback();
       }
-      img.onload = function() {
+      img.onload = function () {
         var dim = self.computeDesiredDim(img.width, img.height);
         var elem = sfig_.newSvgElem('image');
         elem.setAttributeNS('http://www.w3.org/1999/xlink', 'href', path);
@@ -2085,7 +2085,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
   // Given the original width and height of image and information about the
   // desired width/height specified on this Image, return the actual
   // width/height to use.
-  Image.prototype.computeDesiredDim = function(origWidth, origHeight) {
+  Image.prototype.computeDesiredDim = function (origWidth, origHeight) {
     // Preserve aspect ratio if only one of
     var aspectRatio = origWidth / origHeight;
     var width = this.width().get();
@@ -2101,24 +2101,24 @@ sfig.down = function(x) { return x * sfig.downSign; };
     return [width, height];
   }
 
-  sfig.image = function(href) { return new Image().href(href); }
+  sfig.image = function (href) { return new Image().href(href); }
 
   // DEPRECATED
   sfig_.cachedCommands = ['mkdir -p cached-images'];
-  sfig.cachedImage = function(href) {
+  sfig.cachedImage = function (href) {
     var tokens = href.split('/');
-    var local = 'cached-images/'+tokens[tokens.length-1];
+    var local = 'cached-images/' + tokens[tokens.length - 1];
 
     if (sfig.useCachedImages) {
       // Use the local version
       return new image(local);
     } else {
       // Use web version, but suggest caching
-      sfig_.cachedCommands.push('wget -c \''+href+'\' -O '+local);
+      sfig_.cachedCommands.push('wget -c \'' + href + '\' -O ' + local);
       return new image(href);
     }
   }
-  sfig.showCachedCommands = function() {
+  sfig.showCachedCommands = function () {
     console.log(sfig_.cachedCommands.join('\n'));
   }
 })();
@@ -2126,13 +2126,13 @@ sfig.down = function(x) { return x * sfig.downSign; };
 ////////////////////////////////////////////////////////////
 // Ellipse
 
-(function() {
-  var Ellipse = sfig.Ellipse = function() {
+(function () {
+  var Ellipse = sfig.Ellipse = function () {
     Ellipse.prototype.constructor.call(this);
   };
   sfig_.inheritsFrom('Ellipse', Ellipse, sfig.Block);
 
-  Ellipse.prototype.renderElem = function(state, callback) {
+  Ellipse.prototype.renderElem = function (state, callback) {
     var elem = sfig_.newSvgElem('ellipse');
     elem.setAttribute('rx', this.xradius().getOrDie());
     elem.setAttribute('ry', this.yradius().getOrDie());
@@ -2141,7 +2141,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
   sfig_.addPairProperty(Ellipse, 'radius', 'xradius', 'yradius', null, null, 'Vertical and horizontal radius of ellipse');
 
-  Ellipse.prototype.clipPoint = function(angle) {
+  Ellipse.prototype.clipPoint = function (angle) {
     this.ensureRendered();
     // Assume no rotation!
     var mx = this.realWidth().get() / 2;
@@ -2151,25 +2151,25 @@ sfig.down = function(x) { return x * sfig.downSign; };
     return [this.left().get() + mx + dx, this.top().get() + my + dy];
   }
 
-  sfig.ellipse = function(rx, ry) { return new Ellipse().radius(rx, ry); }
-  sfig.circle = function(r) { return new Ellipse().radius(r); }
+  sfig.ellipse = function (rx, ry) { return new Ellipse().radius(rx, ry); }
+  sfig.circle = function (r) { return new Ellipse().radius(r); }
 })();
 
 ////////////////////////////////////////////////////////////
 // ArrowHead: a triangle which is oriented.
 
-(function() {
-  var ArrowHead = sfig.ArrowHead = function() {
+(function () {
+  var ArrowHead = sfig.ArrowHead = function () {
     ArrowHead.prototype.constructor.call(this);
   };
   sfig_.inheritsFrom('ArrowHead', ArrowHead, sfig.Block);
 
-  ArrowHead.prototype.createChildren = function() {
+  ArrowHead.prototype.createChildren = function () {
     var width = this.width().getOrElse(sfig.defaultArrowWidth);
     var length = this.length().getOrElse(sfig.defaultArrowLength);
     var s = this.strokeWidth().getOrElse(sfig.defaultStrokeWidth);
     var e = s * 1.5;  // Adjust for stroke size
-    var poly = sfig.polygon([-e,0], [-length-e, -width/2], [-length-e, +width/2]);
+    var poly = sfig.polygon([-e, 0], [-length - e, -width / 2], [-length - e, +width / 2]);
     poly.strokeWidth(s);
     poly.rotate(this.angle());
     poly.shift(this.xtip(), this.ytip());
@@ -2186,13 +2186,13 @@ sfig.down = function(x) { return x * sfig.downSign; };
 // Line: a line segment connecting two points or objects
 // with clipping.
 
-(function() {
-  var Line = sfig.Line = function() {
+(function () {
+  var Line = sfig.Line = function () {
     Line.prototype.constructor.call(this);
   };
   sfig_.inheritsFrom('Line', Line, sfig.Block);
 
-  Line.prototype.renderElem = function(state, callback) {
+  Line.prototype.renderElem = function (state, callback) {
     // Get positions
     var x1, y1, x2, y2;
     if (this.b1().get() != null) {
@@ -2251,15 +2251,15 @@ sfig.down = function(x) { return x * sfig.downSign; };
     // frac: what fraction of the way from p1 to p2
     // soar: how much to go above the line at |frac|
     function getPoint(frac, soar, alwaysUp) {
-      var x = frac * x1 + (1-frac) * x2;
+      var x = frac * x1 + (1 - frac) * x2;
       var y = (y1 + y2) / 2;
-      var len = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
-      var dx = -(y2-y1) / len;
-      var dy = +(x2-x1) / len;
-      if (alwaysUp && dy > 0) { dx = -dx; dy = -dy;}
+      var len = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+      var dx = -(y2 - y1) / len;
+      var dy = +(x2 - x1) / len;
+      if (alwaysUp && dy > 0) { dx = -dx; dy = -dy; }
       x += soar * dx;
       y += soar * dy;
-      return {x: x, y: y};
+      return { x: x, y: y };
     }
 
     // Place label
@@ -2280,7 +2280,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
 
     if (ctrlx1 != null) {
       this.elem = sfig_.newSvgElem('path');
-      var spec = 'M'+x1+','+y1+' '+'Q'+ctrlx1+','+ctrly1+' '+x2+','+y2;
+      var spec = 'M' + x1 + ',' + y1 + ' ' + 'Q' + ctrlx1 + ',' + ctrly1 + ' ' + x2 + ',' + y2;
       //sfig.L(spec);
       this.elem.setAttribute('d', spec);
     } else {
@@ -2316,13 +2316,13 @@ sfig.down = function(x) { return x * sfig.downSign; };
   sfig_.addProperty(Line, 'labelDist', 5, 'How far to put the label');
   sfig_.addPairProperty(Line, 'plabel', 'xlabel', 'ylabel', null, null, 'After rendering, where to put the center of the label');
 
-  Line.prototype.arg1 = function(arg1) {
+  Line.prototype.arg1 = function (arg1) {
     if (arg1 instanceof Array) this.p1(arg1[0], arg1[1]);
     else if (arg1 instanceof sfig.Block) this.b1(arg1);
     else sfig.throwException('Bad arg1: ' + arg1);
     return this;
   }
-  Line.prototype.arg2 = function(arg2) {
+  Line.prototype.arg2 = function (arg2) {
     if (arg2 instanceof Array) this.p2(arg2[0], arg2[1]);
     else if (arg2 instanceof sfig.Block) this.b2(arg2);
     else sfig.throwException('Bad arg2: ' + arg2);
@@ -2330,21 +2330,21 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   // Arguments arg1, arg2 could be either a point [x,y] or an Block.
-  sfig.line = function(arg1, arg2) { return new Line().arg1(arg1).arg2(arg2); }
+  sfig.line = function (arg1, arg2) { return new Line().arg1(arg1).arg2(arg2); }
 })();
 
 ////////////////////////////////////////////////////////////
 // DecoratedLine: decorate Line with arrow heads and labels.
 
-(function() {
-  var DecoratedLine = sfig.DecoratedLine = function() {
+(function () {
+  var DecoratedLine = sfig.DecoratedLine = function () {
     DecoratedLine.prototype.constructor.call(this);
     this.line = new sfig.Line();
     this.line.setEnd(this);
   };
   sfig_.inheritsFrom('DecoratedLine', DecoratedLine, sfig.Block);
 
-  DecoratedLine.prototype.createChildren = function() {
+  DecoratedLine.prototype.createChildren = function () {
     if (this.drawArrow1().get()) {
       this.arrowHead1 = new sfig.ArrowHead();
       this.arrowHead1.setEnd(this);
@@ -2379,43 +2379,43 @@ sfig.down = function(x) { return x * sfig.downSign; };
   sfig_.addPairProperty(DecoratedLine, 'drawArrow', 'drawArrow1', 'drawArrow2', null, null, 'Whether to draw an arrow at the two ends of the line');
   sfig_.addProperty(DecoratedLine, 'label', null, 'Label to draw');
 
-  sfig.decoratedLine = function(arg1, arg2) { return new DecoratedLine().line.arg1(arg1).arg2(arg2).end.atomicMouseShowHide(true); }
-  sfig.arrow = function(arg1, arg2) { return sfig.decoratedLine(arg1, arg2).drawArrow(false, true); }
-  sfig.doubleArrow = function(arg1, arg2) { return sfig.decoratedLine(arg1, arg2).drawArrow(true, true); }
+  sfig.decoratedLine = function (arg1, arg2) { return new DecoratedLine().line.arg1(arg1).arg2(arg2).end.atomicMouseShowHide(true); }
+  sfig.arrow = function (arg1, arg2) { return sfig.decoratedLine(arg1, arg2).drawArrow(false, true); }
+  sfig.doubleArrow = function (arg1, arg2) { return sfig.decoratedLine(arg1, arg2).drawArrow(true, true); }
 
-  sfig.leftArrow = function(n) { return sfig.arrow([0, 0], [-n, 0]); }
-  sfig.rightArrow = function(n) { return sfig.arrow([0, 0], [n, 0]); }
-  sfig.upArrow = function(n) { return sfig.arrow([0, 0], [0, sfig.up(n)]); }
-  sfig.downArrow = function(n) { return sfig.arrow([0, 0], [0, sfig.down(n)]); }
-  sfig.leftRightArrow = function(n) { return sfig.doubleArrow([0, 0], [n, 0]); }
-  sfig.upDownArrow = function(n) { return sfig.doubleArrow([0, 0], [0, sfig.down(n)]); }
+  sfig.leftArrow = function (n) { return sfig.arrow([0, 0], [-n, 0]); }
+  sfig.rightArrow = function (n) { return sfig.arrow([0, 0], [n, 0]); }
+  sfig.upArrow = function (n) { return sfig.arrow([0, 0], [0, sfig.up(n)]); }
+  sfig.downArrow = function (n) { return sfig.arrow([0, 0], [0, sfig.down(n)]); }
+  sfig.leftRightArrow = function (n) { return sfig.doubleArrow([0, 0], [n, 0]); }
+  sfig.upDownArrow = function (n) { return sfig.doubleArrow([0, 0], [0, sfig.down(n)]); }
 })();
 
 ////////////////////////////////////////////////////////////
 // Poly: sequence of segments
 
-(function() {
-  var Poly = sfig.Poly = function() {
+(function () {
+  var Poly = sfig.Poly = function () {
     Poly.prototype.constructor.call(this);
   };
   sfig_.inheritsFrom('Poly', Poly, sfig.Block);
 
-  Poly.prototype.getPoints = function() {
+  Poly.prototype.getPoints = function () {
     var points = this.points().getOrDie();
-    points = points.map(function(p) {
+    points = points.map(function (p) {
       var x = p[0];
       var y = p[1];
       if (x instanceof sfig.Thunk) x = x.get();
       if (y instanceof sfig.Thunk) y = y.get();
-      return [x,y];
+      return [x, y];
     });
     return points;
   }
 
-  Poly.prototype.renderElem = function(state, callback) {
+  Poly.prototype.renderElem = function (state, callback) {
     var elem = sfig_.newSvgElem(this.closed().get() ? 'polygon' : 'polyline');
     var points = this.getPoints();
-    elem.setAttribute('points', points.map(function(p) {return p[0]+','+p[1];}).join(' '));
+    elem.setAttribute('points', points.map(function (p) { return p[0] + ',' + p[1]; }).join(' '));
     this.elem = elem;
 
     // For non-rectangular polygons, we have to compute our own bounding box
@@ -2427,8 +2427,8 @@ sfig.down = function(x) { return x * sfig.downSign; };
       var strokeWidth = this.strokeWidth().get();
       for (var i = 0; i < points.length; i++) {
         var p1 = points[i];
-        var p2 = points[(i+1) % points.length];
-        var p3 = points[(i+2) % points.length];
+        var p2 = points[(i + 1) % points.length];
+        var p3 = points[(i + 2) % points.length];
         //     q2
         //     ||
         //   w || len
@@ -2443,20 +2443,20 @@ sfig.down = function(x) { return x * sfig.downSign; };
         var uy = p1[1] - p2[1];
         var vx = p3[0] - p2[0];
         var vy = p3[1] - p2[1];
-        var u_mag = Math.sqrt(ux*ux + uy*uy); ux /= u_mag; uy /= u_mag;
-        var v_mag = Math.sqrt(vx*vx + vy*vy); vx /= v_mag; vy /= v_mag;
-        if (!(u_mag > 0) || !(v_mag > 0)) sfig.throwException('Duplicate points: '+u_mag+' '+v_mag);
-        var cos_2a = ux*vx + uy*vy;
-        var sin_a = Math.sin(Math.acos(cos_2a)/2);
+        var u_mag = Math.sqrt(ux * ux + uy * uy); ux /= u_mag; uy /= u_mag;
+        var v_mag = Math.sqrt(vx * vx + vy * vy); vx /= v_mag; vy /= v_mag;
+        if (!(u_mag > 0) || !(v_mag > 0)) sfig.throwException('Duplicate points: ' + u_mag + ' ' + v_mag);
+        var cos_2a = ux * vx + uy * vy;
+        var sin_a = Math.sin(Math.acos(cos_2a) / 2);
         if (sin_a == 0) sfig.throwException('Collinear points');
-        var len = (strokeWidth/2) / sin_a;  // How much to extend p2 -> q2
+        var len = (strokeWidth / 2) / sin_a;  // How much to extend p2 -> q2
         //sfig.L(strokeWidth/2, Math.acos(cos_2a)*180/Math.PI/2, len);
         // w is direction to grow
-        var wx = (ux + vx)/2;
-        var wy = (uy + vy)/2;
-        var w_mag = Math.sqrt(wx*wx + wy*wy); wx /= w_mag; wy /= w_mag;
-        var q2x = p2[0] - wx*len;
-        var q2y = p2[1] - wy*len;
+        var wx = (ux + vx) / 2;
+        var wy = (uy + vy) / 2;
+        var w_mag = Math.sqrt(wx * wx + wy * wy); wx /= w_mag; wy /= w_mag;
+        var q2x = p2[0] - wx * len;
+        var q2y = p2[1] - wy * len;
         if (minx == null || q2x < minx) minx = q2x;
         if (miny == null || q2y < miny) miny = q2y;
         if (maxx == null || q2x > maxx) maxx = q2x;
@@ -2464,8 +2464,8 @@ sfig.down = function(x) { return x * sfig.downSign; };
       }
       this.left(minx);
       this.top(miny);
-      this.realWidth(maxx-minx);
-      this.realHeight(maxy-miny);
+      this.realWidth(maxx - minx);
+      this.realHeight(maxy - miny);
       this.bboxIsSet = true;
     }
 
@@ -2475,30 +2475,30 @@ sfig.down = function(x) { return x * sfig.downSign; };
   sfig_.addProperty(Poly, 'points', null, 'Array of points');
   sfig_.addProperty(Poly, 'closed', null, 'Whether to create a polygon');
 
-  sfig.polyline = function() { return new Poly().points(Array.prototype.slice.call(arguments)).closed(false); }
-  sfig.polygon = function() { return new Poly().points(Array.prototype.slice.call(arguments)).closed(true); }
-  sfig.eqTriangle = function(side) {
+  sfig.polyline = function () { return new Poly().points(Array.prototype.slice.call(arguments)).closed(false); }
+  sfig.polygon = function () { return new Poly().points(Array.prototype.slice.call(arguments)).closed(true); }
+  sfig.eqTriangle = function (side) {
     var length = side * 0.5 * Math.sqrt(3);
     var width = side;
-    return sfig.polygon([0,0], [-width/2, sfig.down(length)], [+width/2, sfig.down(length)]);
+    return sfig.polygon([0, 0], [-width / 2, sfig.down(length)], [+width / 2, sfig.down(length)]);
   }
-  sfig.xline = function(length) { return sfig.polyline([0, 0], [length, 0]); }
-  sfig.yline = function(length) { return sfig.polyline([0, 0], [0, sfig.down(length)]); }
+  sfig.xline = function (length) { return sfig.polyline([0, 0], [length, 0]); }
+  sfig.yline = function (length) { return sfig.polyline([0, 0], [0, sfig.down(length)]); }
 
-  sfig.xspace = function(length) { return sfig.xline(length).opacity(0); }
-  sfig.yspace = function(length) { return sfig.yline(length).opacity(0); }
+  sfig.xspace = function (length) { return sfig.xline(length).opacity(0); }
+  sfig.yspace = function (length) { return sfig.yline(length).opacity(0); }
 })();
 
 ////////////////////////////////////////////////////////////
 // Rect
 
-(function() {
-  var Rect = sfig.Rect = function() {
+(function () {
+  var Rect = sfig.Rect = function () {
     Rect.prototype.constructor.call(this);
   };
   sfig_.inheritsFrom('Rect', Rect, sfig.Block);
 
-  Rect.prototype.renderElem = function(state, callback) {
+  Rect.prototype.renderElem = function (state, callback) {
     var elem = sfig_.newSvgElem('rect');
     elem.setAttribute('width', this.width().getNonnegativeOrDie());
     elem.setAttribute('height', this.height().getNonnegativeOrDie());
@@ -2511,8 +2511,8 @@ sfig.down = function(x) { return x * sfig.downSign; };
   sfig_.addPairProperty(Rect, 'dim', 'width', 'height', null, null, 'Dimensions of rectangle');
   sfig_.addPairProperty(Rect, 'round', 'xround', 'yround', null, null, 'Amount of rounding to do on the rectangle');
 
-  sfig.rect = function(width, height) { return new Rect().dim(width, height); }
-  sfig.square = function(width) { return new Rect().dim(width); }
+  sfig.rect = function (width, height) { return new Rect().dim(width, height); }
+  sfig.square = function (width) { return new Rect().dim(width); }
 })();
 
 ////////////////////////////////////////////////////////////
@@ -2520,13 +2520,13 @@ sfig.down = function(x) { return x * sfig.downSign; };
 // properties (e.g., shifting, scaling) without interferring with the
 // properties of the underlying object.
 
-(function() {
-  var Wrap = sfig.Wrap = function() {
+(function () {
+  var Wrap = sfig.Wrap = function () {
     Wrap.prototype.constructor.call(this);
   };
   sfig_.inheritsFrom('Wrap', Wrap, sfig.Block);
 
-  Wrap.prototype.createChildren = function() {
+  Wrap.prototype.createChildren = function () {
     var content = this.content();
     if (content.exists()) {
       content = sfig.std(content.get());
@@ -2535,13 +2535,13 @@ sfig.down = function(x) { return x * sfig.downSign; };
     }
   }
 
-  Wrap.prototype.resetContent = function(content) {
+  Wrap.prototype.resetContent = function (content) {
     this.content(content);
   }
 
   sfig_.addProperty(Wrap, 'content', null, 'What to draw');
 
-  sfig.wrap = function(block) { return new sfig.Wrap().content(block); }
+  sfig.wrap = function (block) { return new sfig.Wrap().content(block); }
 })();
 
 ////////////////////////////////////////////////////////////
@@ -2553,14 +2553,14 @@ sfig.down = function(x) { return x * sfig.downSign; };
 // well to keep same aspect ratio).
 // Transforms are separate from the object because we need to first render it
 // to access its position and size.
-(function() {
-  var Transform = sfig.Transform = function(content) {
+(function () {
+  var Transform = sfig.Transform = function (content) {
     Transform.prototype.constructor.call(this);
     this.content = sfig.std(content);
   };
   sfig_.inheritsFrom('Transform', Transform, sfig.Block);
 
-  Transform.prototype.createChildren = function() {
+  Transform.prototype.createChildren = function () {
     if (!this.orphan().exists()) this.orphan(this.content.orphan());
 
     var wrapped = sfig.wrap(this.content);
@@ -2588,55 +2588,55 @@ sfig.down = function(x) { return x * sfig.downSign; };
     this.addChild(wrapped);
   }
 
-  Transform.prototype.home = function() { return this.pivot(-1, -1); }
-  Transform.prototype.center = function() { return this.pivot(0, 0); }
+  Transform.prototype.home = function () { return this.pivot(-1, -1); }
+  Transform.prototype.center = function () { return this.pivot(0, 0); }
 
   // These are used to set shift, scale
   sfig_.addPairProperty(Transform, 'pivot', 'xpivot', 'ypivot', null, null, 'A relative scaling (between [-1,1]) determines position of each child.  Make each of these positions coincide at (0,0).');
   sfig_.addPairProperty(Transform, 'dim', 'width', 'height', null, null, 'Absolute dimensions to resize object to.');
 
-  sfig.transform = function(content) { return new Transform(content); }
-  sfig.home = function(content) { return sfig.transform(content).home(); }
-  sfig.center = function(content) { return sfig.transform(content).center(); }
+  sfig.transform = function (content) { return new Transform(content); }
+  sfig.home = function (content) { return sfig.transform(content).home(); }
+  sfig.center = function (content) { return sfig.transform(content).center(); }
 })();
 
 ////////////////////////////////////////////////////////////
 // Overlay: a group of objects rendered on top of each other.
 
-(function() {
-  var Overlay = sfig.Overlay = function(items) {
+(function () {
+  var Overlay = sfig.Overlay = function (items) {
     var self = this;
     Overlay.prototype.constructor.call(this);
     this.items = sfig.std(items);
   };
   sfig_.inheritsFrom('Overlay', Overlay, sfig.Block);
 
-  Overlay.prototype.createChildren = function() {
+  Overlay.prototype.createChildren = function () {
     var self = this;
-    this.items.forEach(function(item) {
+    this.items.forEach(function (item) {
       if (item instanceof sfig.Block) {
         self.addChild(sfig.transform(item).pivot(self.xpivot(), self.ypivot()));
       } else if (item instanceof sfig.PropertyChanger) {
         self.addChild(item);
       } else {
-        sfig.throwException('Invalid: '+item);
+        sfig.throwException('Invalid: ' + item);
       }
     });
   }
 
   // Delegate pivoting to the transforms
-  Overlay.prototype.center = function() { return this.pivot(0, 0); }
+  Overlay.prototype.center = function () { return this.pivot(0, 0); }
   sfig_.addPairProperty(Overlay, 'pivot', 'xpivot', 'ypivot', null, null, 'A relative scaling (between [-1,1]) determines position of each child.  Make each of these positions coincide at (0,0).');
 
-  sfig.overlay = function() { return new Overlay(arguments); }
+  sfig.overlay = function () { return new Overlay(arguments); }
 })();
 
 ////////////////////////////////////////////////////////////
 // Frame: |content| is placed on a rectangular background |bg|,
 // whose dimensions are determined based on content.
 
-(function() {
-  var Frame = sfig.Frame = function(content) {
+(function () {
+  var Frame = sfig.Frame = function (content) {
     Frame.prototype.constructor.call(this);
     this.content = sfig.std(content);
     this.content.setEnd(this);
@@ -2648,14 +2648,14 @@ sfig.down = function(x) { return x * sfig.downSign; };
     var bgWithTitle = sfig.overlay(
       this.bg,  // Rectangular background
       transformedTitleBlock, // Title (hack)
-    _);
+      _);
     var transformedBgWithTitle = sfig.transform(bgWithTitle).pivot(this.xpivot().orElse(0), this.ypivot().orElse(0)); // Center by default
     var transformedContent = sfig.transform(this.content).pivot(this.xpivot().orElse(0), this.ypivot().orElse(0)); // Center by default
     this.overlay = sfig.overlay(transformedBgWithTitle, transformedContent.yshiftBy(this.titleBlock.realHeight().div(2)));
   };
   sfig_.inheritsFrom('Frame', Frame, sfig.Block);
 
-  Frame.prototype.createChildren = function() {
+  Frame.prototype.createChildren = function () {
     var strokeWidth = this.bg.strokeWidth();
     if (!strokeWidth.exists()) strokeWidth.set(0);  // Default
 
@@ -2680,23 +2680,23 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   // Delegate pivoting to the transforms
-  Frame.prototype.center = function() { return this.pivot(0, 0); }
+  Frame.prototype.center = function () { return this.pivot(0, 0); }
   sfig_.addPairProperty(Frame, 'pivot', 'xpivot', 'ypivot', null, null, 'A relative scaling (between [-1,1]) determines position of each child.  Make each of these positions coincide.');
   sfig_.addPairProperty(Frame, 'padding', 'xpadding', 'ypadding', null, null, 'Amount of space to put around the object');
   sfig_.addProperty(Frame, 'title', null, 'Title to put on the border');
   sfig_.addProperty(Frame, 'titleIndent', 10, 'Horizontal space between frame and start of title');
 
-  sfig.frame = function(block) { return new Frame(block); }
+  sfig.frame = function (block) { return new Frame(block); }
 
-  sfig.opaquebg = function(block, color) { return sfig.frame(block).bg.color(color || sfig.defaultBgColor).end; }
+  sfig.opaquebg = function (block, color) { return sfig.frame(block).bg.color(color || sfig.defaultBgColor).end; }
 })();
 
 ////////////////////////////////////////////////////////////
 // Table
 // TODO: support multirow/column tables
 
-(function() {
-  var Table = sfig.Table = function(contents) {
+(function () {
+  var Table = sfig.Table = function (contents) {
     Table.prototype.constructor.call(this);
     contents = sfig.std(contents);
 
@@ -2717,17 +2717,17 @@ sfig.down = function(x) { return x * sfig.downSign; };
           } else if (x instanceof sfig.PropertyChanger) {
             this.items.push(x);
           } else {
-            sfig.throwException('Expected Block or PropertyChanger, but got: '+x);
+            sfig.throwException('Expected Block or PropertyChanger, but got: ' + x);
           }
         }
         if (numCols == -1) numCols = c;
-        if (numCols != c) sfig.throwException('Each row must have the same number of columns, but row 0 has '+numCols+' while row '+(r+1)+' has '+c);
+        if (numCols != c) sfig.throwException('Each row must have the same number of columns, but row 0 has ' + numCols + ' while row ' + (r + 1) + ' has ' + c);
         c = 0;
         r++;
       } else if (item instanceof sfig.PropertyChanger) {
         this.items.push(item);
       } else {
-        sfig.throwException('Expected Array or PropertyChanger, but got: '+item);
+        sfig.throwException('Expected Array or PropertyChanger, but got: ' + item);
       }
     }
     this.numCols = numCols;
@@ -2735,16 +2735,16 @@ sfig.down = function(x) { return x * sfig.downSign; };
   };
   sfig_.inheritsFrom('Table', Table, sfig.Block);
 
-  Table.prototype.createChildren = function() {
+  Table.prototype.createChildren = function () {
     for (var i = 0; i < this.items.length; i++) this.addChild(this.items[i]);
   }
 
-  Table.prototype.renderElem = function(state, callback) {
+  Table.prototype.renderElem = function (state, callback) {
     // Justification
     var xjustify = this.xjustify().getOrElse('l');
-    while (xjustify.length < this.numCols) xjustify += xjustify[xjustify.length-1];
+    while (xjustify.length < this.numCols) xjustify += xjustify[xjustify.length - 1];
     var yjustify = this.yjustify().getOrElse('l');
-    while (yjustify.length < this.numRows) yjustify += yjustify[yjustify.length-1];
+    while (yjustify.length < this.numRows) yjustify += yjustify[yjustify.length - 1];
 
     // Compute maximum width of each column and height of each column
     var widths = [];
@@ -2789,15 +2789,15 @@ sfig.down = function(x) { return x * sfig.downSign; };
     var xstart = [0];
     var ystart = [0];
     for (var c = 1; c <= this.numCols; c++)
-      xstart[c] = xstart[c-1] + widths[c-1] + (c < this.numCols ? xmargin : 0);
+      xstart[c] = xstart[c - 1] + widths[c - 1] + (c < this.numCols ? xmargin : 0);
     for (var r = 1; r <= this.numRows; r++)
-      ystart[r] = ystart[r-1] + heights[r-1] + (r < this.numRows ? ymargin : 0);
+      ystart[r] = ystart[r - 1] + heights[r - 1] + (r < this.numRows ? ymargin : 0);
 
     function justifyToPivot(justify) {
       if (justify == 'l') return -1;
       if (justify == 'c') return 0;
       if (justify == 'r') return +1;
-      sfig.throwException('Invalid justify (expected l,c,r): '+justify);
+      sfig.throwException('Invalid justify (expected l,c,r): ' + justify);
     }
 
     // To compute the bounding box (if there are orphan children)
@@ -2816,16 +2816,16 @@ sfig.down = function(x) { return x * sfig.downSign; };
         var xpivot = cell.xparentPivot().getOrElse(justifyToPivot(xjustify[c]));
         var ypivot = cell.yparentPivot().getOrElse(justifyToPivot(yjustify[r]));
         var xoffset = (xstart[c] + 0.5 * (xpivot + 1) * widths[c]) -
-                      (cell.left().getOrDie() + 0.5 * (xpivot + 1) * cell.realWidth().getOrDie());
+          (cell.left().getOrDie() + 0.5 * (xpivot + 1) * cell.realWidth().getOrDie());
         var yoffset = (ystart[r] + 0.5 * (ypivot + 1) * heights[r]) -
-                      (cell.top().getOrDie() + 0.5 * (ypivot + 1) * cell.realHeight().getOrDie());
+          (cell.top().getOrDie() + 0.5 * (ypivot + 1) * cell.realHeight().getOrDie());
 
         // Only non-orphans contribute to the bounding box
         if (!cell.orphan().get()) {
           minx = Math.min(minx, xstart[c]);
           miny = Math.min(miny, ystart[r]);
-          maxx = Math.max(maxx, xstart[c+1]);
-          maxy = Math.max(maxy, ystart[r+1]);
+          maxx = Math.max(maxx, xstart[c + 1]);
+          maxy = Math.max(maxy, ystart[r + 1]);
         }
 
         // Shift the cell element
@@ -2837,35 +2837,35 @@ sfig.down = function(x) { return x * sfig.downSign; };
     }
 
     // Manually set bounding box.
-    this.left(minx).top(miny).realWidth(maxx-minx).realHeight(maxy-miny);
+    this.left(minx).top(miny).realWidth(maxx - minx).realHeight(maxy - miny);
     this.bboxIsSet = true;
 
     callback();
   };
 
-  Table.prototype.closeAppendices = function() {
+  Table.prototype.closeAppendices = function () {
     this.freeze();
     // Just don't do anything
   }
 
-  Table.prototype.center = function() { return this.justify('c', 'c'); }
-  Table.prototype.xcenter = function() { return this.xjustify('c'); }
-  Table.prototype.ycenter = function() { return this.yjustify('c'); }
+  Table.prototype.center = function () { return this.justify('c', 'c'); }
+  Table.prototype.xcenter = function () { return this.xjustify('c'); }
+  Table.prototype.ycenter = function () { return this.yjustify('c'); }
   sfig_.addPairProperty(Table, 'justify', 'xjustify', 'yjustify', null, null, 'Justification string consisting of l (left), c (center), or r (right)');
   sfig_.addPairProperty(Table, 'margin', 'xmargin', 'ymargin', null, null, 'Amount of space between rows/columns');
   sfig_.addPairProperty(Table, 'cellDim', 'cellWidth', 'cellHeight', null, null, 'Set the dimensions of cells');
   sfig_.addPairProperty(Table, 'dim', 'width', 'height', null, null, 'Set the overall dimensions');
 
-  sfig.table = function() { return new Table(arguments); }
-  sfig.xtable = function() { return new Table([arguments]); }
-  sfig.ytable = function() { return new Table(sfig.std(arguments).map(function(x) { return x instanceof sfig.Block ? [x] : x; })); }
+  sfig.table = function () { return new Table(arguments); }
+  sfig.xtable = function () { return new Table([arguments]); }
+  sfig.ytable = function () { return new Table(sfig.std(arguments).map(function (x) { return x instanceof sfig.Block ? [x] : x; })); }
 })();
 
 ////////////////////////////////////////////////////////////
 // Slide
 
-(function() {
-  var Slide = sfig.Slide = function(contents) {
+(function () {
+  var Slide = sfig.Slide = function (contents) {
     Slide.prototype.constructor.call(this);
     this.contents = contents;
 
@@ -2893,7 +2893,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
   };
   sfig_.inheritsFrom('Slide', Slide, sfig.Block);
 
-  Slide.prototype.createChildren = function() {
+  Slide.prototype.createChildren = function () {
     this.titleBlock = this.title().get();
     if (this.titleBlock != null) {
       if (!(this.titleBlock instanceof sfig.Block))
@@ -2923,12 +2923,12 @@ sfig.down = function(x) { return x * sfig.downSign; };
     if (this.titleBlock != null) {
       framedTitleBlock = sfig.frame(
         sfig.wrap(this.titleBlock).scale(this.titleScale()),
-      _).pivot(0, 1).bg.strokeWidth(0).dim(this.innerWidth(), this.titleHeight()).end;
+        _).pivot(0, 1).bg.strokeWidth(0).dim(this.innerWidth(), this.titleHeight()).end;
     }
     var titleBody = sfig.ytable(
       framedTitleBlock,
       this.body,
-    _).ymargin(this.titleSpacing()).shiftBy(this.leftPadding(), this.topPadding());
+      _).ymargin(this.titleSpacing()).shiftBy(this.leftPadding(), this.topPadding());
     this.addChild(titleBody);
 
     // Add headers and footers
@@ -2988,7 +2988,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
   sfig_.addProperty(Slide, 'extra', null, 'Object to overlay on top of the slide');
 
   // Usage: slide(title, ...); if title is null, then don't allocate any space for it.
-  sfig.slide = function() {
+  sfig.slide = function () {
     var title = arguments[0];
     var contents = Array.prototype.slice.call(arguments, 1);
     var slide = new Slide(contents);
@@ -2997,7 +2997,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   // Return an element which looks like |button|, but when pressed will toggle display of |explanation| under it.
-  sfig.explain = function(button, explanation, options) {
+  sfig.explain = function (button, explanation, options) {
     // Too complex, don't use
     if (options == null) options = {};
     var pivot = options.pivot;
@@ -3017,7 +3017,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     else y = button.ymiddle();
     explanation = transform(explanation).pivot(pivot[0], pivot[1]).shift(x, y).orphan(true).showLevel(-1);
 
-    button.setPointerWhenMouseOver().onClick(function() {
+    button.setPointerWhenMouseOver().onClick(function () {
       if (explanation.toggleShowHide())
         button.bg.elem.style.fill = 'gray';
       else
@@ -3033,18 +3033,18 @@ sfig.down = function(x) { return x * sfig.downSign; };
 ////////////////////////////////////////////////////////////
 // Presentation: manages the rendering of Blocks to SVGs.
 
-(function() {
+(function () {
   // container is optional
-  var Presentation = sfig.Presentation = function(options) {
+  var Presentation = sfig.Presentation = function (options) {
     if (!options) options = {};
     this.slides = [];
     if (!sfig.serverSide && (options.initKeys == null || options.initKeys))
       this.initKeys();
   }
 
-  Presentation.prototype.addSlide = function(slide) {
+  Presentation.prototype.addSlide = function (slide) {
     slide = sfig.std(slide);
-    if (!(slide instanceof sfig.Block)) sfig.throwException('Slide must be Block, but got: '+slide);
+    if (!(slide instanceof sfig.Block)) sfig.throwException('Slide must be Block, but got: ' + slide);
 
     if (slide instanceof sfig.Slide) {
       // Add slide index
@@ -3056,9 +3056,9 @@ sfig.down = function(x) { return x * sfig.downSign; };
       if (slide.rightHeader().exists())
         items.push(slide.rightHeader().get());
       if (notes)
-        items.push(sfig.explain('Notes', notes, {pivot: [1, -1], borderWidth: 1}));
+        items.push(sfig.explain('Notes', notes, { pivot: [1, -1], borderWidth: 1 }));
       if (!sfig.serverSide && slide.showHelp().get())
-        items.push(sfig.explain('Help', this.getHelpBlock(), {pivot: [1, -1], borderWidth: 1}));
+        items.push(sfig.explain('Help', this.getHelpBlock(), { pivot: [1, -1], borderWidth: 1 }));
       if (items.length > 0)
         slide.rightHeader(sfig.table(items).xmargin(5));
     }
@@ -3072,7 +3072,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     this.slides.push(slide);
   }
 
-  sfig_.newState = function() {
+  sfig_.newState = function () {
     return {
       svg: sfig_.newSvg(),
       // For each level, list of new Blocks to hide/show/animate
@@ -3084,17 +3084,17 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   // Return |dir| if we can move in that direction.
-  Presentation.prototype.distanceToNeighboringSlide = function(dir) {
-    var slide = this.slides[this.currSlideIndex+dir];
+  Presentation.prototype.distanceToNeighboringSlide = function (dir) {
+    var slide = this.slides[this.currSlideIndex + dir];
     if (!slide) return 0;
     return dir;
   }
 
-  Presentation.prototype.showNextSlide = function(firstLevel, callback) {
+  Presentation.prototype.showNextSlide = function (firstLevel, callback) {
     var self = this;
     var n = self.distanceToNeighboringSlide(+1);
     if (n != 0) {
-      self.setSlideIndex(self.currSlideIndex+n, function() {
+      self.setSlideIndex(self.currSlideIndex + n, function () {
         self.setLevel(firstLevel ? 0 : self.currMaxLevel());
         self.updateUrlParams();
         callback();
@@ -3104,11 +3104,11 @@ sfig.down = function(x) { return x * sfig.downSign; };
     }
   }
 
-  Presentation.prototype.showPrevSlide = function(firstLevel, callback) {
+  Presentation.prototype.showPrevSlide = function (firstLevel, callback) {
     var self = this;
     var n = self.distanceToNeighboringSlide(-1);
     if (n != 0) {
-      self.setSlideIndex(self.currSlideIndex+n, function() {
+      self.setSlideIndex(self.currSlideIndex + n, function () {
         self.setLevel(firstLevel ? 0 : self.currMaxLevel());
         self.updateUrlParams();
         callback();
@@ -3118,25 +3118,25 @@ sfig.down = function(x) { return x * sfig.downSign; };
     }
   }
 
-  Presentation.prototype.registerKey = function(description, keys, func) {
+  Presentation.prototype.registerKey = function (description, keys, func) {
     var self = this;
-    keys.forEach(function(key) {
-      if (self.keyMap[key]) sfig.throwException('Already registered key '+key);
-      self.keyMap[key] = {description: description, func: func};
+    keys.forEach(function (key) {
+      if (self.keyMap[key]) sfig.throwException('Already registered key ' + key);
+      self.keyMap[key] = { description: description, func: func };
     });
-    self.keyBindings.push({description: description, keys: keys});
+    self.keyBindings.push({ description: description, keys: keys });
   }
 
   // Map from key to [description, func], where func takes a single callback argument
-  Presentation.prototype.initKeys = function() {
+  Presentation.prototype.initKeys = function () {
     this.keyMap = {};  // key -> description and func
     this.keyBindings = []; // List of description, keys
     var self = this;
 
-    this.registerKey('Go to next slide build', ['space', 'down', 'page_down', 'right', 'j', 'l'], function(callback) {
+    this.registerKey('Go to next slide build', ['space', 'down', 'page_down', 'right', 'j', 'l'], function (callback) {
       if (!self.readyForSlideShowKey()) return callback();
-      if (self.currLevel+1 <= self.currMaxLevel()) {
-        self.setLevel(self.currLevel+1);
+      if (self.currLevel + 1 <= self.currMaxLevel()) {
+        self.setLevel(self.currLevel + 1);
         self.updateUrlParams();
         callback();
       } else {
@@ -3144,15 +3144,15 @@ sfig.down = function(x) { return x * sfig.downSign; };
       }
     });
 
-    this.registerKey('Go to next slide', ['shift-down', 'shift-right', 'shift-j', 'shift-l'], function(callback) {
+    this.registerKey('Go to next slide', ['shift-down', 'shift-right', 'shift-j', 'shift-l'], function (callback) {
       if (!self.readyForSlideShowKey()) return callback();
       self.showNextSlide(false, callback);
     });
 
-    this.registerKey('Go to previous slide build', ['backspace', 'up', 'page_up', 'left', 'k', 'h'], function(callback) {
+    this.registerKey('Go to previous slide build', ['backspace', 'up', 'page_up', 'left', 'k', 'h'], function (callback) {
       if (!self.readyForSlideShowKey()) return callback();
-      if (self.currLevel-1 >= 0) {
-        self.setLevel(self.currLevel-1);
+      if (self.currLevel - 1 >= 0) {
+        self.setLevel(self.currLevel - 1);
         self.updateUrlParams();
         callback();
       } else {
@@ -3160,7 +3160,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
       }
     });
 
-    this.registerKey('Go to previous slide', ['shift-up', 'shift-left', 'shift-k', 'shift-h'], function(callback) {
+    this.registerKey('Go to previous slide', ['shift-up', 'shift-left', 'shift-k', 'shift-h'], function (callback) {
       if (!self.readyForSlideShowKey()) return callback();
       self.showPrevSlide(false, callback);
     });
@@ -3175,14 +3175,14 @@ sfig.down = function(x) { return x * sfig.downSign; };
       return false;
     }
 
-    this.registerKey('Jump to slide (by number or search)', ['g'], function(callback) {
+    this.registerKey('Jump to slide (by number or search)', ['g'], function (callback) {
       if (!self.readyForSlideShowKey()) return callback();
       var query = prompt('Go to which slide (<slide id> or <slide index> or [/?]<search query>)?');
       if (query == null) return callback();
       processJumpQuery(query, callback);
     });
 
-    this.registerKey('Search again', ['n'], function(callback) {
+    this.registerKey('Search again', ['n'], function (callback) {
       if (!self.readyForSlideShowKey()) return callback();
       if (!lastTextSearchQuery) return callback();
       processJumpQuery(lastTextSearchQuery, callback);
@@ -3202,8 +3202,8 @@ sfig.down = function(x) { return x * sfig.downSign; };
         if (slideIndex == self.currSlideIndex) break;  // Wrapped around
         var slide = self.slides[slideIndex];
         if ((slide.id && slide.id().get() == query) ||
-            (''+slideIndex == query) ||
-            (isTextSearch && containsText(slide, query.slice(1)))) {
+          ('' + slideIndex == query) ||
+          (isTextSearch && containsText(slide, query.slice(1)))) {
           found = true;
           break;
         }
@@ -3211,30 +3211,30 @@ sfig.down = function(x) { return x * sfig.downSign; };
 
       if (!found) return callback();
 
-      self.setSlideIndex(slideIndex, function() {
+      self.setSlideIndex(slideIndex, function () {
         self.setLevel(isTextSearch ? sfig_.maxLevel : 0);
         self.updateUrlParams();
         callback();
       });
     }
 
-    this.registerKey('Set display mode: default', ['shift-d'], function(callback) {
+    this.registerKey('Set display mode: default', ['shift-d'], function (callback) {
       sfig_.setDisplayMode(sfig_.DISPLAYMODE_DEFAULT);
     });
-    this.registerKey('Set display mode: full screen', ['shift-f'], function(callback) {
+    this.registerKey('Set display mode: full screen', ['shift-f'], function (callback) {
       sfig_.setDisplayMode(sfig_.DISPLAYMODE_FULLSCREEN);
     });
-    this.registerKey('Set display mode: outline', ['shift-o'], function(callback) {
+    this.registerKey('Set display mode: outline', ['shift-o'], function (callback) {
       sfig_.setDisplayMode(sfig_.DISPLAYMODE_OUTLINE);
     });
-    this.registerKey('Set display mode: print (1pp)', ['p'], function(callback) {
+    this.registerKey('Set display mode: print (1pp)', ['p'], function (callback) {
       sfig_.setDisplayMode(sfig_.DISPLAYMODE_PRINT1PP);
     });
-    this.registerKey('Set display mode: print (6pp)', ['shift-p'], function(callback) {
+    this.registerKey('Set display mode: print (6pp)', ['shift-p'], function (callback) {
       sfig_.setDisplayMode(sfig_.DISPLAYMODE_PRINT6PP);
     });
 
-    this.registerKey('Toggle mouse show/hide', ['shift-m'], function(callback) {
+    this.registerKey('Toggle mouse show/hide', ['shift-m'], function (callback) {
       if (sfig_.urlParams.defaultMouseShowHide) {
         delete sfig_.urlParams.defaultMouseShowHide;
       } else {
@@ -3244,24 +3244,27 @@ sfig.down = function(x) { return x * sfig.downSign; };
       window.location.reload();
     });
 
-    this.registerKey('Toggle listening mode (turn on for non-projected screen, show next slide)', ['shift-n'], function(callback) {
-      if (sfig_.urlParams.listen) {
-        delete sfig_.urlParams.listen;
-      } else {
+    this.registerKey('Toggle listener view (prose / current slide)', ['shift-n'], function (callback) {
+      if (!sfig_.urlParams.listen) {
         sfig_.urlParams.listen = true;
+        self.updateUrlParams();
+        window.location.reload();
+      } else {
+        sfig_.urlParams.listen =
+          sfig_.urlParams.listen == 'slide' ? true : 'slide';
+        sfig_.serializeUrlParamsToLocation();
+        callback();
       }
-      self.updateUrlParams();
-      window.location.reload();
     });
 
-    this.registerKey('Render all slides, caching results', ['shift-r'], function(callback) {
+    this.registerKey('Render all slides, caching results', ['shift-r'], function (callback) {
       if (!self.readyForSlideShowKey()) return callback();
-      sfig_.performOperation('renderAll', function(modifiedCallback) {
+      sfig_.performOperation('renderAll', function (modifiedCallback) {
         self.renderAllSlides(modifiedCallback);
       }, callback);
     });
 
-    this.registerKey('Show keyboard shortcuts', ['shift-/'], function(callback) {
+    this.registerKey('Show keyboard shortcuts', ['shift-/'], function (callback) {
       alert(self.getHelpText());
     });
 
@@ -3281,16 +3284,45 @@ sfig.down = function(x) { return x * sfig.downSign; };
     // so we need to ignore
     var justHid;
 
-    document.documentElement.addEventListener('keydown', function(event) {
+    var remoteNavigationKeys = {
+      'space': 1, 'down': 1, 'page_down': 1, 'right': 1, 'j': 1, 'l': 1,
+      'shift-down': 1, 'shift-right': 1, 'shift-j': 1, 'shift-l': 1,
+      'backspace': 1, 'up': 1, 'page_up': 1, 'left': 1, 'k': 1, 'h': 1,
+      'shift-up': 1, 'shift-left': 1, 'shift-k': 1, 'shift-h': 1
+    };
+    var remoteKeyStorageKey =
+      'sfigRemoteKey:' + window.location.pathname + window.location.search;
+
+    document.documentElement.addEventListener('keydown', function (event) {
       sfig.hideCursor();
       justHid = true;
       if (!sfig_.keysEnabled) return;
       var key = sfig_.eventToKey(event);
+
+      if (sfig_.urlParams.listen && remoteNavigationKeys[key]) {
+        localStorage.setItem(remoteKeyStorageKey, JSON.stringify({
+          key: key,
+          nonce: Date.now() + ':' + Math.random()
+        }));
+        event.preventDefault();
+        return;
+      }
+
       self.keyQueue.push(key);
-      processKeyQueue(function() {});
+      processKeyQueue(function () { });
     }, false);
 
-    document.documentElement.addEventListener('mousemove', function(event) {
+    window.addEventListener('storage', function (event) {
+      if (event.key != remoteKeyStorageKey ||
+        sfig_.urlParams.listen ||
+        !event.newValue) return;
+
+      var message = JSON.parse(event.newValue);
+      self.keyQueue.push(message.key);
+      processKeyQueue(function () { });
+    }, false);
+
+    document.documentElement.addEventListener('mousemove', function (event) {
       if (!justHid) {
         if (sfig.isCursorHidden()) sfig.resetCursor();
       } else {
@@ -3308,10 +3340,10 @@ sfig.down = function(x) { return x * sfig.downSign; };
 
       if (delta > 0) {
         self.keyQueue.push('up');
-        processKeyQueue(function() {});
+        processKeyQueue(function () { });
       } else if (delta < 0) {
         self.keyQueue.push('down');
-        processKeyQueue(function() {});
+        processKeyQueue(function () { });
       }
     }
     if (sfig.enableMouseWheel) {
@@ -3320,31 +3352,31 @@ sfig.down = function(x) { return x * sfig.downSign; };
     }
   }
 
-  Presentation.prototype.getHelpBlock = function() {
+  Presentation.prototype.getHelpBlock = function () {
     if (sfig.serverSide) return sfig.nil();
-    var rows = this.keyBindings.map(function(binding) {
-      return [binding.keys.map(function(key) { return key.fontcolor('blue') }).join(' | '.fontcolor('brown')), binding.description];
+    var rows = this.keyBindings.map(function (binding) {
+      return [binding.keys.map(function (key) { return key.fontcolor('blue') }).join(' | '.fontcolor('brown')), binding.description];
     });
     return sfig.ytable(
-      'This presentation is created using <a href="'+sfig.homePage+'" target="blank">sfig '+sfig.version+'</a>.',
+      'This presentation is created using <a href="' + sfig.homePage + '" target="blank">sfig ' + sfig.version + '</a>.',
       'Key bindings'.bold(),
       new sfig.Table(rows).xjustify('rl').xmargin(15),
-    _).center().ymargin(10).scale(0.8);
+      _).center().ymargin(10).scale(0.8);
   }
 
-  Presentation.prototype.getHelpText = function() {
+  Presentation.prototype.getHelpText = function () {
     const header = [
       '--- Key bindings ---',
     ];
-    const rows = this.keyBindings.map(function(binding) {
+    const rows = this.keyBindings.map(function (binding) {
       return binding.keys.join(' | ') + ': ' + binding.description;
     });
     return header.concat(rows).join('\n');
   }
 
-  Presentation.prototype.readyForSlideShowKey = function() {
+  Presentation.prototype.readyForSlideShowKey = function () {
     if (sfig_.getDisplayMode() != sfig_.DISPLAYMODE_DEFAULT &&
-        sfig_.getDisplayMode() != sfig_.DISPLAYMODE_FULLSCREEN)
+      sfig_.getDisplayMode() != sfig_.DISPLAYMODE_FULLSCREEN)
       return false;
 
     // This function is sometimes called when rendering isn't completed yet, so just ignore.
@@ -3355,7 +3387,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     return true;
   }
 
-  Presentation.prototype.processKey = function(key, callback) {
+  Presentation.prototype.processKey = function (key, callback) {
     if (!this.keyMap[key]) {
       callback();
       return;
@@ -3364,7 +3396,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     }
   }
 
-  Presentation.prototype.renderAllSlides = function(callback) {
+  Presentation.prototype.renderAllSlides = function (callback) {
     // Render all the slides
     var self = this;
     var i = 0;
@@ -3373,8 +3405,8 @@ sfig.down = function(x) { return x * sfig.downSign; };
     var progressBox = document.createElement('div');
     document.body.appendChild(progressBox);
     function process() {
-      console.log('Rendering slide '+i+'/'+self.slides.length);
-      progressBox.innerHTML = 'Rendering slide '+i+'/'+self.slides.length;
+      console.log('Rendering slide ' + i + '/' + self.slides.length);
+      progressBox.innerHTML = 'Rendering slide ' + i + '/' + self.slides.length;
       if (i == self.slides.length) {
         self.setSlideIndexAndLevel(saveSlideIndex, saveLevel, callback);  // Go to beginning
         self.updateUrlParams();
@@ -3386,17 +3418,17 @@ sfig.down = function(x) { return x * sfig.downSign; };
     process();
   }
 
-  Presentation.prototype.setSlideIndex = function(slideIndex, callback) {
+  Presentation.prototype.setSlideIndex = function (slideIndex, callback) {
     var self = this;
 
     // Remove old SVG if not printing; otherwise, just append
     if (sfig_.DISPLAYMODES_PRINT.indexOf(sfig_.getDisplayMode()) == -1 && self.currSlideIndex != null)
       self.container.removeChild(self.slides[self.currSlideIndex].state.svg);
 
-    self.currSlideIndex = Math.min(slideIndex, self.slides.length-1);
+    self.currSlideIndex = Math.min(slideIndex, self.slides.length - 1);
     self.currLevel = -1;
     var slide = self.slides[self.currSlideIndex];
-    if (slide == null) sfig.throwException('Invalid slide index: '+self.currSlideIndex);
+    if (slide == null) sfig.throwException('Invalid slide index: ' + self.currSlideIndex);
     self.container.appendChild(self.slides[self.currSlideIndex].state.svg);
 
     // Don't display border in full screen mode
@@ -3410,7 +3442,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     while (state.svg.hasChildNodes())
       state.svg.removeChild(state.svg.lastChild);
 
-    slide.render(state, function() {
+    slide.render(state, function () {
       state.svg.appendChild(slide.elem);
 
       // Set the size of containers for a snug fit
@@ -3447,12 +3479,12 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   // Of the current slide...
-  Presentation.prototype.currMaxLevel = function() {
+  Presentation.prototype.currMaxLevel = function () {
     var state = this.slides[this.currSlideIndex].state;
     return Math.max(state.hideBlocks.length, state.showBlocks.length) - 1;
   }
 
-  Presentation.prototype.setLevel = function(targetLevel) {
+  Presentation.prototype.setLevel = function (targetLevel) {
     var self = this;
     var state = this.slides[this.currSlideIndex].state;
 
@@ -3462,18 +3494,18 @@ sfig.down = function(x) { return x * sfig.downSign; };
     if (self.currLevel == -1) {
       for (var i = 0; i <= self.currMaxLevel(); i++) {
         var showBlocks = state.showBlocks[i];
-        if (showBlocks) showBlocks.forEach(function(block) { block.hide(true); });
+        if (showBlocks) showBlocks.forEach(function (block) { block.hide(true); });
       }
     }
 
     // Go forward
     for (; self.currLevel < targetLevel && self.currLevel < self.currMaxLevel(); self.currLevel++) {
-      var hideBlocks = state.hideBlocks[self.currLevel+1];
-      var showBlocks = state.showBlocks[self.currLevel+1];
-      var animateBlocks = state.animateBlocks[self.currLevel+1];
-      if (hideBlocks) hideBlocks.forEach(function(block) { block.hide(false); });
-      if (showBlocks) showBlocks.forEach(function(block) { block.show(false); });
-      if (animateBlocks) animateBlocks.forEach(function(block) { block.startAnimate(); });
+      var hideBlocks = state.hideBlocks[self.currLevel + 1];
+      var showBlocks = state.showBlocks[self.currLevel + 1];
+      var animateBlocks = state.animateBlocks[self.currLevel + 1];
+      if (hideBlocks) hideBlocks.forEach(function (block) { block.hide(false); });
+      if (showBlocks) showBlocks.forEach(function (block) { block.show(false); });
+      if (animateBlocks) animateBlocks.forEach(function (block) { block.startAnimate(); });
     }
 
     // Go backward
@@ -3481,13 +3513,13 @@ sfig.down = function(x) { return x * sfig.downSign; };
       var hideBlocks = state.hideBlocks[self.currLevel];
       var showBlocks = state.showBlocks[self.currLevel];
       var animateBlocks = state.animateBlocks[self.currLevel];
-      if (hideBlocks) hideBlocks.forEach(function(block) { block.show(true); });
-      if (showBlocks) showBlocks.forEach(function(block) { block.hide(true); });
-      if (animateBlocks) animateBlocks.forEach(function(block) { block.resetAnimate(); });
+      if (hideBlocks) hideBlocks.forEach(function (block) { block.show(true); });
+      if (showBlocks) showBlocks.forEach(function (block) { block.hide(true); });
+      if (animateBlocks) animateBlocks.forEach(function (block) { block.resetAnimate(); });
     }
   }
 
-  Presentation.prototype.slideIdToSlideIndex = function(slideId) {
+  Presentation.prototype.slideIdToSlideIndex = function (slideId) {
     for (var i = 0; i < this.slides.length; i++) {
       if (this.slides[i].id().get() == slideId)
         return i;
@@ -3496,24 +3528,24 @@ sfig.down = function(x) { return x * sfig.downSign; };
     return 0;
   }
 
-  Presentation.prototype.setSlideIdAndLevel = function(slideId, level, callback) {
+  Presentation.prototype.setSlideIdAndLevel = function (slideId, level, callback) {
     var self = this;
     var slideIndex = this.slideIdToSlideIndex(slideId);
-    this.setSlideIndexAndLevel(slideIndex, level, function() {
+    this.setSlideIndexAndLevel(slideIndex, level, function () {
       self.updateUrlParams();
       callback();
     });
   }
 
-  Presentation.prototype.setSlideIndexAndLevel = function(slideIndex, level, callback) {
+  Presentation.prototype.setSlideIndexAndLevel = function (slideIndex, level, callback) {
     var self = this;
-    this.setSlideIndex(slideIndex, function() {
+    this.setSlideIndex(slideIndex, function () {
       self.setLevel(level);
       callback();
     });
   }
 
-  Presentation.prototype.updateUrlParams = function() {
+  Presentation.prototype.updateUrlParams = function () {
     var self = this;
     var slide = this.slides[this.currSlideIndex];
     if (slide.id().exists()) {
@@ -3531,7 +3563,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   // When file initially loads, jump to the right place.
-  Presentation.prototype.setSlideIndexAndLevelFromUrlParams = function(params, callback) {
+  Presentation.prototype.setSlideIndexAndLevelFromUrlParams = function (params, callback) {
     var slideIndex = parseInt(params.slideIndex);
     if (slideIndex == null || !isFinite(slideIndex)) slideIndex = 0;
     var slideId = params.slideId;
@@ -3540,7 +3572,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     if (level == null || !isFinite(level)) level = 0;
 
     // Notify slide of URL changes before setting the slide
-    var slide = this.slides[Math.min(slideIndex, this.slides.length-1)];
+    var slide = this.slides[Math.min(slideIndex, this.slides.length - 1)];
     if (slide != null) {
       var onUpdateUrlParams = slide.onUpdateUrlParams().get();
       if (onUpdateUrlParams) {
@@ -3568,16 +3600,16 @@ sfig.down = function(x) { return x * sfig.downSign; };
 
   // Allow communication of urlParams to other windows that have the same slide
   // presentation open (to allow for speaker notes).
-  sfig_.sendUrlParams = function() {
+  sfig_.sendUrlParams = function () {
     localStorage.setItem('urlParams', JSON.stringify(sfig_.urlParams));
   }
-  sfig_.receiveUrlParams = function() {
+  sfig_.receiveUrlParams = function () {
     return JSON.parse(localStorage.getItem('urlParams'));
   }
 
-  Presentation.prototype.run = function(callback) {
+  Presentation.prototype.run = function (callback) {
     var self = this;
-    if (callback == null) callback = function() {};
+    if (callback == null) callback = function () { };
 
     if (sfig_.urlParams.defaultMouseShowHide) {
       sfig.setLaserPointerCursor();
@@ -3588,18 +3620,23 @@ sfig.down = function(x) { return x * sfig.downSign; };
       // presentation is keyed by the file path, so if the same path
       // (e.g., index.html) is used for multiple presentations,
       // there will be conlicts but only while you're presenting.
-      let {slideIndex, slideId} = sfig_.receiveUrlParams();
-      // Show next slide after that (which could be notes or the
-      // next slide) so that we're ready.
+      var remote = sfig_.receiveUrlParams();
+      if (!remote) return;
+
+      let { slideIndex, slideId, level } = remote;
+      var offset = sfig_.urlParams.listen == 'slide' ? 0 : 1;
+      var targetLevel = offset == 0 ? level : null;
+
       if (slideId) {
-        slideIndex = prez.slideIdToSlideIndex(slideId) + 1;
+        slideIndex = prez.slideIdToSlideIndex(slideId) + offset;
         if (slideIndex < prez.slides.length) {
           slideId = prez.slides[slideIndex].id().get();
-          self.setSlideIdAndLevel(slideId, null, callback);
+          self.setSlideIdAndLevel(slideId, targetLevel, callback);
         }
-      } else if (slideIndex) {
-        slideIndex = slideIndex + 1;
-        self.setSlideIndexAndLevel(slideIndex, null, callback);
+      } else if (slideIndex != null) {
+        slideIndex = parseInt(slideIndex) + offset;
+        if (slideIndex < prez.slides.length)
+          self.setSlideIndexAndLevel(slideIndex, targetLevel, callback);
       }
     }
     if (sfig_.urlParams.listen) {
@@ -3609,7 +3646,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     if (this.slides.length == 0) sfig.throwException('No slides');
     if (!sfig_.initialized) sfig.throwException('Must call sfig.initialize() first');
 
-    sfig_.performOperation('Presentation.run', function(modifiedCallback) {
+    sfig_.performOperation('Presentation.run', function (modifiedCallback) {
       var mode = sfig_.getDisplayMode();
       if (sfig_.DISPLAYMODES_PRINT.indexOf(mode) != -1)
         self.displayPrinterFriendly(null, modifiedCallback);
@@ -3618,10 +3655,10 @@ sfig.down = function(x) { return x * sfig.downSign; };
       else if (mode == sfig_.DISPLAYMODE_FULLSCREEN || mode == sfig_.DISPLAYMODE_DEFAULT)
         self.displaySlideShow(null, modifiedCallback);
       else
-        sfig.throwException('Invalid mode: '+mode);
+        sfig.throwException('Invalid mode: ' + mode);
     }, callback);
 
-    window.onhashchange = function() {
+    window.onhashchange = function () {
       // If changed externally (not reflected by sfig_.urlHash), then force refresh.
       // This happens when user presses back or forward.
       if (window.location.hash != sfig_.urlHash) {
@@ -3631,14 +3668,14 @@ sfig.down = function(x) { return x * sfig.downSign; };
           window.location.reload();  // Need to reload the whole page
         } else {
           // Just change slides
-          self.setSlideIndexAndLevelFromUrlParams(sfig_.urlParams, function() { });
+          self.setSlideIndexAndLevelFromUrlParams(sfig_.urlParams, function () { });
         }
       }
     }
   }
 
   // Don't render(), but just display text - quick way to see all the content in a searchable way
-  Presentation.prototype.displayOutline = function(container, callback) {
+  Presentation.prototype.displayOutline = function (container, callback) {
     var self = this;
 
     // Body
@@ -3659,7 +3696,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
         if (childDivs.length == 0) return null;
         if (childDivs.length == 1 && compressUnaries) return childDivs[0];
         var div = sfig_.newElem('ul');
-        childDivs.forEach(function(childDiv) {
+        childDivs.forEach(function (childDiv) {
           var li = sfig_.newElem('li');
           li.appendChild(childDiv);
           div.appendChild(li);
@@ -3674,7 +3711,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
       div.style.margin = 10;
 
       var title = sfig_.newElem('a');
-      title.innerHTML = ('Slide ' + i + (slide.title && slide.title().get() ? ': '+slide.title().get() : '')).bold();
+      title.innerHTML = ('Slide ' + i + (slide.title && slide.title().get() ? ': ' + slide.title().get() : '')).bold();
       var newParams = sfig_.mergeInto({}, sfig_.urlParams);
       newParams.slideIndex = i;
       newParams.level = null;
@@ -3691,7 +3728,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   // Works well in Chrome, not Firefox
-  Presentation.prototype.displayPrinterFriendly = function(container, callback) {
+  Presentation.prototype.displayPrinterFriendly = function (container, callback) {
     var self = this;
 
     // Body
@@ -3707,7 +3744,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
         if (callback) callback();
         return;
       }
-      self.setSlideIndexAndLevel(i, sfig_.maxLevel, function() {
+      self.setSlideIndexAndLevel(i, sfig_.maxLevel, function () {
         i++;
         //self.container.appendChild(document.createTextNode(' '));
         process();
@@ -3720,7 +3757,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
 
   // Works well in Firefox, not Chrome
   // container (if null, default to body): where to put the presentation
-  Presentation.prototype.displaySlideShow = function(container, callback) {
+  Presentation.prototype.displaySlideShow = function (container, callback) {
     var self = this;
 
     // Create new container and add it to the body if doesn't exist
@@ -3736,8 +3773,8 @@ sfig.down = function(x) { return x * sfig.downSign; };
     self.setSlideIndexAndLevelFromUrlParams(sfig_.urlParams, callback);
   }
 
-  Presentation.prototype.refresh = function(callback) {
-    if (callback == null) callback = function() {};
+  Presentation.prototype.refresh = function (callback) {
+    if (callback == null) callback = function () { };
 
     // Force reload
     var slide = this.slides[this.currSlideIndex];
@@ -3747,33 +3784,33 @@ sfig.down = function(x) { return x * sfig.downSign; };
     this.setSlideIndexAndLevel(this.currSlideIndex, this.currLevel, callback);
   }
 
-  Presentation.prototype.serialize = function() {
+  Presentation.prototype.serialize = function () {
     console.log(new XMLSerializer().serializeToString(document));
   }
 
   // Do nothing
   if (!sfig.serverSide) {
-    Presentation.prototype.writePdf = function() { }
+    Presentation.prototype.writePdf = function () { }
   }
 
-  sfig.presentation = function(rootBlock, container) { return new sfig.Presentation(rootBlock, container); }
+  sfig.presentation = function (rootBlock, container) { return new sfig.Presentation(rootBlock, container); }
 })();
 
 ////////////////////////////////////////////////////////////
 // Main entry point for sfig.
 
-(function() {
+(function () {
   sfig_.latexMacros = {};
-  sfig.latexMacro = function(name, arity, body) {
+  sfig.latexMacro = function (name, arity, body) {
     if (sfig_.initialized) sfig.throwException('Can\'t add Latex macros after initialized');
     sfig_.latexMacros[name] = [arity, body];
   }
 
   // Basic text formatting
-  sfig.bold = function(s) { return s.bold(); }
-  sfig.italics = function(s) { return s.italics(); }
-  sfig.tt = function(s) { return '<tt>' + s + '</tt>'; }
-  sfig.sc = function(x) { return '<span style="font-variant:small-caps">' + x + '</span>'; }
+  sfig.bold = function (s) { return s.bold(); }
+  sfig.italics = function (s) { return s.italics(); }
+  sfig.tt = function (s) { return '<tt>' + s + '</tt>'; }
+  sfig.sc = function (x) { return '<span style="font-variant:small-caps">' + x + '</span>'; }
 
   // Colors logic: user will specify colors in HTML: 'red', 'rgb(255,0,0)', or '#ff0000'
   // Need to convert this string into a canonical form:
@@ -3811,7 +3848,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     foo: '#FF0000',
   };
   // Return the RGB value corresponding to a color.
-  sfig._getRGB = function(color) {
+  sfig._getRGB = function (color) {
     if (color in sfig._colorMap) color = sfig._colorMap[color];
 
     // Match hex
@@ -3833,40 +3870,40 @@ sfig.down = function(x) { return x * sfig.downSign; };
 
     sfig.throwException('Invalid color: ' + s);
   }
-  sfig._canonicalColor = function(color) {
+  sfig._canonicalColor = function (color) {
     var rgb = sfig._getRGB(color);
     if (sfig.serverSide)
-      return 'rgb,1:red,' + (rgb[0]/255) + ';green,' + (rgb[1]/255) + ';blue,' + (rgb[2]/255);
+      return 'rgb,1:red,' + (rgb[0] / 255) + ';green,' + (rgb[1] / 255) + ';blue,' + (rgb[2] / 255);
     else
       return 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
   }
-  sfig.colorLatexMacro = function(name, color) {
+  sfig.colorLatexMacro = function (name, color) {
     var colorCmd = sfig.serverSide ? 'textcolor' : 'color';
     var color = sfig._canonicalColor(color);
-    sfig.latexMacro(name, 1, '{\\'+colorCmd+'{'+color+'}{#1}}');
+    sfig.latexMacro(name, 1, '{\\' + colorCmd + '{' + color + '}{#1}}');
   }
 
   // Define convenient macros and functions for the common colors
-  function colorFunc(color) { return function(x) { return x.toString().fontcolor(color); } }
-  function colorBoldFunc(color) { return function(x) { return x.toString().fontcolor(color).bold(); } }
-  function colorItalicsFunc(color) { return function(x) { return x.toString().fontcolor(color).italics(); } }
+  function colorFunc(color) { return function (x) { return x.toString().fontcolor(color); } }
+  function colorBoldFunc(color) { return function (x) { return x.toString().fontcolor(color).bold(); } }
+  function colorItalicsFunc(color) { return function (x) { return x.toString().fontcolor(color).italics(); } }
   for (var name in sfig._colorMap) {
     var color = sfig._colorMap[name];
     sfig.colorLatexMacro(name, color);
     sfig[name] = colorFunc(color);
-    sfig[name+'bold'] = colorBoldFunc(color);
-    sfig[name+'italics'] = colorItalicsFunc(color);
+    sfig[name + 'bold'] = colorBoldFunc(color);
+    sfig[name + 'italics'] = colorItalicsFunc(color);
   }
 
   // Note: this requires cross origin scripting
   // For Chrome, either of the following will do the trick:
   //   google-chrome -–allow-file-access-from-files
   //   google-chrome --disable-web-security
-  sfig.readFile = function(path) {
+  sfig.readFile = function (path) {
     sfig.L('readFile: ' + path);
     var request = new XMLHttpRequest();
     var response = null;
-    request.onload = function() {
+    request.onload = function () {
       response = this.responseText;
     }
     request.open('GET', path, false);
@@ -3874,11 +3911,11 @@ sfig.down = function(x) { return x * sfig.downSign; };
     return response;
   }
 
-  sfig.includeLatex = function(path) {
+  sfig.includeLatex = function (path) {
     sfig.readFile(path).split(/\n/).forEach(sfig.parseLatex);
   }
 
-  sfig.parseLatex = function(line) {
+  sfig.parseLatex = function (line) {
     line = line.replace(/%.*$/, '');
     line = line.replace(/^\s+/, '').replace(/\s+$/, '');
     if (line == '') return;
@@ -3890,7 +3927,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     sfig.throwException('Invalid LaTeX: ' + line);
   }
 
-  sfig_.includeScript = function(src) {
+  sfig_.includeScript = function (src) {
     var head = document.head;
     var script = sfig_.newElem('script');
     script.src = src;
@@ -3899,7 +3936,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     return script;
   }
 
-  sfig_.includeStylesheet = function(href) {
+  sfig_.includeStylesheet = function (href) {
     var head = document.head;
     var css = sfig_.newElem('link');
     css.setAttribute('rel', 'stylesheet');
@@ -3908,7 +3945,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     return css;
   }
 
-  sfig.getInternalDir = function() {
+  sfig.getInternalDir = function () {
     // Hack: find where this file (sfig.js) is.
     // Assume the external directory is one level down.
     var scripts = document.getElementsByTagName('script');
@@ -3921,7 +3958,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     return parentDir;
   }
 
-  sfig.initialize = function() {
+  sfig.initialize = function () {
     if (sfig.serverSide) return;
 
     sfig_.parseUrlParamsFromLocation();
@@ -3940,7 +3977,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     sfig_.initialized = true;
   }
 
-  sfig_.initMathJax = function(scriptLocation, fallbackScriptLocation) {
+  sfig_.initMathJax = function (scriptLocation, fallbackScriptLocation) {
     var script = sfig_.includeScript(scriptLocation);
     var buf = '';
     buf += 'MathJax.Hub.Config({';
@@ -3969,18 +4006,18 @@ sfig.down = function(x) { return x * sfig.downSign; };
     script.innerHTML = buf;
 
     // If fail, try the fallback location
-    script.onerror = function() {
+    script.onerror = function () {
       sfig.L('Failed to load ' + scriptLocation + ', trying ' + fallbackScriptLocation);
       if (fallbackScriptLocation)
         sfig_.initMathJax(fallbackScriptLocation, null);
     }
   }
 
-  sfig_.currPresentationName = function() {
+  sfig_.currPresentationName = function () {
     return window.location.pathname.match(/\/([^\/]+)\.html/)[1];
   }
 
-  sfig_.goToPresentation = function(name, slideId, level, newWindow, extraUrlParams) {
+  sfig_.goToPresentation = function (name, slideId, level, newWindow, extraUrlParams) {
     var urlParams = newWindow ? sfig_.mergeInto({}, sfig_.urlParams) : sfig_.urlParams;
     urlParams.slideIndex = null;
     urlParams.slideId = slideId;
@@ -3988,7 +4025,7 @@ sfig.down = function(x) { return x * sfig.downSign; };
     if (extraUrlParams) mergeInto(urlParams, extraUrlParams);
 
     // name is the filename (without the html extension) of the sfig presentation to go to.
-    var pathname = window.location.pathname.replace(/\/[^\/]+\.html/, '/'+name+'.html');
+    var pathname = window.location.pathname.replace(/\/[^\/]+\.html/, '/' + name + '.html');
     var urlHash = sfig_.serializeUrlParams(urlParams);
     var url = pathname + urlHash;
     if (newWindow)
@@ -3998,15 +4035,15 @@ sfig.down = function(x) { return x * sfig.downSign; };
   }
 
   // Create a figure from |block| and render it into |container|.
-  sfig.figure = function(block, container) {
+  sfig.figure = function (block, container) {
     if (sfig.isString(container)) container = document.getElementById(container);
-    var prez = sfig.presentation({initKeys: false});
+    var prez = sfig.presentation({ initKeys: false });
     prez.addSlide(block);
     prez.displayPrinterFriendly(container);
   }
 
   // Call this function to include another file
-  sfig.includeFileFromArgs = function() {
+  sfig.includeFileFromArgs = function () {
     if (sfig.serverSide) {
       // This branch is not really used
       var path = process.argv[2];

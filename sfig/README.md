@@ -31,6 +31,8 @@ MathJax for rendering math offline) by typing:
 When you're going to give a presentation:
 * Type 'shift-f' to toggle between full screen mode.
 * Type 'shift-r' to pre-render all the slides.
+* Type 'shift-n' to enter listen mode (extended displya)
+* The laptop listener is also a remote controller, and Shift+N toggles slide vs. prose while remaining tethered.
 
 Currently, sfig has been tested with Chrome 21 and Firefox 15 on Linux and both
 work, although the math and animations work much better in Firefox due to a bug
