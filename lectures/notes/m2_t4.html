@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>From data and objectives to model behavior | Stanford CS120</title>
+  <meta name="description" content="From data and objectives to model behavior — CS120, Autumn 2026.">
+  <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/lectures/notes/m2_t4.html">
+  <link rel="stylesheet" href="../materials.css">
+  
+<script>
+window.MathJax = {
+  tex: {inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']]},
+  options: {ignoreHtmlClass: '.*', processHtmlClass: 'arithmatex'}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><a href="../../index.html">Stanford CS120 · Autumn 2026</a></header>
+<main id="main">
+  <nav aria-label="Course materials">
+    <a href="../../lectures/index.html">All course materials</a> ·
+    <a href="../../lectures/notes/index.html">Course notes</a>
+  </nav>
+  <h1>From data and objectives to model behavior</h1>
+  <p class="meta">Class meeting: 2026-10-01</p>
+  <article>
+<p><strong>Module 2: From data and objectives to model behavior</strong></p>
+<p><img alt="Course sequence through Modules 2–5, with Module 2, Model behavior, boxed." src="images/course-progression-m2.svg" /></p>
+<p>In <a href="https://stanford-cs120.github.io/fall2026/lectures/notes/m1_t1.html">Module 1</a>, we introduced the AI Safety problem, methods for identifying a system and its potential to become hazardous, and what evidence would support an assurance claim. We now turn our attention towards learned predictors as components of those systems. The technical focus here is narrow: we are looking at how a predictor's behavior is shaped by its development system. The safety analysis is going to be broader: we will ask how the predictor's behavior can contribute to harm scenarios in the system.</p>
+<p><strong>The classical machine-learning pipeline.</strong></p>
+<p>Machine learning is the process of turning data into a model. After learning a model, inference can convert inputs into predictions for downstream tasks. This is an intentionally narrow system boundary, but as will be seen, the setting is rich enough to illustrate several key ideas in hazard analysis and assurance. </p>
+<p><img alt="A reflex-based model: input x passes through predictor f to produce output y." src="images/reflex-based-model.svg" /></p>
+<p><em>Diagram adapted from <a href="https://stanford-cs221.github.io/spring2026/modules/module.html#include=machine-learning%2Flecture1.js&amp;slideId=reflex-based-models&amp;level=0">CS221: Reflex-based models</a>.</em></p>
+<p>A <strong>reflex-based model</strong> is interchangeable with a <strong>predictor</strong> function <span class="arithmatex">\(f\)</span> that takes some input <span class="arithmatex">\(x\)</span> and produces an output <span class="arithmatex">\(y.\)</span> The input can represent something simple like a timestamp, or more complicated like a string or an image. However, the output <span class="arithmatex">\(y\)</span> is structured and determines the type of prediction task.</p>
+<p>One of the simplest prediction tasks is binary classification. We sample inputs <span class="arithmatex">\(x \sim X\)</span> from a population distribution <span class="arithmatex">\(X\)</span> and feed them into the predictor <span class="arithmatex">\(f(x) \in \{-1,+1\}\)</span>, which returns a binary label. This simple prediction task can be used for anomaly detection, filtering toxic comments, or classifying input types, e.g., vegetable vs. fruit.</p>
+<p>We call the space of possible predictors <span class="arithmatex">\(\mathcal{H}\)</span> the hypothesis class and search it using a loss function and an optimization algorithm.</p>
+<p>In this course, a particularly compelling prediction task is <em>pairwise preference classification</em>. The input is a pair <span class="arithmatex">\((x,z)\)</span>, and the goal is to predict which of the two alternatives is preferred.</p>
+<p><strong>A Preference Learning Example.</strong></p>
+<p>To make the prediction problem concrete we will walk through problem formulation, model specification, learning, and inference. We will also introduce and analyze one hypothetical food-ordering system through the four Systems-Theoretic Process Analysis (STPA) stages from Module 1.</p>
+<p>Here is the prediction problem. Fix one customer. Let <span class="arithmatex">\(x\)</span> and <span class="arithmatex">\(z\)</span> represent two food alternatives, with features that can represent food type, freshness, etc. Labels record this customer's choices in binary-choice experiments. If <span class="arithmatex">\(x=\text{Apple}\)</span> and <span class="arithmatex">\(z=\text{Spinach}\)</span>, let <span class="arithmatex">\(y=-1\)</span> denote selection of <span class="arithmatex">\(x\)</span> and <span class="arithmatex">\(y=+1\)</span> selection of <span class="arithmatex">\(z\)</span>. Here the intended construct is a preference between food types at comparable freshness. Note that comparisons may instead confound food type with freshness. </p>
+<p><strong>STPA stage 1: purpose, harm, hazard, and boundary.</strong></p>
+<p>We assume the food-ordering service uses the predictor to purchase one of the two available foods for the customer. In deployment, both options have the same price and comparable, acceptable freshness. The customer interface has delegated routine ordering that does not confirm each purchase. The analysis here is scoped to unwanted spending, setting aside food hygiene, dietary restrictions, and changes in preference during an ordering episode.</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Specification for the food-ordering example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Purpose</td>
+<td>Learn how preference predictions contribute to unwanted purchasing and what could prevent or limit this from happening.</td>
+</tr>
+<tr>
+<td>Harm <span class="arithmatex">\(L_F\)</span></td>
+<td>The customer is charged for the alternative they would reject in favor of the other.</td>
+</tr>
+<tr>
+<td>Hazard <span class="arithmatex">\(H_F\)</span></td>
+<td>A predicted choice can become a nonrefundable purchase without an effective opportunity for the customer to confirm or correct it.</td>
+</tr>
+<tr>
+<td>Safety constraint <span class="arithmatex">\(SC_F\)</span></td>
+<td>Prevent nonrefundable purchase of an order that would contradict the customer's intended choice.</td>
+</tr>
+<tr>
+<td>Analysis boundary</td>
+<td>The predictor, ordering rule, merchant order-and-charge process, and customer notification/correction loop.</td>
+</tr>
+</tbody>
+</table>
+<p>Here and below, <span class="arithmatex">\(L_F\)</span>, <span class="arithmatex">\(H_F\)</span>, and <span class="arithmatex">\(SC_F\)</span> denote this example's harm, hazard, and safety constraint. The hazard is an upstream condition rather than the charge itself. For example, this hazard does not create a harm if the prediction matches the customer's intended choice.</p>
+<p><strong>STPA stage 2: model the control structure.</strong></p>
+<p>The <strong>ordering controller</strong> consists of the preference predictor and a fixed ordering rule. Its working information consists of a predicted customer choice and the merchant's reported order status. It can submit an order or request cancellation. The <strong>controlled process</strong> is the merchant's order-and-charge process. Submission initiates that process; commitment is the point at which its charge becomes nonrefundable.</p>
+<p><img alt="Food-ordering control structure. Development data and fitting sit above the deployed system. The ordering controller contains the preference predictor and ordering rule; it commands the merchant process and exchanges notices and corrections with the customer." src="images/food-ordering-control.svg" /></p>
+<p><em>Baseline control structure; customer confirmation before purchase is not yet a control.</em></p>
+<p>In this basic design, the rule submits the predicted choice automatically. If the merchant commits the purchase before the customer receives notice, a later correction cannot prevent the charge.</p>
+<p><strong>Learning the predictor inside this system.</strong></p>
+<p>We use a train-test split. Suppose there is a source distribution <span class="arithmatex">\(S\)</span> over pairwise preference examples, from which we can sample independent and identically distributed (i.i.d.) observations <span class="arithmatex">\((x,z,y)\sim S\)</span>. We draw a collection of samples to construct a training set <span class="arithmatex">\(S_{\mathrm{train}}\)</span>, and separately draw a test set <span class="arithmatex">\(S_{\mathrm{test}}\)</span> that will be used to evaluate the trained model.</p>
+<p>Suppose each alternative is represented in a common feature space, <span class="arithmatex">\(x,z\in\mathbb{R}^k\)</span>, and consider a Bradley-Terry model with parameter <span class="arithmatex">\(\theta\in \Theta\)</span> where <span class="arithmatex">\(\Theta := \mathbb{R}^k\)</span>. Therefore, the hypothesis space satisfies</p>
+<div class="arithmatex">\[
+\mathcal{H}_{\text{pref}} = \lbrace (x,z) \mapsto \text{Pr}_{\theta}(y | x,z) :\theta \in \Theta \rbrace.
+\]</div>
+<p>The model assigns each alternative a score <span class="arithmatex">\(\theta^\top x\)</span>, and models the probability that <span class="arithmatex">\(x\)</span> is preferred to <span class="arithmatex">\(z\)</span> as</p>
+<div class="arithmatex">\[
+\Pr_\theta(x\succ z\mid x,z)
+=
+\frac{e^{\theta^\top x}}
+     {e^{\theta^\top x}+e^{\theta^\top z}},
+\qquad
+\Pr_\theta(z\succ x\mid x,z)
+=
+\frac{e^{\theta^\top z}}
+     {e^{\theta^\top x}+e^{\theta^\top z}}.
+\]</div>
+<p>Under our label convention, <span class="arithmatex">\(y=-1\)</span> corresponds to <span class="arithmatex">\(x\succ z\)</span> and <span class="arithmatex">\(y=+1\)</span> corresponds to <span class="arithmatex">\(z\succ x\)</span>. This allows a compact expression for the comparison likelihood</p>
+<div class="arithmatex">\[
+\Pr_\theta(y\mid x,z)
+=
+\frac{1}{1+\exp\!\left(y\,\theta^\top(x-z)\right)}.
+\]</div>
+<p>Assuming the training examples are i.i.d., the likelihood of the observed training data is</p>
+<div class="arithmatex">\[
+\mathcal{L}(\theta)
+=
+\prod_{(x,z,y)\in S_{\mathrm{train}}}
+\Pr_\theta(y\mid x,z),
+\]</div>
+<p>and the maximum-likelihood estimator is</p>
+<div class="arithmatex">\[
+\hat{\theta}
+=
+\arg\max_{\theta}\mathcal{L}(\theta).
+\]</div>
+<p>Equivalently, it is often more convenient to maximize the log-likelihood,</p>
+<div class="arithmatex">\[
+\hat{\theta}
+=
+\arg\max_{\theta}
+\sum_{(x,z,y)\in S_{\mathrm{train}}}
+\log \Pr_\theta(y\mid x,z).
+\]</div>
+<p>Then we can abstract the particular likelihood, normalize, and obtain</p>
+<div class="arithmatex">\[
+\ell(\theta; x, z, y) = - \log \text{Pr}_\theta(y | x, z),
+\]</div>
+<div class="arithmatex">\[
+\hat R_{\mathrm{train}}(\theta)
+=
+\frac{1}{|S_{\mathrm{train}}|}
+\sum_{(x,z,y)\in S_{\mathrm{train}}}
+\ell(\theta; x, z, y),
+\]</div>
+<p>and therefore</p>
+<div class="arithmatex">\[
+\hat{\theta}
+=
+\arg\min_{\theta}
+\hat R_{\mathrm{train}}(\theta).
+\]</div>
+<p>Since the objective is differentiable with respect to the model parameters, gradient descent is a popular algorithm. Finally, once we have a fixed model <span class="arithmatex">\(\hat \theta\)</span> we can use it to generate preference classifications. There are many ways to convert a probability into a concrete decision <span class="arithmatex">\(\hat y(x,z) \in \lbrace -1, +1\rbrace\)</span>. For example,</p>
+<div class="arithmatex">\[
+\hat y(x, z) = \begin{cases} 
+-1 \quad \text{if } \hat \theta^T x \ge \hat \theta^T z, \\
++1 \quad \text{otherwise.}
+\end{cases}
+\]</div>
+<p>picks the option with the highest predicted probability, breaking ties in favor of <span class="arithmatex">\(x\)</span>. This is a prediction; the ordering rule separately turns it into a purchase instruction.</p>
+<p><strong>STPA stage 3: identify an unsafe control action.</strong></p>
+<p>The ordering controller submits an order for <span class="arithmatex">\(x\)</span> when the customer's intended choice is <span class="arithmatex">\(z\)</span>, while the order can become nonrefundable before the customer can correct it. Generalization and stress testing will provide evidence about the predictor's contribution. The next stage will connect that behavior to the rest of the control structure.</p>
+<p><strong>Generalization as an assurance claim.</strong></p>
+<p>Learning gives us a predictor <span class="arithmatex">\(\hat \theta\)</span>, but it does not by itself tell us whether that predictor will behave well on inputs that were not sampled during training. This is the role of <em>generalization</em>.</p>
+<p>For this section, evaluate classifications using bounded zero-one loss,</p>
+<div class="arithmatex">\[
+\ell(\theta;x,z,y)=\ell_{01}(\hat y_\theta(x,z),y)
+=1\lbrace\hat y_\theta(x,z)\neq y\rbrace,
+\]</div>
+<p>where <span class="arithmatex">\(\hat y_\theta\)</span> is the inference rule with parameters <span class="arithmatex">\(\theta\)</span>. This evaluation loss differs from the log loss optimized during fitting. The training, test, and population risks in this section all use this same evaluation loss.</p>
+<p>As described so far, the loss of the predictor on the training set is</p>
+<div class="arithmatex">\[
+\hat R_{\mathrm{train}}(\hat\theta).
+\]</div>
+<p>However, this does not directly tell us anything about the expected loss on the source distribution</p>
+<div class="arithmatex">\[
+R_S(\theta) = \mathbb{E}_{(x,z,y) \sim S}[ \ell(\theta; x, z, y)],
+\]</div>
+<p>which we call the population risk. Since <span class="arithmatex">\(S\)</span> is something we can only sample, we instead use <span class="arithmatex">\(S_{\mathrm{test}}\)</span> to estimate this quantity:</p>
+<div class="arithmatex">\[
+\hat R_{\mathrm{test}}(\hat\theta)
+=
+\frac{1}{|S_{\mathrm{test}}|}
+\sum_{(x,z,y)\in S_{\mathrm{test}}}
+\ell(\hat\theta;x,z,y).
+\]</div>
+<p>We cannot use <span class="arithmatex">\(\hat R_{\mathrm{train}}\)</span> directly in the same way because <span class="arithmatex">\(\hat \theta\)</span> depends on the training data. Indeed, that's how we obtained the model in the first place! A related statement can sometimes be made using <span class="arithmatex">\(S_{\mathrm{train}}\)</span>, but that requires a separate statistical learning argument about the learning procedure and hypothesis class. However, assuming the test samples really are i.i.d. from <span class="arithmatex">\(S\)</span>, are independent of the learned predictor, and the evaluation loss is bounded, then <span class="arithmatex">\(\hat R_{\mathrm{test}}\)</span> will estimate <span class="arithmatex">\(R_S(\hat \theta)\)</span> once <span class="arithmatex">\(|S_{\mathrm{test}}|\)</span> is sufficiently large.</p>
+<p>Taking the simplest train-test split as the implementation we can now produce the assurance claim:</p>
+<div class="arithmatex">\[
+\boxed{
+\text{independent test samples from }S
++
+\text{good test performance}
+\quad\Longrightarrow\quad
+\text{evidence of good performance on future samples from }S
+}
+\]</div>
+<p><strong>What does this establish in the ordering system?</strong> The model-level claim is about predictions under the population distribution. Connecting model error to the harm <span class="arithmatex">\(L_F\)</span> also requires assumptions about the labels and control structure. Under these assumptions the zero-one population error rate equals the probability of <span class="arithmatex">\(L_F\)</span> per order.</p>
+<p>Note this is not a claim that the assumptions hold for our development data. The actual ordering conditions may be different or an effective confirmation step would change what can be prevented. Freshness-confounded comparisons may not represent the intended ordering conditions. Finally, the loss <span class="arithmatex">\(\ell\)</span> is entirely distinct from the potential harms <span class="arithmatex">\(L_F\)</span>. Even when population risk measures the probability of that harm, it does not by itself establish its (monetary) severity or whether the risk is acceptable given the intended (number of orders) exposure.</p>
+<p><strong>STPA stage 4: identify a harm scenario.</strong></p>
+<p>A freshness shortcut could contribute to an unwanted purchase in four steps:</p>
+<ol>
+<li>Development comparisons confound food type with freshness, allowing the freshness-based rule to perform well on recorded choices.</li>
+<li>In an ordering episode, both foods are fresh and the customer would choose spinach. The pair is presented as <span class="arithmatex">\(x=\text{Apple}\)</span> and <span class="arithmatex">\(z=\text{Spinach}\)</span>. The freshness-based predictor ties and returns <span class="arithmatex">\(\hat y=-1\)</span>.</li>
+<li>The ordering rule uses that output to submit an apple order: an unsafe control action occurs.</li>
+<li>The merchant commits the nonrefundable charge before the customer receives the notice. The customer's later correction cannot prevent <span class="arithmatex">\(L_F\)</span>.</li>
+</ol>
+<p>The scenario combines a development-data relationship, a learned prediction rule, an automatic control action, and ineffective feedback timing.</p>
+<p><strong>From the scenario to requirements and evidence.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Proposed requirement</th>
+<th>Evidence to seek</th>
+<th>What that evidence would not establish alone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Limit prediction error under the given ordering conditions to a justified tolerance.</td>
+<td>Independent labeled comparisons under those conditions, with evaluation uncertainty reported.</td>
+<td>Correct order execution, effective correction, or the adequacy of the tolerance for the harm and exposure.</td>
+</tr>
+<tr>
+<td>Require explicit customer confirmation; without confirmation, do not allow nonrefundable commitment.</td>
+<td>Log confirmed, rejected, delayed, and missing responses; inspect actual order and charge records.</td>
+<td>That confirmation matches the customer's intended choice.</td>
+</tr>
+</tbody>
+</table>
+<p>The first is a model-level requirement. The second is a proposed system control addressing <span class="arithmatex">\(SC_F\)</span>, not a feature of the baseline system. The stress tests below investigate the model-behavior part of the harm scenario.</p>
+<p><strong>Underspecification.</strong></p>
+<p>We can make this idea of equivalent predictors more precise by considering the set of all predictors that are indistinguishable according to the criterion used by the development pipeline. Define the set of near-optimal population-level predictors:</p>
+<div class="arithmatex">\[
+\mathcal{\Theta}^*_\epsilon
+=
+\left\{
+\theta \in\mathcal{\Theta}:
+R_S(\theta)
+\leq
+\inf_{\hat \theta \in\mathcal{\Theta}} R_S(\hat \theta)+\epsilon
+\right\}.
+\]</div>
+<p>The main point is that good predictive performance may identify a <em>set</em> of acceptable predictors rather than one particular predictor. For underspecification of a specific pipeline, the primary question is which set of predictors that pipeline can return with the same effective validation performance.</p>
+<p>D’Amour et al. describe this in <em>Underspecification presents challenges for credibility in modern machine learning.</em> A machine-learning pipeline is underspecified when it can return multiple distinct, validation-equivalent predictors even when core components of the pipeline specification, such as the model class and training data, are held fixed. This becomes consequential when those predictors differ in application-relevant behavior. In this course, we are concerned with safety-relevant differences among validation-equivalent predictors.</p>
+<p><strong>Testing for consequential underspecification.</strong></p>
+<p>D’Amour et al. propose an empirical strategy based on three common forms of stress testing: stratified, shifted, and contrastive evaluation. These evaluations are intended to probe a behavioral requirement that is not guaranteed by aggregate i.i.d. evaluation. </p>
+<p>Test matched-freshness choice; state the claim, expected result, and untested controls.</p>
+<p>A <strong>stratified evaluation</strong> splits the evaluation population into meaningful subsets and then reports performance on each subset. In the preference learning example, the fruit and vegetable categories would be example subsets. We might also distinguish comparison types: fresh-spoiled, fresh-fresh, spoiled-spoiled, etc. If performance were to be high on the fresh-spoiled subset but significantly lower on matched subsets, this would indicate a relevant gap, not by itself establish freshness use; other subset differences could explain it. Too few matched comparisons require more data. </p>
+<p>A <strong>shifted evaluation</strong> aims to measure performance under some new distribution <span class="arithmatex">\(S' \not = S.\)</span> For example, we might collect labels from the same customer with both foods at comparable, acceptable freshness as required by the task; a different population of users changes another assumption and should be identified separately. The shift supplies evidence about the effect of that particular change. </p>
+<p>A <strong>contrastive evaluation</strong> makes interventions at the item-level and then compares performance with the expected relationship. For example, if food items are represented by photographs, a contrastive evaluation might alter the background while preserving the depicted food and freshness. Because the assumption is that the change has a known anticipated effect, that assumption must be justified; results that violate expectations show sensitivity to the intervention, not proof of the freshness shortcut or downstream harm. </p>
+<p>By comparing predictors produced by repeated runs of the pipeline and varying otherwise incidental choices we can identify consequential underspecification. We might change the random seed used for training with data, model class, and procedure fixed, then run various stress tests. Systematic differences between validation-equivalent predictors on the same stress test, with uncertainty accounted for, then would flag differences insufficiently explained by i.i.d. performance. Well-designed stress tests then allow us to identify meaningful behavioral differences that might otherwise appear incidental. </p>
+<p>Seed changes need not yield different predictors; one failed predictor is insufficient and a negative result constrains only this test. A positive result is a model-level difference, not an unwanted charge or <span class="arithmatex">\(SC_F\)</span>; confirmation control needs separate order-feedback evidence, and changing it can change the finding's safety significance.</p>
+<p>In summary, underspecification asks a pipeline-level assurance question: does the existing evidence constrain the behavior being tested, or does that behavior depend on choices the specification leaves unresolved? A positive finding identifies a gap, but a negative finding only says that particular specification gaps were not exposed.</p>
+<p><strong>Passive versus researcher degrees of freedom.</strong></p>
+<p>Underspecification becomes consequential when the development pipeline leaves important model behaviors unconstrained by its assurance criterion. Once researchers or optimization procedures begin to adapt or repeatedly select according to this criterion, these degrees of freedom can become directions along which optimization pressure acts.</p>
+<p>The general lesson here is that an evaluation criterion does two jobs. First, it produces evidence about the predictor such as performance, generalization, and potential insights into consequential underspecification. Second, when these evaluations are repeatedly used to make development or deployment choices, this use can create optimization pressure that selects the predictor we get. Those two roles should not be confused. Once evaluation results are used for selection, the selected predictor is no longer independent of that evaluation data; the earlier assurance argument therefore requires fresh held-out data or an additional argument accounting for selection.</p>
+<p>[1] D’Amour, Alexander, et al. "Underspecification presents challenges for credibility in modern machine learning." <em>Journal of Machine Learning Research</em> 23.226 (2022): 1-61.</p>
+</article>
+</main>
+<footer>CS120: Introduction to AI Safety · Stanford University</footer>
+</body>
+</html>

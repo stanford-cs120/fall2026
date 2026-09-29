@@ -10,6 +10,11 @@
       "id": "m1_t2",
       "title": "Lecture 2: What is the Object of Assurance?",
       "date": "2026-09-24"
+    },
+    {
+      "id": "m1_t3",
+      "title": "Lecture 3: What counts as an assurance claim?",
+      "date": "2026-09-29"
     }
   ],
   "notes": [
@@ -27,6 +32,11 @@
       "id": "m1_t3",
       "title": "What Counts as an Assurance Claim?",
       "date": "2026-09-25"
+    },
+    {
+      "id": "m2_t4",
+      "title": "From data and objectives to model behavior",
+      "date": "2026-10-01"
     }
   ]
 }

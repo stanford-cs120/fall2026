@@ -508,6 +508,142 @@ G.courseProgressionDiagram = function(currentModule) {
   ).center().ymargin(12).recMouseShowHide(false);
 }
 
+// Food-ordering control structure for note 4 and lecture 4.
+// Slide usage: parentCenter(foodOrderingControlDiagram()).
+// Options: confirmation: true adds a proposed safeguard (not baseline);
+// focus: 'data', 'predictor', 'action', 'feedback', or 'confirmation'.
+// Every variant retains the same node positions and overall geometry.
+G.foodOrderingControlDiagram = function(opts) {
+  opts = opts || {};
+  var focus = opts.focus || null;
+  var allowed = ['data', 'predictor', 'action', 'feedback', 'confirmation'];
+  if (focus !== null && allowed.indexOf(focus) === -1)
+    throw new Error('foodOrderingControlDiagram: unknown focus ' + focus);
+  if (focus === 'confirmation' && !opts.confirmation)
+    throw new Error('Confirmation focus requires confirmation: true');
+
+  var colors = {
+    data: '#666666',
+    action: '#222222',
+    feedback: '#245A81',
+    confirmation: '#793C8C',
+  };
+  var parts = [];
+  function point(x, y) { return [x, sfig.downSign * y]; }
+  function at(block, x, y) {
+    return transform(block).pivot(-1, -1).shift(x, sfig.downSign * y);
+  }
+  function label(message, x, y, size, color) {
+    parts.push(at(nowrapText(message).fontSize(size || 17)
+      .strokeColor(color || '#222222'), x, y));
+  }
+  function box(lines, x, y, width, height, active, size) {
+    parts.push(at(rect(width, height).fillColor(active ? '#F3E8B6' : 'white')
+      .strokeColor(active ? '#333333' : '#777777')
+      .strokeWidth(active ? 2.5 : 1.2), x, y));
+    var contents = ytable.apply(null, lines.map(function(message) {
+      return nowrapText(message).fontSize(size || 19);
+    })).center().ymargin(2);
+    parts.push(transform(contents).pivot(0, 0)
+      .shift(x + width / 2, sfig.downSign * (y + height / 2)));
+  }
+  function segment(a, b, kind, headed, width) {
+    parts.push((headed ? arrow : line)(point(a[0], a[1]), point(b[0], b[1]))
+      .strokeColor(colors[kind]).strokeWidth(width));
+  }
+  function route(points, kind, dashed, isLegend) {
+    var width = !isLegend && focus === kind ? 3.4 : 1.8;
+    for (var i = 1; i < points.length; i++) {
+      var a = points[i - 1], b = points[i];
+      var last = i === points.length - 1;
+      if (!dashed) {
+        segment(a, b, kind, last, width);
+        continue;
+      }
+      // Explicit dash segments work in both browser and TeX renderers.
+      var dx = b[0] - a[0], dy = b[1] - a[1];
+      var length = Math.sqrt(dx * dx + dy * dy);
+      var stop = last ? length - 10 : length;
+      function along(distance) {
+        return [a[0] + dx * distance / length, a[1] + dy * distance / length];
+      }
+      for (var start = 0; start < stop; start += 12)
+        segment(along(start), along(Math.min(start + 7, stop)), kind, false, width);
+      if (last) segment(along(stop), b, kind, true, width);
+    }
+  }
+
+  // Fixed canvas; development is above the deployed ordering-system boundary.
+  parts.push(at(rect(1000, 535).strokeWidth(0).fillColor('white'), 0, 0));
+  parts.push(at(rect(980, 335).strokeWidth(1.8).strokeColor('#555555')
+    .fillOpacity(0), 10, 155));
+  parts.push(at(rect(425, 135).strokeWidth(1.5).strokeColor('#555555')
+    .fillColor('#F6F6F6'), 275, 180));
+
+  // Development, installation, and inference inputs.
+  route([[200, 49], [350, 49]], 'data');
+  route([[380, 78], [380, 225]], 'data');
+  route([[170, 254], [290, 254]], 'data');
+  route([[460, 254], [535, 254]], 'data');
+
+  // Per-order control actions and merchant status feedback.
+  route([[680, 241], [820, 241]], 'action');
+  route([[820, 275], [680, 275]], 'feedback');
+
+  // Baseline notification and correction; neither guarantees timely correction.
+  route([[565, 289], [565, 411]], 'feedback');
+  route([[650, 411], [650, 289]], 'feedback');
+
+  // Proposed request/response paths connect the controller and customer.
+  // They supplement, rather than relabel, the existing notice/correction paths.
+  if (opts.confirmation) {
+    route([[350, 315], [350, 438], [535, 438]], 'confirmation', true);
+    route([[535, 455], [300, 455], [300, 315]], 'confirmation', true);
+  }
+
+  box(['Comparison', 'collection'], 20, 20, 180, 58, focus === 'data', 20);
+  box(['Model fitting', 'and evaluation'], 350, 20, 245, 58, focus === 'data', 20);
+  box(['Available', 'food pair'], 28, 230, 142, 58, false, 20);
+  box(['Preference', 'predictor'], 290, 225, 170, 64, focus === 'predictor', 20);
+  box(['Ordering', 'rule'], 535, 225, 145, 64,
+    focus === 'action' || focus === 'confirmation', 20);
+  box(['Merchant', 'order + charge', 'process'], 820, 219, 155, 76,
+    focus === 'action', 18);
+  box(['Customer'], 535, 411, 145, 60,
+    focus === 'feedback' || focus === 'confirmation', 22);
+
+  label('Pairs and choices', 207, 22, 16, colors.data);
+  label('$(x,z,y)$', 251, 54, 18, colors.data);
+  label('Install $\\hat\\theta$', 392, 102, 18, colors.data);
+  label('(not an order)', 392, 128, 15, colors.data);
+  label('Ordering-system boundary', 25, 165, 17);
+  label('Ordering controller', 438, 188, 19);
+  label('$(x,z)$', 207, 230, 19, colors.data);
+  label('$\\hat y$', 485, 230, 19, colors.data);
+  label('Choice', 476, 266, 14, colors.data);
+  label('Submit / cancel', 691, 218, 16, colors.action);
+  label('Order status', 704, 284, 16, colors.feedback);
+  label('Order notice', 459, 348, 16, colors.feedback);
+  label('Correction /', 662, 342, 16, colors.feedback);
+  label('cancel request', 662, 365, 16, colors.feedback);
+  if (opts.confirmation) {
+    label('Confirm this choice?', 358, 414, 16, colors.confirmation);
+    label('Confirm / reject', 313, 463, 16, colors.confirmation);
+  }
+
+  route([[20, 517], [48, 517]], 'data', false, true);
+  label('Data / installation', 56, 505, 15, colors.data);
+  route([[273, 517], [301, 517]], 'action', false, true);
+  label('Control action', 309, 505, 15, colors.action);
+  route([[455, 517], [483, 517]], 'feedback', false, true);
+  label('Status / notice / correction', 491, 505, 15, colors.feedback);
+  if (opts.confirmation) {
+    route([[717, 517], [745, 517]], 'confirmation', true, true);
+    label('Proposed confirmation', 753, 505, 15, colors.confirmation);
+  }
+  return overlay.apply(null, parts).recMouseShowHide(false);
+}
+
 // Three stages of implementation: modeling -> learning -> inference.
 // opts.subs: three optional captions; opts.select: stage label to highlight.
 G.stagesDiagram = function(opts) {
