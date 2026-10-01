@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proxies and Model-Selection Pressure | Stanford CS120</title>
+  <meta name="description" content="Proxies and Model-Selection Pressure — CS120, Autumn 2026.">
+  <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/lectures/notes/m2_t5.html">
+  <link rel="stylesheet" href="../materials.css">
+  
+<script>
+window.MathJax = {
+  tex: {inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']]},
+  options: {ignoreHtmlClass: '.*', processHtmlClass: 'arithmatex'}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><a href="../../index.html">Stanford CS120 · Autumn 2026</a></header>
+<main id="main">
+  <nav aria-label="Course materials">
+    <a href="../../lectures/index.html">All course materials</a> ·
+    <a href="../../lectures/notes/index.html">Course notes</a>
+  </nav>
+  <h1>Proxies and Model-Selection Pressure</h1>
+  <p class="meta">Class meeting: 2026-10-06</p>
+  <article>
+<p><strong>Module 2: Proxies and model-selection pressure</strong></p>
+<p>In the previous note, we introduced the machine-learning pipeline and discussed a harm scenario where a freshness-based predictor contributes to an unwanted purchase through the ordering rule and the timing of the merchant's payment and customer feedback. We keep the same harm <span class="arithmatex">\(L_F\)</span>, hazard <span class="arithmatex">\(H_F\)</span>, safety constraint <span class="arithmatex">\(SC_F\)</span>, and baseline ordering controller. The discussion of underspecification showed seemingly incidental choices can end up determining which predictor is selected. Selection itself is something already encountered regularly with train-test splits and empirical loss minimization.</p>
+<p>Now we ask how objectives, learning procedure, and development choices can favor particular predictors contributing to undesired selection properties. Let <span class="arithmatex">\(G\)</span> represent the target property and <span class="arithmatex">\(M\)</span> the measured criterion used for selection. The target may be observable, but simply too expensive or underrepresented to be effectively available for evaluation. Recall the food-ordering setting. The intended model-level target is accurate preference prediction for this customer between food types at equal prices and comparable, acceptable freshness, while the development criterion measures prediction of recorded choices, which may confound food type with freshness. A gap here creates the possibility of failure. Achieving this model-level target supports the prediction-quality requirement, but does not by itself establish <span class="arithmatex">\(SC_F\)</span>. As a reminder, failure does not necessarily imply a hazard, and a hazard does not necessarily result in harm. </p>
+<p>What happens when we use a proxy <span class="arithmatex">\(M\)</span> for selection? There are two gaps that we will distinguish. First, its finite-sample measurement may inaccurately estimate the population value of that criterion. This is a generalization problem. In this note we want to distinguish this gap from a second: the criterion may not fully capture the intended construct <em>even when measured accurately.</em> </p>
+<p><strong>Shortcut learning</strong></p>
+<p>Shortcut learning is about what solutions the criterion allows and learning favors [1]. Geirhos et al. articulate this, writing, "Shortcuts are decision rules that perform well on standard benchmarks, but fail to transfer to more challenging testing conditions, such as real-world scenarios." In the context of artificial intelligence (AI) safety, shortcuts are predictive rules that succeed under development conditions but do not support the intended generalization. </p>
+<p>Returning to the food preference example: freshness might predict recorded choices, so a predictor can perform well without learning the food-type preference needed for matched-freshness comparisons. Detection requires evaluations that distinguish the suspected shortcut from the intended behavior. In the previous note three strategies were presented: stratified, shifted, or contrastive evaluations. </p>
+<p>The shortcut phenomenon makes the difference between generalizing to new samples from the development distribution and generalizing under the required conditions of the application explicit. </p>
+<p><strong>Goodhart effects.</strong></p>
+<p>A shortcut shows that success on the development criterion can coexist with failure of the intended generalization. What happens to the relationship between measured success and the target when we increasingly select or optimize for that criterion? </p>
+<p>Manheim and Garrabrant categorize variants of this phenomenon by which the relationship between the intended target and the proxy can become less reliable under selection pressure [2]. Goodhart effects are about how proxy-based selection can separate measured success from the target. Target performance need not decline absolutely; measured improvements may simply overstate genuine improvements.  </p>
+<p>From the paper, there are several ways this can happen: regressional, extremal, causal, and adversarial. Not every shortcut leads to a Goodhart effect, not every Goodhart effect comes from a shortcut, and the taxonomy is neither mutually exclusive nor exhaustive. </p>
+<p><strong>Regressional</strong> effects can exploit favorable measurement errors to select extreme proxy values. This selection goes beyond genuine target performance. Suppose the target and proxy are related by <span class="arithmatex">\(M = G + \eta\)</span> where <span class="arithmatex">\(\eta\)</span> is measurement noise. A high measured score could reflect target performance improvement or "lucky" measurement error.</p>
+<p><strong>Extremal</strong> effects can occur when selection operates over regions of the model space beyond just input space where the proxy-target relationship differs from oridinary conditions. This might happen when an inference relies on <em>extrapolation</em> beyond the supporting region of the development data.</p>
+<p><strong>Causal</strong> effects show up when an intervention changes the relationship on which the proxy's interpretation depends. Just because there is an observational relationship between proxy and target does not mean intervening to improve the proxy has the intended effect on the target. For example, simply displaying a shorter wait time on a rideshare app does not actually make a driver arrive faster.</p>
+<p><strong>Adversarial</strong> effects happen when another optimizer with different goals exploits the criterion. This can increase measured success without the corresponding improvement the evaluator intended. </p>
+<p>Doing a Goodhart classification does not replace specifying a harm scenario. Specifying the harm scenario would additionally identify what is selected, the criterion, and how the resulting behavior could contribute to the unsafe control action.</p>
+<p><strong>Example: Model-selection and leaderboard pressure.</strong></p>
+<p>Leaderboards and benchmarks estimate performance with respect to a specified task distribution. Usually, a fresh held-out benchmark estimates this target. However, in practice, performance on a finite and reusable evaluation set is often used as a proxy. </p>
+<p>One selection pressure in this setting is that researchers or automated searches may repeatedly choose and revise models using reported scores. Importantly, the examples or item labels themselves need not be public. This can result in a failure mode where selecting the best model can implicitly select favorable estimation noise rather than better population performance. This means the evaluation set is no longer independent of the selected predictor, so the simple held-out argument for generalization no longer applies without an additional argument accounting for selection. </p>
+<p>In the ordering example, an overoptimistic score can favor a predictor whose error under the ordering conditions is higher than reported. Score inflation here is upstream of the harm scenario. The harm scenario itself is recreated if an order is followed by automatic submission and nonrefundable payment before customer feedback.</p>
+<p>One way to address this failure mode is to update the reported best-so-far score only for sufficiently large improvements over the previous report, and round the released value. This is the "Ladder" mechanism proposed in Blum and Hardt's paper [3]. The mechanism limits informative feedback and then can bound the leaderboard estimation error under the method's statistical assumptions.</p>
+<p>Here is an extension of the requirements/evidence table:</p>
+<table>
+<thead>
+<tr>
+<th>Proposed requirement</th>
+<th>Evidence to seek</th>
+<th>What that evidence would not establish alone</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Account for adaptive selection in reported prediction error.</td>
+<td>Fresh independent evaluation or a justified selection-aware bound; report uncertainty.</td>
+<td>Construct validity, order execution, or effective customer confirmation.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example: Length in reinforcement learning from human feedback (RLHF)</strong></p>
+<p>Reinforcement learning from human feedback trains a large language model (LLM) using a learned preference model. Reinforcement learning will be discussed in more depth in the next module. For this example, replace the food alternatives with a pair of LLM responses <span class="arithmatex">\((R_1, R_2)\)</span> to the same prompt <span class="arithmatex">\(c\)</span>, and collect recorded preferences between them.</p>
+<p>Here the target is response quality under the intended task criterion. The proxy is the learned scalar reward score. From the previous note, this can be formulated as a maximum likelihood estimation of a shared scoring function <span class="arithmatex">\(r_\phi(c,R)\)</span> assigning scores to each response <span class="arithmatex">\(R\)</span> given prompt <span class="arithmatex">\(c\)</span>, followed by a logistic map <span class="arithmatex">\(\sigma(\cdot)\)</span> that takes the score difference and converts it to a preference probability:</p>
+<div class="arithmatex">\[
+\Pr_\phi(R_1\succ R_2\mid c) = \sigma\!\left(r_\phi(c,R_1)-r_\phi(c,R_2)\right).
+\]</div>
+<p>This is preference-model fitting. Downstream of this an optimization procedure tunes the LLM using the resulting preference model. Notice the distinction: predicting recorded comparisons well and providing a useful objective for downstream use are separate claims.</p>
+<p>Indeed, one selection pressure in this setting is that policy optimization favors responses receiving higher predicted utility. Notice the shift from which predictor we obtain to which outputs the system actually produces. This can produce a failure mode where, if some superficial feature predicts preference judgements in the training comparisons, the reward model may rely on it. This can result in improvements that increase reward without increasing quality. </p>
+<p>Singhal et al. investigate this in practice [4] through observational comparisons and interventions on the RLHF pipeline. Specifically, in their studied settings, increasing response length accounts for much of the reward improvement, and a length-based reward reproduces much of the measured preference improvement. While length correlation alone neither establishes a shortcut nor a Goodhart effect, it also does not establish that longer responses are worse or that harm occurs. </p>
+<p>One way to investigate this failure mode is to intervene on preference data, reward modeling, and optimization. In the paper, these interventions provide empirical evidence about where length-related behavior originates and which changes reduce it, not a general guarantee on response quality. No intervention works uniformly across their settings.</p>
+<p>Another approach is to cap the response length, which directly limits length. Again, imposing only a soft penalty can discourage behavior but doesn't necessarily produce a hard bound. Measuring the effectiveness of a proposed constraint requires additional supporting evidence.</p>
+<p>The main takeaway is that a particular failure mode may originate as one part of a larger development pipeline. This example transfers the proxy analysis beyond food ordering; a separate harm scenario still requires specifying the system using the responses, its relevant control actions, and the conditions under which those actions could lead to harm.</p>
+<p><strong>From selection to behavior under changed conditions.</strong></p>
+<p>Up to this point, it has been established that selection can affect the predictor and which outputs from the pipeline are obtained. The examples demonstrate how optimization pressure can exploit estimation error or the gap between the intended target and proxy. In the ordering system, this can affect which predictor enters the controller and why its development evidence may be insufficient. However, we have not yet a characterization of which changes in the inputs or deployment conditions the pipeline's predictor can tolerate. </p>
+<p>Testing for consequential underspecification and understanding how shortcut learning and Goodhart effects can exploit such gaps is a foundation for understanding how to <em>address</em> such failure modes. In the next note, we hold the predictor fixed and ask which changed conditions it can tolerate. This does not remove optimization: an adversary may still optimize the inputs presented to the fixed predictor. We revisit the shared assurance question: <strong>which conditions support the evidence, and does the intended claim extend beyond them?</strong></p>
+<p><strong>References.</strong></p>
+<p>[1] Geirhos, Robert, et al. "Shortcut learning in deep neural networks." <em>Nature Machine Intelligence</em> 2.11 (2020): 665-673.</p>
+<p>[2] Manheim, David, and Scott Garrabrant. "Categorizing variants of Goodhart's Law." <em>arXiv preprint arXiv:1803.04585</em> (2018).</p>
+<p>[3] Blum, Avrim, and Moritz Hardt. "The ladder: A reliable leaderboard for machine learning competitions." <em>International Conference on Machine Learning</em>. Proceedings of Machine Learning Research (PMLR), 2015.</p>
+<p>[4] Singhal, Prasann, et al. "A long way to go: Investigating length correlations in RLHF." <em>arXiv preprint arXiv:2310.03716</em> (2023).</p>
+</article>
+</main>
+<footer>CS120: Introduction to AI Safety · Stanford University</footer>
+</body>
+</html>
