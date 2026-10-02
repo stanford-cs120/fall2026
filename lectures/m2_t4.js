@@ -154,7 +154,7 @@ prose(
 
 // 5
 add(slide('Formulate the preference problem',
-    m2t4Text('Fix one customer. The input is a pair of food alternatives $(x,z)$.', 28),
+    m2t4Text('Fix one customer. If the requested item is unavailable, compare substitutes $(x,z)$.', 28),
     parentCenter(table(
         [m2t4Cell('$x=\\text{Apple}$', 390, 28),
         m2t4Cell('$z=\\text{Spinach}$', 390, 28)],
@@ -194,11 +194,12 @@ prose(
 add(slide('STPA 2: controller, process, and feedback',
     parentCenter(ytable(
         m2t4Control(),
-        m2t4Text('Submission initiates the merchant process; commitment makes the charge nonrefundable.', 22, 930),
+        m2t4Text('Submission and commitment can be separated by a delay; commitment makes the charge nonrefundable.', 22, 930),
     ).center().ymargin(10)),
     _));
 prose(
     'The ordering controller consists of the preference predictor and a fixed ordering rule. It can submit an order or request cancellation. The controlled process is the merchant\'s order-and-charge process.',
+    'Delayed order-status feedback can reveal that the requested item is unavailable and trigger a substitute choice.',
     _,
     'Development is above the ordering-system boundary. Installing parameters is not an order. In the baseline, a notice and later correction need not prevent the charge.',
 );
@@ -359,7 +360,7 @@ add(slide('STPA 4: from a freshness shortcut to a charge',
         [m2t4Cell('1', 35, 27),
         m2t4Cell('Development comparisons confound food type with freshness.', 810, 26)],
         [m2t4Cell('2', 35, 27),
-        m2t4Cell('Both foods are fresh; the customer would choose spinach. The freshness-based predictor ties and returns $\\hat y=-1$ for $x=\\text{Apple}$.', 810, 25)],
+        m2t4Cell('Both substitutes are fresh; the customer would choose spinach. The freshness-based predictor ties and returns $\\hat y=-1$ for $x=\\text{Apple}$.', 810, 25)],
         pause(),
         [m2t4Cell('3', 35, 27),
         m2t4Cell('The ordering rule submits the apple order: an unsafe control action occurs.', 810, 26)],

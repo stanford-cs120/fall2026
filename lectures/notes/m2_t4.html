@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>From data and objectives to model behavior | Stanford CS120</title>
-  <meta name="description" content="From data and objectives to model behavior — CS120, Autumn 2026.">
+  <title>Learning, Generalization, and Underspecification | Stanford CS120</title>
+  <meta name="description" content="Learning, Generalization, and Underspecification — CS120, Autumn 2026.">
   <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/lectures/notes/m2_t4.html">
   <link rel="stylesheet" href="../materials.css">
   
@@ -25,7 +25,7 @@ window.MathJax = {
     <a href="../../lectures/index.html">All course materials</a> ·
     <a href="../../lectures/notes/index.html">Course notes</a>
   </nav>
-  <h1>From data and objectives to model behavior</h1>
+  <h1>Learning, Generalization, and Underspecification</h1>
   <p class="meta">Class meeting: 2026-10-01</p>
   <article>
 <p><strong>Module 2: From data and objectives to model behavior</strong></p>
@@ -43,7 +43,7 @@ window.MathJax = {
 <p>To make the prediction problem concrete we will walk through problem formulation, model specification, learning, and inference. We will also introduce and analyze one hypothetical food-ordering system through the four Systems-Theoretic Process Analysis (STPA) stages from Module 1.</p>
 <p>Here is the prediction problem. Fix one customer. Let <span class="arithmatex">\(x\)</span> and <span class="arithmatex">\(z\)</span> represent two food alternatives, with features that can represent food type, freshness, etc. Labels record this customer's choices in binary-choice experiments. If <span class="arithmatex">\(x=\text{Apple}\)</span> and <span class="arithmatex">\(z=\text{Spinach}\)</span>, let <span class="arithmatex">\(y=-1\)</span> denote selection of <span class="arithmatex">\(x\)</span> and <span class="arithmatex">\(y=+1\)</span> selection of <span class="arithmatex">\(z\)</span>. Here the intended construct is a preference between food types at comparable freshness. Note that comparisons may instead confound food type with freshness. </p>
 <p><strong>STPA stage 1: purpose, harm, hazard, and boundary.</strong></p>
-<p>We assume the food-ordering service uses the predictor to purchase one of the two available foods for the customer. In deployment, both options have the same price and comparable, acceptable freshness. The customer interface has delegated routine ordering that does not confirm each purchase. The analysis here is scoped to unwanted spending, setting aside food hygiene, dietary restrictions, and changes in preference during an ordering episode.</p>
+<p>We assume the food-ordering service uses the predictor to purchase one of the two available foods for the customer. The predictor is used to choose a substitute if the customer's originally requested item is unavailable. In deployment, both options have the same price and comparable, acceptable freshness. The customer interface has delegated routine ordering that does not confirm each purchase. The analysis here is scoped to unwanted spending, setting aside food hygiene, dietary restrictions, and changes in preference during an ordering episode.</p>
 <table>
 <thead>
 <tr>
@@ -76,7 +76,7 @@ window.MathJax = {
 </table>
 <p>Here and below, <span class="arithmatex">\(L_F\)</span>, <span class="arithmatex">\(H_F\)</span>, and <span class="arithmatex">\(SC_F\)</span> denote this example's harm, hazard, and safety constraint. The hazard is an upstream condition rather than the charge itself. For example, this hazard does not create a harm if the prediction matches the customer's intended choice.</p>
 <p><strong>STPA stage 2: model the control structure.</strong></p>
-<p>The <strong>ordering controller</strong> consists of the preference predictor and a fixed ordering rule. Its working information consists of a predicted customer choice and the merchant's reported order status. It can submit an order or request cancellation. The <strong>controlled process</strong> is the merchant's order-and-charge process. Submission initiates that process; commitment is the point at which its charge becomes nonrefundable.</p>
+<p>The <strong>ordering controller</strong> consists of the preference predictor and a fixed ordering rule. Its working information consists of a predicted customer choice and the merchant's reported order status. It can submit an order or request cancellation. The <strong>controlled process</strong> is the merchant's order-and-charge process. Submission initiates that process; commitment is the point at which its charge becomes nonrefundable. Availability may be learned from an order-status response, and commitment may delay after submission.</p>
 <p><img alt="Food-ordering control structure. Development data and fitting sit above the deployed system. The ordering controller contains the preference predictor and ordering rule; it commands the merchant process and exchanges notices and corrections with the customer." src="images/food-ordering-control.svg" /></p>
 <p><em>Baseline control structure; customer confirmation before purchase is not yet a control.</em></p>
 <p>In this basic design, the rule submits the predicted choice automatically. If the merchant commits the purchase before the customer receives notice, a later correction cannot prevent the charge.</p>
@@ -194,7 +194,7 @@ R_S(\theta) = \mathbb{E}_{(x,z,y) \sim S}[ \ell(\theta; x, z, y)],
 <p>A freshness shortcut could contribute to an unwanted purchase in four steps:</p>
 <ol>
 <li>Development comparisons confound food type with freshness, allowing the freshness-based rule to perform well on recorded choices.</li>
-<li>In an ordering episode, both foods are fresh and the customer would choose spinach. The pair is presented as <span class="arithmatex">\(x=\text{Apple}\)</span> and <span class="arithmatex">\(z=\text{Spinach}\)</span>. The freshness-based predictor ties and returns <span class="arithmatex">\(\hat y=-1\)</span>.</li>
+<li>In an ordering episode requiring a substitute, both foods are fresh and the customer would choose spinach. The pair is presented as <span class="arithmatex">\(x=\text{Apple}\)</span> and <span class="arithmatex">\(z=\text{Spinach}\)</span>. The freshness-based predictor ties and returns <span class="arithmatex">\(\hat y=-1\)</span>.</li>
 <li>The ordering rule uses that output to submit an apple order: an unsafe control action occurs.</li>
 <li>The merchant commits the nonrefundable charge before the customer receives the notice. The customer's later correction cannot prevent <span class="arithmatex">\(L_F\)</span>.</li>
 </ol>
