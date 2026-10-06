@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Robustness Beyond the Development Distribution | Stanford CS120</title>
+  <meta name="description" content="Robustness Beyond the Development Distribution — CS120, Autumn 2026.">
+  <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/lectures/notes/m2_t6.html">
+  <link rel="stylesheet" href="../materials.css">
+  
+<script>
+window.MathJax = {
+  tex: {inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']]},
+  options: {ignoreHtmlClass: '.*', processHtmlClass: 'arithmatex'}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><a href="../../index.html">Stanford CS120 · Autumn 2026</a></header>
+<main id="main">
+  <nav aria-label="Course materials">
+    <a href="../../lectures/index.html">All course materials</a> ·
+    <a href="../../lectures/notes/index.html">Course notes</a>
+  </nav>
+  <h1>Robustness Beyond the Development Distribution</h1>
+  <p class="meta">Class meeting: 2026-10-08</p>
+  <article>
+<p><strong>Module 2: Robustness Beyond the Development Distribution</strong></p>
+<p>What happens when the predictor is fixed after development, but the deployment conditions change? The first note in this module established an assurance for generalization about population risk under a fixed distribution <span class="arithmatex">\(S\)</span>. The previous note then examined how selection shapes the predictor using an ordering system as a working example. In this note, we will continue referring to that example and begin to distinguish changes in deployment conditions from predictor selection.</p>
+<p>Empirical risk minimization has a source distribution <span class="arithmatex">\(S\)</span> and then produces a predictor <span class="arithmatex">\(\hat \theta\)</span> with some risk <span class="arithmatex">\(R_{S}(\hat \theta).\)</span> When the development distribution shifts <span class="arithmatex">\(S \to S'\)</span> at deployment, evaluation on <span class="arithmatex">\(S\)</span> does not automatically support claims under <span class="arithmatex">\(S'.\)</span> Write <span class="arithmatex">\(R_{S'}\)</span> for population risk under deployment distribution <span class="arithmatex">\(S'\)</span>. When we are uncertain about the development distribution shift we can specify a family <span class="arithmatex">\(\mathcal{U}\)</span> of shifts and a target threshold <span class="arithmatex">\(\tau\)</span> to create a requirement:</p>
+<div class="arithmatex">\[
+\forall S'\in\mathcal U:\quad R_{S'}(\hat\theta)\le\tau.
+\]</div>
+<p>This says that for all potential shifts in the uncertainty family, the shifted risk is no larger than <span class="arithmatex">\(\tau\)</span>. The rest of this note motivates this requirement and examines what evidence would support the resulting assurance claim, given a specified loss, threshold, and uncertainty family.</p>
+<p><strong>Distribution shift and robust optimization</strong></p>
+<p>First, a distribution shift doesn't necessarily cause failure. Suppose the labeler population changes only in the proportions of fixed groups, while the within-group distributions remain unchanged. In this case, only group prevalence or weighting changes; the examples are in the support of the source distribution. In the ordering example, groups could instead represent food-comparison categories.</p>
+<p>Indeed, distributionally robust optimization (DRO) simply selects for worst-case performance over a specified family:</p>
+<div class="arithmatex">\[
+\min_\theta\sup_{S'\in\mathcal U}R_{S'}(\theta).
+\]</div>
+<p>This is why the <em>specification</em> of the uncertainty set is the main conceptual move. Specifying <span class="arithmatex">\(\mathcal U\)</span> defines which changes a robustness claim covers; it does not demonstrate consequential underspecification: a pipeline returning validation-equivalent predictors with different relevant behavior. </p>
+<p>Suppose the distribution was split into <span class="arithmatex">\(m\)</span> groups and let <span class="arithmatex">\(S_g\)</span> be fixed within-group distributions. If <span class="arithmatex">\(\mathcal{U}_{\text{group}}\)</span> consists of all mixtures of these distributions,</p>
+<div class="arithmatex">\[
+\mathcal U_{\mathrm{group}} = \left\{\sum_{g=1}^{m}q_gS_g: q_g\ge0,\ \sum_{g=1}^{m}q_g=1\right\},
+\]</div>
+<p>then, because expected loss is linear in the mixture weights,</p>
+<div class="arithmatex">\[
+\sup_{S'\in\mathcal U_{\mathrm{group}}}R_{S'}(\theta)
+=\max_g R_{S_g}(\theta).
+\]</div>
+<p>This shows that stratified evaluation, previously discussed as a way to <em>test</em> for consequential underspecification, is connected to group DRO. Stratified evaluation estimates group performance; group DRO uses group losses as a way to select a predictor. This doesn't make specifying groups easier and small-group estimation remains difficult. However, the mixture identity does introduce a conditional formal assurance: if simultaneously valid upper bounds establish <span class="arithmatex">\(R_{S_g}(\hat\theta)\le\tau\)</span> for every group, the requirement holds for every mixture in <span class="arithmatex">\(\mathcal U_{\mathrm{group}}\)</span>. </p>
+<p><strong>Example: "Gender Shades" - group-based disparities</strong></p>
+<p>Group stratified risk is a useful way to disaggregate performance and reveal consequential subgroup differences. Buolamwini and Gebru's <em>Gender Shades</em> evaluated commercial gender classifiers on facial images, reporting performance on subgroups defined jointly by gender and skin type [1]. They found large accuracy gaps across these subgroups. </p>
+<p><img alt="" src="images/gender_shade_table.png" /></p>
+<p>Other studies have found more disparities ranging from bias in tools for detecting machine-generated text against non-native English writers to artificial intelligence (AI) decisions based on dialect [2], [3]. Liang et al. found that tested detectors frequently misclassify human-written content from non-native English writers as AI-generated [3]. Hofmann et al. has documented dialect prejudice in studied language models, including discriminatory hypothetical decisions [2].</p>
+<p>These are all examples of different tasks and populations; non-native writing and dialect are not interchangeable. The important distinction, however, is that these evaluations do not establish that disparities are from a deployment shift. Once again, the safety analysis must specify the controller's use of affected predictions and which harm scenario they could influence. </p>
+<p><strong>Adversarial inputs</strong></p>
+<p>Adversarial transformations are another way to specify changed conditions. One common model allows an adversary to change <em>individual instances</em>, potentially using knowledge of the predictor. Let <span class="arithmatex">\(x\)</span> denote the complete predictor input—the full comparison in the food example—and <span class="arithmatex">\(y\)</span> be the label. For continuous inputs, consider a perturbed input <span class="arithmatex">\(\tilde x = x + \eta\)</span> where <span class="arithmatex">\(\Vert \eta \Vert_{\infty} \le \epsilon\)</span>, which allows each coordinate in the input to vary by up to <span class="arithmatex">\(\epsilon\)</span> in the domain. Specify permitted transformations and whether they preserve the intended label; a small feature-space norm does not itself establish label preservation. </p>
+<p>This adversary seems weak; if <span class="arithmatex">\(\epsilon\)</span> is small it seems intuitive they have limited ability to perturb the predicted labels. However, this turns out not to be true for many simple predictors. Goodfellow et al.'s work on this provides one explanation in terms of accumulated change [4]. They consider a linear predictor <span class="arithmatex">\(w\)</span> that generates decisions according to <span class="arithmatex">\(\text{sign}(w^T x)\)</span>, the sign of the dot product between the weights of the predictor and the input. When this predictor encounters an adversarial example the inner-product becomes:</p>
+<div class="arithmatex">\[
+w^T \tilde x = w^T x + w^T \eta .
+\]</div>
+<p>The adversary is able to do more than create noise or reweight subgroups. They can manufacture a tailored perturbation based on the predictor such as:</p>
+<div class="arithmatex">\[
+\eta = \text{sign}(w) \cdot \epsilon .
+\]</div>
+<p>Suppose <span class="arithmatex">\(w\)</span> has <span class="arithmatex">\(n\)</span> features and is normalized so that <span class="arithmatex">\(\Vert w \Vert_{\infty} = 1\)</span>. Then the inner product grows by</p>
+<div class="arithmatex">\[
+w^T \eta = \epsilon\sum_{i=1}^{n}|w_i| = \epsilon\Vert w\Vert_1 \le \epsilon\cdot n.
+\]</div>
+<p>For <span class="arithmatex">\(\epsilon&gt;0\)</span>, the last bound is an equality only when every coordinate has magnitude one.</p>
+<blockquote>
+<p>An adversary perturbing the input to a linear predictor can change the inner-product by an amount that depends on the weight magnitudes, not the number of input features alone.</p>
+</blockquote>
+<p>Whether the adversary can switch the class of particular instances also depends on the margin. For a correctly classified example with <span class="arithmatex">\(y\in\{-1,+1\}\)</span>, the perturbation <span class="arithmatex">\(\eta=-y\,\epsilon\,\text{sign}(w)\)</span> reduces the signed margin by <span class="arithmatex">\(\epsilon\Vert w\Vert_1\)</span>. Every perturbation satisfying <span class="arithmatex">\(\Vert\eta\Vert_\infty\le\epsilon\)</span> obeys</p>
+<div class="arithmatex">\[
+y\,w^T(x+\eta) \ge y\,w^T x-\epsilon\Vert w\Vert_1.
+\]</div>
+<p>Thus <span class="arithmatex">\(y\,w^T x&gt;\epsilon\Vert w\Vert_1\)</span> guarantees unchanged classification for this linear predictor and perturbation set; continued correctness also requires label preservation.</p>
+<p>These allowed adversarial transformations induce a particular family of shifted distributions. This can also be extended to other settings, such as text where one could reformulate this to use permitted edits rather than feature / pixel based norms. The crucial point of interest here is that unsuccessful testing does <em>not</em> certify robustness: failure to find an attack does not cover every permitted perturbation.</p>
+<p>In a photograph-based ordering system, permitted edits might change image presentation while preserving the food, freshness, and customer's intended choice. A successful attack can contribute to the unsafe-submission scenario introduced in the <a href="https://stanford-cs120.github.io/fall2026/lectures/notes/m2_t4.html">first note of the module</a>. Its deployment feasibility and whether feedback or confirmation prevents an unwanted charge require separate evidence. </p>
+<p><strong>Calibration under changed conditions</strong></p>
+<p>Suppose the ordering rule is adjusted. Now it automatically submits orders only when confidence in the selected alternative exceeds a threshold, and otherwise requires customer confirmation before nonrefundable commitment.</p>
+<p>What evidence would justify this rule? First check calibration under the relevant distribution, then whether the rule meets its requirement. Recall the Bradley-Terry model, or any general predictor, that gives outputs to be interpreted as comparison probabilities. For a reported probability <span class="arithmatex">\(\hat p(X)\)</span> of label <span class="arithmatex">\(+1\)</span>, calibration under <span class="arithmatex">\(S\)</span> means</p>
+<div class="arithmatex">\[
+\text{Pr}_S(Y = +1 | \hat p(X) = p) = p.
+\]</div>
+<p>It is possible to plot a reliability diagram which compares reported probabilities with actual observed frequencies; here a one-to-one linear trend is ideal. </p>
+<p><img alt="" src="images/reliability_example_plot.png" /></p>
+<p>There are caveats. Calibration is a distribution-relative notion distinct from classification or shift detection. Ironically, a predictor that only detects the <em>subgroup</em> and outputs the base-rate can be perfectly calibrated without distinguishing cases. </p>
+<p>Calibration is not itself a method for detecting distribution shift. Ovadia et al. further investigate these distinctions by testing if in-distribution calibration survives distribution shift [5]. They find this often is not the case under the shifts they study. This limits the assurance supported by an in-distribution calibration observation. </p>
+<p>Returning to the proposed ordering flow, we might evaluate prediction error among automatically submitted orders faithful to the anticipated conditions. Calibration can be measured using confirmation from the witheld low confidence predictions. However, this data is still naturally incomplete because high-confidence predictions are less likely to trigger confirmation. Finally, even perfectly calibrated probabilities does not fix an issue with the ordering rule.</p>
+<p><strong>Conclusions</strong></p>
+<p>Performance across distribution shifts, resistance to specified adversarial transformations, and calibrated probabilities are different model-level requirements. Each can inform the predictor's contribution to the ordering harm scenario and help identify assurance requirements.</p>
+<p>The resulting proposed intervention should identify which causal step it changes and what evidence establishes that change. Improving the predictor, restricting admissible inputs, and requiring confirmation are interventions on different parts of the system.</p>
+<p>Finally, picking a population, uncertainty set, subgroups, labels, or permitted transformations is specification work. The next note will examine how data collection, curation, labeling, and documentation encode these choices. </p>
+<p><strong>References</strong></p>
+<p>[1] Buolamwini, Joy, and Timnit Gebru. "Gender shades: Intersectional accuracy disparities in commercial gender classification." <em>Conference on fairness, accountability and transparency</em>. Proceedings of Machine Learning Research (PMLR), 2018.</p>
+<p>[2] Hofmann, Valentin, et al. "AI generates covertly racist decisions about people based on their dialect." <em>Nature</em> 633.8028 (2024): 147-154.</p>
+<p>[3] Liang, Weixin, et al. "GPT detectors are biased against non-native English writers." <em>Patterns</em> 4.7 (2023).</p>
+<p>[4] Goodfellow, Ian J., Jonathon Shlens, and Christian Szegedy. "Explaining and harnessing adversarial examples." <em>arXiv preprint arXiv:1412.6572</em> (2014).</p>
+<p>[5] Ovadia, Yaniv, et al. "Can you trust your model's uncertainty? Evaluating predictive uncertainty under dataset shift." <em>Advances in neural information processing systems</em> 32 (2019).</p>
+</article>
+</main>
+<footer>CS120: Introduction to AI Safety · Stanford University</footer>
+</body>
+</html>

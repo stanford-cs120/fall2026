@@ -20,6 +20,11 @@
       "id": "m2_t4",
       "title": "Lecture 4: From data and objectives to model behavior",
       "date": "2026-10-01"
+    },
+    {
+      "id": "m2_t5",
+      "title": "Lecture 5: Proxies and Model-Selection Pressure",
+      "date": "2026-10-06"
     }
   ],
   "notes": [
@@ -47,6 +52,11 @@
       "id": "m2_t5",
       "title": "Proxies and Model-Selection Pressure",
       "date": "2026-10-06"
+    },
+    {
+      "id": "m2_t6",
+      "title": "Robustness Beyond the Development Distribution",
+      "date": "2026-10-08"
     }
   ]
 }
