@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data as Specification | Stanford CS120</title>
+  <meta name="description" content="Data as Specification — CS120, Autumn 2026.">
+  <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/lectures/notes/m2_t7.html">
+  <link rel="stylesheet" href="../materials.css">
+  
+<script>
+window.MathJax = {
+  tex: {inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']]},
+  options: {ignoreHtmlClass: '.*', processHtmlClass: 'arithmatex'}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><a href="../../index.html">Stanford CS120 · Autumn 2026</a></header>
+<main id="main">
+  <nav aria-label="Course materials">
+    <a href="../../lectures/index.html">All course materials</a> ·
+    <a href="../../lectures/notes/index.html">Course notes</a>
+  </nav>
+  <h1>Data as Specification</h1>
+  <p class="meta">Class meeting: 2026-10-13</p>
+  <article>
+<p><strong>Module 2: Data as Specification</strong></p>
+<p>Recall the early notes where a crowd-sourced dataset was procured to train a toxicity predictor. We looked at how a moderation rule could affect visibility and determine the outcomes of user appeals. In the current module we have considered generalization and robustness and why neither alone is sufficient to claim the data specifies the intended task. Now we will examine <em>how</em> development decisions about the dataset can produce shortcuts, such as a spurious correlation between dialect and toxicity.</p>
+<p><img alt="Simplified platform moderation system. Annotation data feeds model fitting and evaluation, which installs a toxicity predictor. A posted comment enters the predictor; its score feeds the moderation rule. The rule controls post visibility and receives status feedback. The author receives a decision notice and can appeal, but this path does not guarantee timely correction." src="images/moderation-control.svg" /></p>
+<p><em>Development supplies a fitted predictor; the score does not itself remove a post. The moderation rule controls visibility. Appeals provide feedback, but restoration may come too late to preserve participation. This simplified diagram leaves the data-production decisions to be examined below.</em></p>
+<p><strong>Annotators with attitudes</strong></p>
+<p>Who makes the dataset? That's the basic question we consider in this note. We tell the story through three sources. In the toxicity detector system we had considered, the platform's goal was to remove targeted abuse while allowing other comments to pass through the filter unflagged. A predictor that used <em>dialect</em> as a proxy for toxicity could contribute to a potential harm <span class="arithmatex">\(L_T\)</span>: speakers lose timely participation because their nominally allowed posts are removed.</p>
+<p>In <em>Annotators with Attitudes</em>, Sap et al. measure perceived offensiveness of online comments and its associations with dialect, prejudice, and vulgarity [1]. They focus on comments exhibiting African American English (AAE), racism, or vulgarity.</p>
+<p>This paper suggests a mechanism upstream of model fitting: the composition of the annotator pool can embed spurious associations directly into the training labels. In our original crowd-sourced predictor example, we focused on <em>shortcut learning</em> as the source of spurious correlation between dialect and toxicity. Here the authors study annotator attitudes and their associations with annotations. For example, higher scores on their racist-belief scale were associated with lower toxicity ratings for anti-Black posts and higher toxicity ratings for AAE posts.</p>
+<p>This paper tells us about the annotators, but we can also ask about the researchers' own choices and positionality. How were the experiment design, constructs, method of AAE identification, and interpretation of results selected? For example, in the paper's <em>breadth-of-posts</em> study, 173 annotators label 571 tweets. Consider two design decisions:</p>
+<ol>
+<li>Each attitude dimension is measured using a single questionnaire item selected based on the earlier <em>breadth-of-annotators</em> study.</li>
+<li>The study assigns two White conservatives, two White liberals, and two Black annotators per post.</li>
+</ol>
+<p>White annotators are therefore politically differentiated in the assignment scheme while Black annotators are not. Moreover, the item used to measure each attitude is selected based on a previous component of the study. These decisions influence which comparisons the design supports and raise questions about the reliability and scope of the attitude measurements.</p>
+<p><strong>Datasheets for datasets</strong></p>
+<p>The attitudes paper raises the next natural question: what should we know about how a dataset was made? Pointing out study decisions is <em>not</em> itself a critique of the study. In fact, the authors were transparent about many of these decisions.</p>
+<p>In <em>Datasheets for Datasets</em> Gebru et al. propose documentation as a way to make otherwise underspecified researcher decisions acquire traceable provenance [2]. Here are some of the components they recommend:</p>
+<ul>
+<li>Motivation or purpose for the dataset</li>
+<li>Dataset composition</li>
+<li>Collection process</li>
+<li>Intended use-cases</li>
+</ul>
+<p>For our platform moderation example, the argument presented in this paper would motivate expanding our system boundary. Instead of conceptualizing data production as a black box, we would ask which decisions and assumptions flowed into its construction. Such documentation can help identify where to investigate; it does not by itself establish that a dataset or its downstream use is safe.</p>
+<p><strong>Mitigating data harms with selection mitigations</strong></p>
+<p>Suppose we know who made the dataset and the relevant information about how it was made. What happens next when we deliberately engineer data to control downstream predictor behavior?</p>
+<p>OpenAI's <em>DALL·E 2 Pre-Training Mitigations</em> gives one perspective on how we can trace intervention and remediation [3]. The report describes filtering sexual and violent imagery from the training data to reduce problematic outputs. This filtering also had an unintended side effect: it reduced caption-word frequencies for "woman" by 14%, versus 6% for "man," suggesting amplified gender skew in the dataset composition. The report then describes reweighting the filtered data to address filtering-induced bias. Filtering and reweighting are distinct interventions: a control aimed at one problem can introduce another, motivating a further mitigation.</p>
+<p>Development controls such as inclusion, labels, and weights are choices <span class="arithmatex">\(c\)</span> that help specify the training objective:</p>
+<div class="arithmatex">\[
+\hat\theta_c\in\arg\min_{\theta\in\Theta} \frac{\sum_{i\in I_c}w_i^{(c)} \ell(\theta;x_i,y_i^{(c)})} {\sum_{i\in I_c}w_i^{(c)}}.
+\]</div>
+<p>In moderation, <span class="arithmatex">\(i\)</span> could index annotations, <span class="arithmatex">\(I_c\)</span> identifies retained annotations, and <span class="arithmatex">\(y_i^{(c)}\)</span> is the label used under choice <span class="arithmatex">\(c\)</span>. The weights <span class="arithmatex">\(w_i^{(c)}\)</span> are nonnegative, with a positive total weight, and help shape which model is selected.</p>
+<p>Notice that researchers choose <span class="arithmatex">\(c\)</span> and then fitting chooses parameters for the model. Yet, a safety intervention may change the training distribution. It is not enough merely to change the objective. We must interrogate what is being changed, what is intended to stay invariant across that change, and specify a procedure connecting the researcher choice to observable evidence of the intended invariance. In the image-model and moderation contexts, that might mean checking whether filtering or reweighting reduces one measured problem while suppressing subgroup representation or preserving a harmful shortcut.</p>
+<p><strong>Synthesis: a researcher choice becomes a harm scenario</strong></p>
+<p>Let's return to <em>Annotators with Attitudes</em>. In the <em>breadth-of-posts</em> study, each attitude is measured using a single questionnaire item. Appendix D.3 describes selecting a post category and one item per attitude using correlations with first-study toxicity ratings. This does <em>not</em> imply an invalid design, nor does item selection alone establish predictive underspecification. Let's extend the example into a <strong>hypothetical harm scenario</strong>, keeping its assumptions separate from the paper's findings.</p>
+<p>Where is the underspecification? Under a fixed baseline development policy <span class="arithmatex">\(c_0\)</span>, assume repeated training runs yield both context-sensitive and dialect-shortcut predictors with statistically indistinguishable validation performance. Suppose validation omits non-abusive AAE, leaving their different treatments of allowed speech unresolved by the available evaluation. These are assumptions for our scenario, not reported findings of Sap et al.</p>
+<p>Now select within that underspecified region. Suppose a moderation pilot confounds dialect with toxicity. The development team selects a single strongly correlating questionnaire item, treats it as an annotator reliability measure, and upweights high scorers. Suppose these annotators tend to rate dialect itself as toxic. Changing <span class="arithmatex">\(c_0\)</span> to <span class="arithmatex">\(c_1\)</span> increases the weights <span class="arithmatex">\(w_i^{(c)}\)</span> of their annotations and can favor a dialect-shortcut predictor. Assume that this predictor is selected and still passes the unchanged validation check. The original validation equivalence was under <span class="arithmatex">\(c_0\)</span>; changing <span class="arithmatex">\(c\)</span> changes the training objective, not the adequacy of the validation check.</p>
+<p>The predictor is deployed and flags an AAE post that the intended moderation policy permits. The controller, here the algorithmic moderation rule, issues a removal instruction. The platform enters a hazardous state <span class="arithmatex">\(H_T\)</span>: an allowed post is hidden while timely correction is unavailable. An appeal restores it only after the platform conversation has moved on. The participant realizes a harm <span class="arithmatex">\(L_T\)</span>: loss of timely participation because an allowed post was removed. Repetition produces systematic exclusion.</p>
+<p>From this scenario, we would try to derive requirements and safety constraints. Here is one potential constraint <span class="arithmatex">\(SC_T\)</span>: prevent or correct erroneous removals before the participation window closes. One development-time check is to evaluate non-abusive AAE against the intended policy before and after reweighting, comparing predictors that were indistinguishable on the original validation check. Testing alone does not prevent a removal; the results must inform a selection or deployment decision. More directly related to the realized harm is a check of correction timeliness using removal, appeal, and restoration logs, against an explicitly defined participation window.</p>
+<p><strong>Conclusion</strong></p>
+<p>Researcher choices can influence data in ways that are hard to detect within the development pipeline. Available evaluations may leave the safety-relevant differences among well-performing models unresolved, while the provenance of selection decisions is difficult to trace. Documenting decisions from the start of data collection to the intended end use can help establish transparency and identify potentially consequential sources of underspecification before model behavior contributes to realized harm.</p>
+<p><strong>References</strong></p>
+<p>[1] Sap, Maarten, et al. "Annotators with Attitudes: How Annotator Beliefs and Identities Bias Toxic Language Detection." <em>Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</em>. 2022.</p>
+<p>[2] Gebru, Timnit, et al. "Datasheets for datasets." <em>Communications of the ACM</em> 64.12 (2021): 86-92.</p>
+<p>[3] OpenAI. “<a href="https://openai.com/index/dall-e-2-pre-training-mitigations/">DALL·E 2 Pre-Training Mitigations</a>.” <em>OpenAI</em>, 28 June 2022.</p>
+</article>
+</main>
+<footer>CS120: Introduction to AI Safety · Stanford University</footer>
+</body>
+</html>
