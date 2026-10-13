@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="650" height="525" viewBox="0 0 650 525" role="img" aria-labelledby="note8-proxy-state-title note8-proxy-state-desc">
+  <title id="note8-proxy-state-title">A proxy can replace the intended state</title>
+  <desc id="note8-proxy-state-desc">A reward proxy penalizes customer corrections. The ordering policy asks for input when confident but skips input when uncertain and does not check order status. Policy-selected feedback substitutes for independently established system state. An unwanted purchase may have no cancellation option. This is a hypothetical schematic, not empirical evidence. Text labels identify the depicted interactions.</desc>
+  <defs>
+    <marker id="ink-arrow" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="10" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 10 4 L 0 8 L 2.7 4 Z" fill="#202020" />
+    </marker>
+    <marker id="gray-arrow" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="10" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 10 4 L 0 8 L 2.7 4 Z" fill="#606060" />
+    </marker>
+    <marker id="blue-arrow" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="10" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 10 4 L 0 8 L 2.7 4 Z" fill="#09588D" />
+    </marker>
+    <marker id="red-arrow" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="10" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 10 4 L 0 8 L 2.7 4 Z" fill="#B3202C" />
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="650" height="525" fill="white" />
+  <g transform="translate(0,-162)" id="proxy-state">
+    <rect x="160" y="174" width="330" height="76" fill="white" stroke="#979797" stroke-width="1.5" />
+    <text x="325" y="203" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#202020" text-anchor="middle">Reward proxy</text>
+    <text x="325" y="233" font-family="Arial, Helvetica, sans-serif" font-size="20.5" fill="#606060" text-anchor="middle">Penalize customer corrections</text>
+    <rect x="12" y="271" width="626" height="404" fill="#F7F7F7" stroke="#979797" stroke-width="1.35" />
+    <text x="28" y="296" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#606060" text-anchor="start">Ordering-system boundary</text>
+    <path d="M 325 250 V 313" fill="none" stroke="#606060" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#gray-arrow)" />
+    <rect x="239" y="313" width="172" height="112" fill="#F2E7BA" stroke="#202020" stroke-width="1.6" />
+    <text x="325.0" y="344" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#202020" text-anchor="middle">Ordering policy</text>
+    <text x="325.0" y="394" font-family="DejaVu Serif" font-size="45" fill="#202020" text-anchor="middle" font-style="italic">π</text>
+    <rect x="36" y="528" width="174" height="94" fill="white" stroke="#979797" stroke-width="1.5" />
+    <text x="123" y="560" font-family="Arial, Helvetica, sans-serif" font-size="23" fill="#202020" text-anchor="middle">Customer</text>
+    <text x="123" y="592" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#202020" text-anchor="middle">confirm / correct</text>
+    <rect x="446" y="528" width="170" height="94" fill="white" stroke="#979797" stroke-width="1.5" />
+    <text x="531" y="560" font-family="Arial, Helvetica, sans-serif" font-size="23" fill="#202020" text-anchor="middle">Vendor</text>
+    <text x="531" y="592" font-family="Arial, Helvetica, sans-serif" font-size="19.5" fill="#202020" text-anchor="middle">commits order</text>
+    <path d="M 239 350 H 141 V 528" fill="none" stroke="#202020" stroke-width="1.7" stroke-linejoin="round" marker-end="url(#ink-arrow)" />
+    <text x="29" y="432" font-family="Arial, Helvetica, sans-serif" font-size="20.5" fill="#202020" text-anchor="start">Confident:</text>
+    <text x="29" y="460" font-family="Arial, Helvetica, sans-serif" font-size="20.5" fill="#202020" text-anchor="start">ask</text>
+    <path d="M 210 576 H 225 V 393 H 239" fill="none" stroke="#09588D" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#blue-arrow)" />
+    <text x="245" y="468" font-family="Arial, Helvetica, sans-serif" font-size="19.5" fill="#09588D" text-anchor="start">Corrections</text>
+    <text x="245" y="494" font-family="Arial, Helvetica, sans-serif" font-size="19.5" fill="#09588D" text-anchor="start">(penalized)</text>
+    <path d="M 411 350 H 529 V 528" fill="none" stroke="#B3202C" stroke-width="2" stroke-linejoin="round" marker-end="url(#red-arrow)" />
+    <text x="542" y="432" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#B3202C" text-anchor="start">Uncertain:</text>
+    <text x="542" y="460" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#B3202C" text-anchor="start">skip input</text>
+    <path d="M 446 584 H 425 V 393 H 411" fill="none" stroke="#09588D" stroke-width="1.8" stroke-linejoin="round" marker-end="url(#blue-arrow)" stroke-dasharray="7 6" />
+    <path d="M 416 505 L 434 487" fill="none" stroke="#B3202C" stroke-width="2.4" stroke-linejoin="round" />
+    <text x="409" y="552" font-family="Arial, Helvetica, sans-serif" font-size="19.5" fill="#09588D" text-anchor="end">Order status</text>
+    <text x="409" y="578" font-family="Arial, Helvetica, sans-serif" font-size="19.5" fill="#09588D" text-anchor="end">not checked</text>
+    <text x="531" y="652" font-family="Arial, Helvetica, sans-serif" font-size="18.5" fill="#B3202C" text-anchor="middle">No cancellation option</text>
+  </g>
+</svg>

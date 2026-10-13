@@ -7,11 +7,11 @@
   <!-- Add URLs for course materials here as they are published. -->
   <url>
     <loc>https://stanford-cs120.github.io/fall2026/lectures/index.html</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-10-13</lastmod>
   </url>
   <url>
     <loc>https://stanford-cs120.github.io/fall2026/lectures/notes/index.html</loc>
-    <lastmod>2026-10-07</lastmod>
+    <lastmod>2026-10-13</lastmod>
   </url>
   <url>
     <loc>https://stanford-cs120.github.io/fall2026/lectures/notes/m1_t1.html</loc>
@@ -112,5 +112,21 @@
   <url>
     <loc>https://stanford-cs120.github.io/fall2026/lectures/pdf/m2_t6-6pp.pdf</loc>
     <lastmod>2026-10-07</lastmod>
+  </url>
+  <url>
+    <loc>https://stanford-cs120.github.io/fall2026/lectures/notes/m3_t8.html</loc>
+    <lastmod>2026-10-13</lastmod>
+  </url>
+  <url>
+    <loc>https://stanford-cs120.github.io/fall2026/lectures/lecture.html?lecture=m2_t7</loc>
+    <lastmod>2026-10-13</lastmod>
+  </url>
+  <url>
+    <loc>https://stanford-cs120.github.io/fall2026/lectures/pdf/m2_t7-1pp.pdf</loc>
+    <lastmod>2026-10-13</lastmod>
+  </url>
+  <url>
+    <loc>https://stanford-cs120.github.io/fall2026/lectures/pdf/m2_t7-6pp.pdf</loc>
+    <lastmod>2026-10-13</lastmod>
   </url>
 </urlset>

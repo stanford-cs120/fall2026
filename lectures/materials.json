@@ -30,6 +30,11 @@
       "id": "m2_t6",
       "title": "Lecture 6: Robustness Beyond the Development Distribution",
       "date": "2026-10-08"
+    },
+    {
+      "id": "m2_t7",
+      "title": "Lecture 7: Data as Specification",
+      "date": "2026-10-13"
     }
   ],
   "notes": [
@@ -66,6 +71,11 @@
     {
       "id": "m2_t7",
       "title": "Data as Specification",
+      "date": "2026-10-13"
+    },
+    {
+      "id": "m3_t8",
+      "title": "From Prediction to Action",
       "date": "2026-10-13"
     }
   ]

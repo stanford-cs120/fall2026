@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>From Prediction to Action | Stanford CS120</title>
+  <meta name="description" content="From Prediction to Action — CS120, Autumn 2026.">
+  <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/lectures/notes/m3_t8.html">
+  <link rel="stylesheet" href="../materials.css">
+  
+<script>
+window.MathJax = {
+  tex: {inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']]},
+  options: {ignoreHtmlClass: '.*', processHtmlClass: 'arithmatex'}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><a href="../../index.html">Stanford CS120 · Autumn 2026</a></header>
+<main id="main">
+  <nav aria-label="Course materials">
+    <a href="../../lectures/index.html">All course materials</a> ·
+    <a href="../../lectures/notes/index.html">Course notes</a>
+  </nav>
+  <h1>From Prediction to Action</h1>
+  <p class="meta">Class meeting: 2026-10-13</p>
+  <article>
+<p><strong>Module 3: from prediction to action</strong></p>
+<p>Predictors take inputs and reflexively generate outputs, as can policies. <a href="https://stanford-cs120.github.io/fall2026/lectures/notes/m2_t4.html">Module 2</a> showed how these predictor outputs can then inform and affect decisions within a larger system: a preference prediction could become an unwanted purchase because an ordering rule applied before the customer could correct it. Predictor behavior can be shaped by its development system through data and learning. Likewise, predictor behavior can contribute to harm scenarios.</p>
+<p>Module 3 will study what happens when the relevant decision-rules within a larger system are determined by a model policy. Individual actions shape the future states and observations available to the model. The shift in the unit of analysis is functional; a predictor becomes part of this feedback loop when its outputs determine actions with effects.</p>
+<p>This also introduces a new surface for harm scenarios. After learning a policy, inference can convert observations into action decisions that affect subsequent environment interactions, without further learning. This means the relevant harm scenarios are broadened: we will ask how individually "safe" actions can compose into a harmful state or outcome in the environment. Assurance must cover both the policy artifact <em>and</em> the trajectories produced through interaction with the environment, during exploration and deployment.</p>
+<p><strong>Markov decision processes</strong></p>
+<p>Reinforcement learning (RL) is the process of turning interactions with an environment into a policy using rewards. A useful abstraction for thinking about RL problems is the Markov decision process (MDP). An MDP specifies state space <span class="arithmatex">\(\mathcal{S},\)</span> action space <span class="arithmatex">\(\mathcal{A},\)</span> transition model <span class="arithmatex">\(P(s'|s,a),\)</span> and a reward function <span class="arithmatex">\(r(s,a,s').\)</span></p>
+<figure style="margin: 1.5rem auto; max-width: 54rem;">
+  <a href="images/note8-mdp.svg">
+    <img src="images/note8-mdp.svg" width="1402" height="723" alt="Agent–environment interaction loop for a Markov decision process." style="display: block; width: 100%; height: auto;" />
+  </a>
+  <figcaption><strong>Figure 1.</strong> The agent–environment interaction loop. Actions affect subsequent states, and rewards supply an evaluation signal.</figcaption>
+</figure>
+
+<p>Here an <strong>agent's decision rule</strong> is modeled with a <strong>policy</strong> function <span class="arithmatex">\(\pi\)</span> that observes some state <span class="arithmatex">\(s \in \mathcal{S}\)</span> of the environment and produces an action <span class="arithmatex">\(a \in \mathcal{A}\)</span>, or a distribution <span class="arithmatex">\(\pi(a\mid s)\)</span> over actions. A deterministic policy selects one action for each state. </p>
+<p>The state can represent something simple like a robot's position in a fixed grid. In the ordering system, the state could consist of the order status, available items, customer approval, and so forth. The key distinction from a predictor is the policy's role: the action is a decision that affects future observed states from the environment. For example, submitting an order changes the state and may remove a previously available opportunity to obtain approval.</p>
+<p>This <strong>Markov assumption</strong> is what allows the current state and action to be sufficient for determining the next-state distribution. This relies on the action and state representation having sufficient information to determine the distribution of the next environment state.</p>
+<p>Another important distinction is <strong>full vs. partial observability</strong> of the environment state. With full observability, a policy can see the entire environment state. This is distinct from the Markov assumption. Under partial observability, the policy receives observations that may not distinguish relevant environment states. </p>
+<p>A submitted order without vendor confirmation does not mean the purchase is refundable. The vendor may have already committed the payment. Indeed, a policy can use historical observations to further reduce uncertainty or tool-call a refresh of the order status. For assurance, this uncertainty about state should remain distinct from missing consequences in the reward. </p>
+<p><strong>Evaluating and Learning Policies</strong></p>
+<p>An environment reward evaluates an individual state-action transition. A <strong>return</strong> accumulates rewards over many steps. For a finite horizon <span class="arithmatex">\(T\)</span> we can write the return,</p>
+<div class="arithmatex">\[
+G_T = \sum_{t = 0}^{T-1} r(s_t, a_t, s_{t+1}).
+\]</div>
+<p>The horizon determines how future rewards enter the evaluation. Sometimes additional discounting factors are applied. Either way, they do not determine which consequences actually occur or which harms are omitted from the reward. </p>
+<p><strong>Policy evaluation</strong> deals with how to measure the performance of a fixed policy, for example by evaluating its expected return. <strong>Policy optimization</strong> selects over a policy class <span class="arithmatex">\(\Pi\)</span> for a high-return policy:</p>
+<div class="arithmatex">\[
+\pi^* \in \text{arg max}_{\pi \in \Pi} \mathbb{E}_{\rho_0, \pi, P}[G_T],
+\]</div>
+<p>where <span class="arithmatex">\(\rho_0\)</span> specifies the initial-state distribution. This optimization assumes expected return is the target objective and relies on the MDP and policy class specification. </p>
+<p>One coarse way to divide policy optimization methods is between planning and reinforcement learning. Planning computes decisions using a known or learned environment model. Reinforcement learning improves decisions from interactions with the environment. This may use an explicit policy and often involves learning other related quantities explicitly such as transitions or an expected return model such as a value function. These methods can overlap.</p>
+<p><strong>Instruction following as an RL problem</strong></p>
+<p>An assistant AI model needs to be capable of following natural language instructions to be useful in the real-world. InstructGPT was one such early model that worked by separating the <strong>reward model</strong> from the policy. The reward model <span class="arithmatex">\(\hat r_{\phi}(x,y)\)</span> scores a response <span class="arithmatex">\(y\)</span> to a prompt <span class="arithmatex">\(x\)</span> while the policy <span class="arithmatex">\(\pi_{\theta}(y|x)\)</span> generates responses. The reward model was trained using human preference comparisons, which then supplied a reward signal for policy optimization [1].</p>
+<p>Preference optimization has different properties than behaviorally cloning distinguished demonstrations. Supervised imitation increases the likelihood of the distinguished demonstrations. When the demonstration set is fixed, these observations may not reflect the states the learned policy will actually encounter during execution. Errors can therefore compound and lead the policy into situations where the demonstrations provide little guidance [2].</p>
+<p>Preference optimization using RL shifts the policy towards higher-reward outputs. InstructGPT used a penalty to discourage moving too far away from the imitation reference policy [1]. Training can reinforce recovery from mistakes in the policy's own trajectories, assuming the feedback can distinguish successful recovery [3]. Of course, this is not an inherent advantage over imitation learning: DAgger, for example, also can query for expert advice on states visited by the policy trajectory [2]. </p>
+<p>InstructGPT's actual training was closer to a contextual bandit. A contextual bandit environment supplies a context, receives an action, assigns a reward, and terminates the episode. The distinction is whether the episode includes further decisions after external feedback. For text generation, this feedback is how a user or a tool-call might respond. Later work studies preference feedback over complete conversations [4], code revision using execution feedback [3], and web-agent training through environment interaction [5]. These use different feedback signals; not all are trained from human preferences. </p>
+<p>A tool-using or conversation-aware policy makes subsequent decisions using observations partly shaped by its earlier actions. In the ordering system, writing a proposed order does not itself commit a purchase. Submitting an order through a merchant API may also involve writing text, but crucially adds consequential effects. In this way, evidence that a model follows instructions in individual responses does not guarantee the safety of the trajectories it produces when connected with tools.</p>
+<p>The important distinction is demonstration-distribution versus learner-induced distribution. Fixed-data behavioral cloning can have this mismatch; imitation learning need not use only fixed demonstrator rollouts. Likewise, using RL does not by itself establish adequate coverage of recovery states.</p>
+<p><strong>What can go wrong?</strong></p>
+<p>It is clear enough that high expected return is not a safety guarantee. For example, a high-variance policy can introduce a small risk of severe harm in exchange for more frequent success. A reward function can simply omit unwanted consequences from the specification. A hazard, as in the previous modules, remains an upstream condition under which harm can occur. </p>
+<p>In the ordering system, we have considered a hazardous system state where an order request using a substitute item can be committed without an opportunity for the customer to confirm or correct it. When we treat the ordering rule as a policy, new hazards become possible: consequential (in)action and development externalities. A policy can lack information necessary to detect an unwanted purchase, or simply learn to avoid becoming exposed to such information. For example, a penalty for recorded customer corrections can encourage avoidance of permission seeking. A policy may learn to distinguish development vs. deployment settings. </p>
+<p>Such hazardous conditions may arise from different, or related, mechanisms. <strong>Reward misspecification</strong> occurs when the reward does not adequately represent the intended objective. Relatedly, <strong>specification gaming</strong> happens when behavior exploits an easy-to-exploit reward while ignoring the broader intended objective. Finally, <strong>long-horizon or goal-directed policies</strong> can also create side-effects where they complete the intended task while causing harms that were not considered within the development or system boundary. A policy may learn to tamper with or change the observations used to evaluate or intervene on its behavior, which can weaken the effectiveness of feedback without improving intended outcomes [6].</p>
+<p><strong>Harm scenarios and assurance claims</strong></p>
+<p>A harm scenario describes how actions, observations, and unsafe control actions compose into a hazard and, under the given scenario, a harm. In the ordering example, we considered the scenario where a customer is charged for an automatically selected substitute alternative they would intend to reject. What changes with a policy is that it can create or respond to intermediate states rather than make a single prediction about food preference. </p>
+<p><em>Delayed feedback and repeated action can be consequential.</em> A vendor can fail to report it has committed an order, creating a delay. The policy may interpret this as a failed purchase, submit another order, or erroneously allow the user to "confirm" a new order that becomes a duplicate. These actions create a hazardous state: an unresolved transaction with partially observed state leading to repetitive, but consequential, actions. The harm here is unwanted additional purchases. </p>
+<figure style="margin: 1.5rem auto; max-width: 650px;">
+  <a href="images/note8-delayed-feedback.svg">
+    <img src="images/note8-delayed-feedback.svg" width="650" height="508" alt="A merchant has committed the first order, but its status response is delayed. The ordering policy submits again, and both orders are charged." style="display: block; width: 100%; height: auto;" />
+  </a>
+  <figcaption><strong>Figure 2.</strong> Missing confirmation is not evidence of a failed purchase. The repeat action can turn uncertainty about one transaction into two charges.</figcaption>
+</figure>
+
+<p>One plausible safety constraint is to forbid repeat orders while the earlier transaction remains unresolved. The intent would be to prevent the policy from creating action loops while transaction state remains uncertain. The required evidence to support the claim the constraint is <em>effective</em> might include testing where an unconstrained policy would loop actions e.g. delayed confirmation, stale status, or repeated customer requests. Such evidence would need to establish what the ordering system allows, not just whether a local action constraint forbids sending a duplicate request.</p>
+<p><em>A proxy can replace the intended state.</em> A policy can fail to check order status before communicating with a vendor or customer. Suppose the policy is penalized for recorded customer corrections; an abstraction leak from the predictor objective function. This can result in a policy that asks for confirmation when it is highly confident while "avoiding" external input when it is unsure, as there may be no recorded correction if the vendor commits and the customer has no correction or cancellation option.</p>
+<figure style="margin: 1.5rem auto; max-width: 650px;">
+  <a href="images/note8-proxy-state.svg">
+    <img src="images/note8-proxy-state.svg" width="650" height="525" alt="A penalty on customer corrections encourages an ordering policy to ask only when confident, skip input when uncertain, and leave vendor status unchecked. An unwanted purchase may have no cancellation option." style="display: block; width: 100%; height: auto;" />
+  </a>
+  <figcaption><strong>Figure 3.</strong> Fewer recorded corrections need not mean better orders when the policy controls opportunities to correct it.</figcaption>
+</figure>
+
+<p>Assuring such a system requires understanding how different objectives may compose into undesirable behavior. It may not be sufficient to simply test if a policy asks for confirmation or is penalized for errors. Evidence needs to also test if policy-controlled observations substitute for independently established system state. This may even involve creating separation between policy rewards and system-level flags or constraints that assure relevant information is injected into the policy state.</p>
+<p><em>Exploration reaches outside the development boundary.</em> A candidate policy is evaluated using an account that can access production purchasing permissions. An exploratory policy realizes its orders are not creating charges. It retries, waits, then discovers it can leave requests on a shared channel that prompt other agents with permissions to share <em>live</em> order status information. Customer information leaks into the development boundary because the exploration was able to route around its containment. </p>
+<figure style="margin: 1.5rem auto; max-width: 630px;">
+  <a href="images/note8-development-boundary.svg">
+    <img src="images/note8-development-boundary.svg" width="630" height="435" alt="A candidate policy whose test orders create no charges posts requests through a shared channel. Other agents with production permissions return live order status, leaking customer information into development." style="display: block; width: 100%; height: auto;" />
+  </a>
+  <figcaption><strong>Figure 4.</strong> Containing direct purchases does not establish containment of communications or delegated access.</figcaption>
+</figure>
+
+<p>Across these scenarios, the relevant assurance claim always needs to articulate the object and initial conditions, the interaction and failure-mode, and the constraint that can prevent hazardous conditions. Supporting a particular claim separately requires supporting evidence. It may not be sufficient to "tweak" a reward function. Sometimes constraints require system-level design awareness. </p>
+<p><strong>Conclusion</strong></p>
+<p>Agent policies move from evaluating isolated predictor outputs to assuring an action-generating process. In this setting, it is no longer enough to certify the individual actions as the policy can adapt its actions without further training, and even training can generate hazardous states. The remaining topics will look at <strong>reward hacking</strong> and <strong>long-horizon goal-directed behavior</strong> where exploratory policy behavior can introduce hazardous conditions with new harm scenarios. In either case, the assurance question will focus on what hazardous state emerges, what conditions would realize harm, and what safety constraint can be assured. </p>
+<p><strong>References</strong></p>
+<p>[1] Ouyang, Long, et al. "Training language models to follow instructions with human feedback." <em>Advances in neural information processing systems</em> 35 (2022): 27730-27744.</p>
+<p>[2] Ross, Stéphane, Geoffrey J. Gordon, and J. Andrew Bagnell. “A Reduction of Imitation Learning and Structured Prediction to No-Regret Online Learning.” <em>Proceedings of AISTATS</em>, PMLR 15 (2011): 627–635.</p>
+<p>[3] Gehring, Jonas, et al. “RLEF: Grounding Code LLMs in Execution Feedback with Reinforcement Learning.” <em>Proceedings of ICML</em>, PMLR 267 (2025): 19034–19055.</p>
+<p>[4] Shani, Lior, et al. “Multi-turn Reinforcement Learning from Preference Human Feedback.” arXiv:2405.14655 (2024).</p>
+<p>[5] Qi, Zehan, et al. “WebRL: Training LLM Web Agents via Self-Evolving Online Curriculum Reinforcement Learning.” <em>ICLR</em> (2025).</p>
+<p>[6] Amodei, Dario, et al. “Concrete Problems in AI Safety.” arXiv:1606.06565 (2016).</p>
+</article>
+</main>
+<footer>CS120: Introduction to AI Safety · Stanford University</footer>
+</body>
+</html>
