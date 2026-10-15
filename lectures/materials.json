@@ -35,6 +35,11 @@
       "id": "m2_t7",
       "title": "Lecture 7: Data as Specification",
       "date": "2026-10-13"
+    },
+    {
+      "id": "m3_t8",
+      "title": "Lecture 8: From Prediction to Action",
+      "date": "2026-10-15"
     }
   ],
   "notes": [
@@ -76,7 +81,12 @@
     {
       "id": "m3_t8",
       "title": "From Prediction to Action",
-      "date": "2026-10-13"
+      "date": "2026-10-15"
+    },
+    {
+      "id": "m3_t9",
+      "title": "Reward hacking and control-loop failures",
+      "date": "2026-10-20"
     }
   ]
 }

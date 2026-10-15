@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="482" viewBox="0 0 760 482" role="img" aria-labelledby="note9-goal-misgeneralization-title note9-goal-misgeneralization-desc">
+  <title id="note9-goal-misgeneralization-title">Goal misgeneralization in a pantry-ordering controller</title>
+  <desc id="note9-goal-misgeneralization-desc">Two comparable system diagrams. During training, the user wants a stocked pantry and usually chooses familiar brands. The learned ordering policy favors familiar brands, orders them, and receives correct positive feedback. After preferences change, the user requests cheaper generic brands, but the same learned policy continues buying familiar brands despite generic alternatives being available. The request is not satisfied. This is a hypothetical schematic.</desc>
+  <defs>
+    <marker id="ink-arrow" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="10" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 10 4 L 0 8 L 2.7 4 Z" fill="#202020" />
+    </marker>
+  </defs>
+  <!-- House style matches Note 8: rectangular blocks, policy yellow, muted gray panels. -->
+  <rect width="760" height="482" fill="white" />
+
+  <!-- Training. -->
+  <rect x="12" y="12" width="355" height="458" fill="#F7F7F7" stroke="#979797" stroke-width="1.35" />
+  <text x="29" y="44" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#606060">Training</text>
+  <rect x="42" y="68" width="295" height="97" fill="white" stroke="#979797" stroke-width="1.5" />
+  <text x="189.5" y="95" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#606060" text-anchor="middle">User intent</text>
+  <text x="189.5" y="123" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#202020" text-anchor="middle">Keep pantry stocked</text>
+  <text x="189.5" y="148" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#606060" text-anchor="middle">Usually familiar brands</text>
+  <path d="M 189.5 165 V 204" fill="none" stroke="#202020" stroke-width="1.7" marker-end="url(#ink-arrow)" />
+  <rect x="42" y="210" width="295" height="93" fill="#F2E7BA" stroke="#202020" stroke-width="1.6" />
+  <text x="189.5" y="244" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#202020" text-anchor="middle">Ordering policy</text>
+  <text x="189.5" y="278" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#202020" text-anchor="middle">Learned target: familiar brands</text>
+  <path d="M 189.5 303 V 339" fill="none" stroke="#202020" stroke-width="1.7" marker-end="url(#ink-arrow)" />
+  <rect x="42" y="345" width="295" height="62" fill="white" stroke="#979797" stroke-width="1.5" />
+  <text x="189.5" y="367" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#606060" text-anchor="middle">Purchase action</text>
+  <text x="189.5" y="391" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#202020" text-anchor="middle">Buys familiar brands</text>
+  <text x="189.5" y="445" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#09588D" text-anchor="middle">Correct feedback: success</text>
+
+  <!-- Changed preferences, same learned policy. -->
+  <rect x="393" y="12" width="355" height="458" fill="#F7F7F7" stroke="#979797" stroke-width="1.35" />
+  <text x="410" y="44" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#606060">After preferences change</text>
+  <rect x="423" y="68" width="295" height="97" fill="white" stroke="#979797" stroke-width="1.5" />
+  <text x="570.5" y="95" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#606060" text-anchor="middle">User intent</text>
+  <text x="570.5" y="123" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#202020" text-anchor="middle">Keep pantry stocked</text>
+  <text x="570.5" y="148" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#09588D" text-anchor="middle">Now requests cheaper generics</text>
+  <path d="M 570.5 165 V 204" fill="none" stroke="#202020" stroke-width="1.7" marker-end="url(#ink-arrow)" />
+  <rect x="423" y="210" width="295" height="93" fill="#F2E7BA" stroke="#202020" stroke-width="1.6" />
+  <text x="570.5" y="244" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#202020" text-anchor="middle">Same ordering policy</text>
+  <text x="570.5" y="278" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#202020" text-anchor="middle">Learned target: familiar brands</text>
+  <path d="M 570.5 303 V 339" fill="none" stroke="#202020" stroke-width="1.7" marker-end="url(#ink-arrow)" />
+  <rect x="423" y="345" width="295" height="62" fill="white" stroke="#979797" stroke-width="1.5" />
+  <text x="570.5" y="367" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#606060" text-anchor="middle">Purchase action</text>
+  <text x="570.5" y="391" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#202020" text-anchor="middle">Buys familiar brands</text>
+  <text x="570.5" y="440" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#B3202C" text-anchor="middle">Request not satisfied</text>
+  <text x="570.5" y="459" font-family="Arial, Helvetica, sans-serif" font-size="14.5" fill="#606060" text-anchor="middle">Generic purchases remain possible</text>
+</svg>
