@@ -40,6 +40,11 @@
       "id": "m3_t8",
       "title": "Lecture 8: From Prediction to Action",
       "date": "2026-10-15"
+    },
+    {
+      "id": "m3_t9",
+      "title": "Lecture 9: Reward Hacking and Control-Loop Failure",
+      "date": "2026-10-20"
     }
   ],
   "notes": [
@@ -87,6 +92,11 @@
       "id": "m3_t9",
       "title": "Reward hacking and control-loop failures",
       "date": "2026-10-20"
+    },
+    {
+      "id": "m3_t10",
+      "title": "Goal-directedness and long horizons",
+      "date": "2026-10-22"
     }
   ]
 }
