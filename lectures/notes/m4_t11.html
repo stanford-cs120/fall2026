@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Human feedback, preferences, and reward models | Stanford CS120</title>
+  <meta name="description" content="Human feedback, preferences, and reward models — CS120, Autumn 2026.">
+  <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/lectures/notes/m4_t11.html">
+  <link rel="stylesheet" href="../materials.css">
+  
+<script>
+window.MathJax = {
+  tex: {inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']]},
+  options: {ignoreHtmlClass: '.*', processHtmlClass: 'arithmatex'}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><a href="../../index.html">Stanford CS120 · Autumn 2026</a></header>
+<main id="main">
+  <nav aria-label="Course materials">
+    <a href="../../lectures/index.html">All course materials</a> ·
+    <a href="../../lectures/notes/index.html">Course notes</a>
+  </nav>
+  <h1>Human feedback, preferences, and reward models</h1>
+  <p class="meta">Class meeting: 2026-10-27</p>
+  <article>
+<p><strong>Module 4: Human feedback, preferences, and reward models</strong></p>
+<p>The organizing framework we are developing across these modules analyzes safety in terms of a model, the system it is embedded in, their control structures, and the resulting hazards that may be produced through unsafe control actions. In this module, we will examine the role of human judgements that these structures rely on.</p>
+<p>In <a href="m1_t3.html">module one</a> we introduced system-theoretic process analysis (STPA) as a way to decompose a system into its controllers, controlled processes, and safety constraints. [1] The modules on predictors and agentic safety focused on various aspects of the training loop: judgements, reward models, and model updates.</p>
+<p>This module shifts the unit of analysis to interaction loops.</p>
+<blockquote>
+<p>How must designers be able to observe, evaluate, and intervene on an interaction loop to assure safe and effective control?</p>
+</blockquote>
+<p>Models, even long-horizon agentic AI policies, ultimately are created by designers (often humans) that do so to achieve certain ends. Models can produce proposals subject to approval and then execute those proposals to create artifacts that can receive feedback. As we have seen, just because the designer participates in the development process or has approval authority does not establish effective control.</p>
+<p><strong>What are preferences, and what are individuals judging?</strong></p>
+<p>Designers make AI models for certain ends. Judgements of whether those ends have been achieved depend not only on the evaluator, but also on the context, the comparable alternatives, and the conditions or interface that surface those determinations.</p>
+<p>That is to say, knowing <em>what</em> sort of AI system might be preferred sounds straightforward, but often the designer, evaluator, and end-user are not the same entity! The designer might know their end is to satisfy users with an AI model, but they need to evaluate the model to measure if that end has been achieved. Like the distinction between an evaluation objective and the intended behavior, there is a distinction between what a user says they want out of an AI system and the preferences that can be inferred from behavior. [2]</p>
+<p>There are some formal models of preferences that attempt to link behavioral choices to personal or latent preferences. For example, the von Neumann–Morgenstern (VNM) utility theorem states conditions under which an individual's preferences over lotteries admit an expected-utility representation. However, this result does not establish that observed choices satisfy those assumptions or produce utilities that are comparable across individuals.</p>
+<p><strong>From individual judgements to reward models</strong></p>
+<p>The VNM utility theorem can be grounded in terms of pairwise comparisons between abstract objects we referred to as "lotteries." What are those and how do they relate to the preference models we have seen so far?</p>
+<p>A lottery is a probability distribution over a finite set <span class="arithmatex">\(\mathcal{O}\)</span> of outcomes. For each outcome <span class="arithmatex">\(o \in \mathcal{O}\)</span>, we can define <span class="arithmatex">\(p_L(o)\)</span> as the probability that lottery <span class="arithmatex">\(L\)</span> produces that outcome. The VNM theorem makes various assumptions about how these lotteries are compared. Given two lotteries <span class="arithmatex">\((L,M)\)</span>, we say <span class="arithmatex">\(L \succeq M\)</span> if lottery <span class="arithmatex">\(L\)</span> is at least as favored as lottery <span class="arithmatex">\(M\)</span>. We then assume every comparison resolves (allowing ties), comparisons are transitive across lotteries, strict comparisons are stable under suitably small perturbations of the outcome likelihoods, and finally that mixing a third lottery <span class="arithmatex">\(N\)</span> in the same proportion with each of <span class="arithmatex">\((L,M)\)</span>, without replacing either, does not affect the comparison. Under these assumptions there exists a utility function <span class="arithmatex">\(u: \mathcal{O} \to \mathbb{R}\)</span> such that</p>
+<div class="arithmatex">\[
+L \succeq M \iff \sum_{o \in \mathcal{O}} p_L(o) u(o) \ge \sum_{o \in \mathcal{O}} p_M(o) u(o).
+\]</div>
+<p>A pure outcome (no randomness) can be understood as a lottery where the probability of that outcome is one. This utility is unique up to a positive affine transformation <span class="arithmatex">\(u' = a u + b\)</span> with <span class="arithmatex">\(a &gt; 0\)</span>. [3]</p>
+<p>The Bradley-Terry model also models comparisons, but does so using probabilities over the observed choice. It models</p>
+<div class="arithmatex">\[
+P_{\theta}(\text{select }a \mid a, b) = \sigma(r_{\theta}(a) - r_{\theta}(b))
+\]</div>
+<p>where <span class="arithmatex">\(\sigma(z)=1/(1+e^{-z})\)</span> is the logistic function that converts a score difference into a probability of selection. In this way, the BT-model is with respect to comparisons of individual outcomes rather than comparisons between distributions of outcomes. This is not a consequence of VNM. [2]</p>
+<p>So far, we have assumed that these pairwise preferences are delivered by a single individual. That would be impractical to scale. Instead, in practice, there are a large number of annotators that produce the preference data used to optimize model behavior. Integrating preferences from a population requires aggregation and pluralism, where diverse groups, beliefs, and interests coexist peacefully and share influence rather than being dominated by a single authority or ideology. This is a rich topic we'll return to in the next note. [4]</p>
+<p><strong>Preference elicitation and measurement effects</strong></p>
+<p>Pairwise comparisons are not the only way to create a reward model. One could imagine ranking alternatives (more than two), rating individual choices, and so forth. Under unbounded rationality assumptions - i.e. unlimited computation and communication - many details of the elicitation can be abstracted away. The revelation principle formalizes a related idea: under its assumptions, the equilibrium outcomes selected by an indirect mechanism can be reproduced by a truthful direct mechanism. However, a direct mechanism may not be feasible to compute or use for a human with communication constraints. For example, being able to compare two outputs does not imply being able to specify a complete preference over an entire space of possible outputs. [5]</p>
+<p>For bounded actors, not specifying the interface often leads to consequential underspecification. The order in which options are presented, how the decision is framed, and the possibility of indecision or ties can all affect the quality of the subsequent reward model. [2] This connects with a lesson from <a href="m2_t4.html">module two</a>: reward models that predict choice labels equally well in validation may still differ in application-relevant behavior.</p>
+<p>For example, a prompt author may understand their intent without having the expertise to articulate or express that as a specification that can be input to a model. Even if they can (approximately) formulate a specification, they may not have the tacit knowledge required to verify an output or answer that an AI system generates from that input. Thus, instructions, output observation, and verification are not interchangeable.</p>
+<p>Finally, preferences can change across time. A young person who would select candy over vegetables generates one type of food preference model. That model might be highly effective at making food ordering decisions under the fixed-preference assumptions. However, later that young person becomes older. They may need to cut back on sugar, start tracking their spending, and as a result their preferences, constraints, and values start to change and separate. It may no longer be enough to make recommendations based on predicting their preference. Now the system must understand the effects of a decision and how they influence future recommendations. Recommendations also affect which alternatives are explored and repeatedly chosen. There is now a feedback loop between the individual and the ordering system that can shape their preferences and values over time. [6]</p>
+<p><strong>Data collection, provenance, and labor</strong></p>
+<p>Individuals may have preferences and it is sometimes possible to capture salient aspects of those preferences in AI models. However, we have also discussed that comparing preferences or utilities across individuals is not automatic. Similarly, who provides feedback is something that is contingent upon who constitutes an expert, a contractor, or an end-user population.</p>
+<p><em>Expert taste.</em> An expert may detect differences that a general evaluator may not, for example, a subtle nuance or a security issue in code. However, expertise is task-specific: being qualified to check code may not transfer directly to another domain, e.g. critiquing art. Finally, hiring an expert does not specify what decision they should be consulted to make judgements on.</p>
+<p><em>Contracted data labor.</em> Data workers produce judgements under instructions and payment contracts established by the data buyer and worker. The task may be to express a personal preference, demonstrate how to complete a task, or apply a rubric. Recruitment, quality assurance, and payment all enter into the conditions under which the label is produced. [2]</p>
+<p><em>Voluntary feedback.</em> Some feedback is voluntary, or collected in accordance with a terms-of-service agreement. Platforms such as social media outlets may collect large quantities of behavioral data, e.g. which videos are watched, which are liked, etc. Other platforms such as Chatbot Arena explicitly exist to collect comparisons from people who gain access to free frontier LLMs and voluntarily provide preference data. [7]</p>
+<p>The diversity of ways preference data can be sourced is both a blessing and a curse. It is a blessing because there are often inventive ways to source data for tasks that might be hard to specify, perceive, or verify. It is a curse because the decisions and documentation of <em>how</em> a dataset was constructed are often overlooked.</p>
+<p>As we discussed at the end of <a href="m2_t7.html">module two</a>, retaining provenance is often just as important as the dataset itself. Retaining information about the collection context, rubrics used to evaluate data <em>and</em> annotators, filtering decisions, and intended use-cases remains important.</p>
+<p><strong>What can go wrong? Loss of effective control in vibe coding</strong></p>
+<p>The data to train AI systems require human labor. This remains true even for synthetic preference data when generated by LLMs trained on human data. [2] When we discussed a "toxicity predictor" in module two we erased this distinction. The conditions by which data is produced also matter. Workers may be exposed to monotonous, unsettling, or toxic laboring conditions depending on the nature of the data work. [8] The potential for hazardous outputs requires worker protection, not merely discussion about whether the data is high quality or reflects the virtues of pluralism.</p>
+<p>Similarly, modern AI systems are powerful converters of intent into artifact. However, the challenges of articulating intent, refining taste, and achieving understanding remain human endeavors. In the same way we can lose sight of the human element of AI training and dataset construction, it is possible for an individual to lose touch with what it means to stay in control of the AI system they are using to assist with or automate tasks.</p>
+<p>For example, consider a user who is working on a coding repository. They may ask an assistant to repair a visible bug in the user interface. The assistant proposes a patch that changes the backend; the user approves it, and the visible front-end workflow succeeds. However, the backend change also removes an authorization check. The user expresses a preference without establishing a way to ensure the system's safety constraints are preserved.</p>
+<p>Approval authority alone does not resolve the gap between intent and understanding. From a hazard-analysis point of view, the potential loss here is disclosure of information to unauthorized users. The unsafe control action is approving the patch using only a partial view to verify its acceptability. Scoped edits, rollback, and separate tests for safety-critical system functions are candidate ways to implement appropriate safety constraints.</p>
+<p><strong>Feedback loops and endogenous data</strong></p>
+<p>In general, the data used to train and evaluate a model may not be independent of the data generated during deployment. Users rate AI outputs, those ratings and outputs become preference data, and new models are trained using that data. Human feedback can be both preferential and <em>performative:</em> each datum can play a small role in shaping the type of model its contributor is likely to interact with next, which in turn shapes future feedback. [9]</p>
+<p>This also means human approval and feedback are not a fixed specification waiting to be articulated once and for all. They are produced by people interacting with a system that can change what they see, what they can evaluate, and what they ultimately come to value.</p>
+<p><strong>References</strong></p>
+<p>[1] Leveson, N. G., &amp; Thomas, J. P. (2018). <a href="https://psas.scripts.mit.edu/home/get_file.php?name=STPA_handbook.pdf">STPA Handbook</a>, Ch. 2.</p>
+<p>[2] Lambert, N. (2025). <a href="https://arxiv.org/abs/2504.12501">Reinforcement Learning from Human Feedback</a>, Ch. 5, 10–12.</p>
+<p>[3] von Neumann, J., &amp; Morgenstern, O. (1947). <em>Theory of Games and Economic Behavior</em>, 2nd ed. Princeton University Press.</p>
+<p>[4] Conitzer et al. (2024). <a href="https://proceedings.mlr.press/v235/conitzer24a.html">Position: Social Choice Should Guide AI Alignment in Dealing with Diverse Human Feedback</a>. ICML.</p>
+<p>[5] Conitzer, V., &amp; Sandholm, T. (2004). <a href="https://doi.org/10.1145/988772.988824">Computational Criticisms of the Revelation Principle</a>. ACM EC.</p>
+<p>[6] Jiang et al. (2019). <a href="https://arxiv.org/abs/1902.10730">Degenerate Feedback Loops in Recommender Systems</a>. AIES (theoretical model).</p>
+<p>[7] Chiang et al. (2024). <a href="https://arxiv.org/abs/2403.04132">Chatbot Arena: An Open Platform for Evaluating LLMs by Human Preference</a>. ICML.</p>
+<p>[8] Perrigo, B. (2023). <a href="https://time.com/6247678/openai-chatgpt-kenya-workers/">OpenAI Used Kenyan Workers on Less Than $2 Per Hour to Make ChatGPT Less Toxic</a>. TIME.</p>
+<p>[9] Perdomo et al. (2020). <a href="https://proceedings.mlr.press/v119/perdomo20a.html">Performative Prediction</a>. ICML.</p>
+</article>
+</main>
+<footer>CS120: Introduction to AI Safety · Stanford University</footer>
+</body>
+</html>
