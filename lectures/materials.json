@@ -50,6 +50,11 @@
       "id": "m3_t10",
       "title": "Lecture 10: Goal-Directedness and Long Horizons",
       "date": "2026-10-22"
+    },
+    {
+      "id": "m4_t11",
+      "title": "Lecture 11: Human Feedback, Preferences, and Reward Models",
+      "date": "2026-10-27"
     }
   ],
   "notes": [
@@ -107,6 +112,11 @@
       "id": "m4_t11",
       "title": "Human feedback, preferences, and reward models",
       "date": "2026-10-27"
+    },
+    {
+      "id": "m4_t12",
+      "title": "Pluralism, disagreement, and preference aggregation",
+      "date": "2026-10-29"
     }
   ]
 }

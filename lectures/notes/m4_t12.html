@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pluralism, disagreement, and preference aggregation | Stanford CS120</title>
+  <meta name="description" content="Pluralism, disagreement, and preference aggregation — CS120, Autumn 2026.">
+  <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/lectures/notes/m4_t12.html">
+  <link rel="stylesheet" href="../materials.css">
+  
+<script>
+window.MathJax = {
+  tex: {inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']]},
+  options: {ignoreHtmlClass: '.*', processHtmlClass: 'arithmatex'}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><a href="../../index.html">Stanford CS120 · Autumn 2026</a></header>
+<main id="main">
+  <nav aria-label="Course materials">
+    <a href="../../lectures/index.html">All course materials</a> ·
+    <a href="../../lectures/notes/index.html">Course notes</a>
+  </nav>
+  <h1>Pluralism, disagreement, and preference aggregation</h1>
+  <p class="meta">Class meeting: 2026-10-29</p>
+  <article>
+<p><strong>Module 4: Pluralism, disagreement, and preference aggregation</strong></p>
+<p>In the previous note, we examined how individual judgements become data for training AI systems. While AI systems are already trained with large amounts of data, these additional judgements attempt to derive structured reward scores that can be used to evaluate AI systems and discern the highest quality outputs. </p>
+<p>However, when we examine what defines a utility it turns out that individual contributing judgements only specify that person's utility function under certain assumptions. Moreover, they do not specify how those judgements should be combined. Individuals might disagree about a particular input, ground facts, how to interpret the task, and so forth. Finally, the problem of reducing ambiguity or communication difficulty before <strong>eliciting</strong> individual judgements should be distinguished from <strong>aggregating</strong> multiple judgements that influence a shared outcome.</p>
+<p><strong>Ex:</strong> Consider an assistant that is deciding whether a university should use facial recognition for building access. Different stakeholders may evaluate the proposal differently. A student may be concerned about convenience or privacy. Security staff may wonder if facial recognition is the most effective option. Another group may be concerned about accuracy and disparities of the recognition system. </p>
+<p>Pluralism is about accepting these different perspectives within what may ultimately be one decision. That decision may be whether or not to install the original system. It might involve finding alternatives, finding a shared default, or a degree of compromise resulting in a system that minimizes the residual disagreement. </p>
+<p><strong>Do LLMs reflect the diversity of opinions?</strong></p>
+<p>If an AI system is involved in the <em>framing</em> of decisions it is worth asking which views it is able to reflect. A model can be aligned to one person, a small group, or a collective. Another model can reflect the views of many while being misaligned to current stakeholders.</p>
+<p>OpinionQA repurposed public opinion surveys to study model outputs and better understand whose viewpoints LLMs reflect [1]. The survey dataset contained over a thousand Pew American Trends Panel questions and comparisons with 60 US demographic groups.</p>
+<p>This study obtained findings and limitations around three areas: representativeness, steerability, and consistency. Representativeness was measured by comparing model response distributions with (weighted) distributions of human responses. They found substantial disparities between the opinions reflected in simple base and fine-tuned LLM baselines. This suggests naive use of human feedback need not improve representativeness.</p>
+<p>A natural follow-up question was to ask if models could be steered, or prompted, towards more representative response patterns. The improvements from steering here were modest, none of the representativeness problems were resolved this way. Indeed, the study also found the groups LLMs align with are not always consistent. An LLM might take a "liberal" position on one subset of questions, but then express "conservative" views on other questions e.g. religious beliefs. </p>
+<p>A successful measurement of which viewpoints an LLM reflects is something like a diagnostic. Whether these discrepancies are <em>consequential</em> is application dependent. For example, optimizing on the dataset to "maximize" representativeness wouldn't work universally because the <em>dataset itself is from within US demographic groups only.</em></p>
+<p><strong>How do we make social choices?</strong></p>
+<p>AI systems are used for decisions and the viewpoints they have are not necessarily representative. Moreover, simply "optimizing" the discrepancy away is itself a consequential choice. Social choice provides a vocabulary for making aggregation assumptions explicit [2]. </p>
+<p><strong>Ex:</strong> Suppose the university assistant decides to send out a poll on how to implement enhanced security with three options: <span class="arithmatex">\(A, B, C.\)</span> Representatives from three groups - <span class="arithmatex">\(G_1, G_2, G_3\)</span> - are given equal weight and are solicited to rank candidates. Here are the rankings:</p>
+<div class="arithmatex">\[
+G_1:  A \succ B \succ C \quad
+G_2: B \succ C \succ A \quad
+G_3: C \succ A \succ B. 
+\]</div>
+<p>Each ranking is transitive, so <span class="arithmatex">\(A \succ B\)</span> and <span class="arithmatex">\(B \succ C\)</span> implies <span class="arithmatex">\(A \succ C\)</span>. So each group has self-consistent rankings. However, pairwise majorities prefer <span class="arithmatex">\(A\)</span> to <span class="arithmatex">\(B\)</span>, <span class="arithmatex">\(B\)</span> to <span class="arithmatex">\(C\)</span>, and <span class="arithmatex">\(C\)</span> to <span class="arithmatex">\(A\)</span>, each by two votes to one.</p>
+<p>The assistant has attempted to solicit community input, but has ended up in a situation where its <em>aggregation</em> rule could determine the final decision. Interpreting a fitted ordering as faithfully recovering these collective preferences would be a validity threat. When regressing preferences - e.g. with a Bradley-Terry model - inconsistency can reflect structured disagreement as well as measurement error. Here, the structured inconsistency or disagreement is the object of analysis. A single scalar score cannot match all three majority directions. </p>
+<p>Suppose the goal is to produce a complete, transitive social ranking among at least three options. Assume that the groups can have any profile of complete, transitive rankings. We might also like it to be the case that if every group prefers some option to another - e.g. everyone prefers <span class="arithmatex">\(A\)</span> to <span class="arithmatex">\(B\)</span> - then that preference holds in the social ranking. It also is convenient if the social ranking of two options depends only on each group's comparison of those options. Finally, we should avoid the case where one fixed group's strict preferences always determine the social ranking i.e. a dictatorship. </p>
+<p>Arrow's impossibility theorem tells us that this is impossible [2]. While these desiderata sound reasonable in isolation, to achieve a complete, transitive social ranking one of the aggregation requirements must be changed. </p>
+<p><strong>Example: RLHF and Constitutional RLAIF</strong></p>
+<p>Social choice is a way to interrogate the assumptions behind how individual choices are combined into a decision. Some idealistic models of social choice are impossible, but this leaves open how criteria are chosen in practice: RLHF and Constitutions are two popular choices in the context of choosing feedback for AI systems.</p>
+<p>We've touched on RLHF briefly; see <a href="https://stanford-cs120.github.io/fall2026/lectures/notes/m2_t5.html">RLHF example in note 5</a>. This consists of collecting comparisons between model outputs, training a shared reward model, and then using the reward model to perform policy optimization on the AI system. As soon as the comparisons are collected from multiple individuals there are choices to be made about how to aggregate; even fitting a common predictor is still a choice. </p>
+<p>Conitzer et al. contrast aggregating rankings <em>before</em> training a common predictor with training evaluator-conditioned models and then aggregating predicted ratings <em>afterward</em> [2]. Indeed, there are prior examples of post-fitting aggregation in supervised learning such as Jury Learning [3]. This allows the model to have an explicit specification of which people or groups, in what proportion, were intended to influence the decisions.</p>
+<p>Constitutional AI is another way to guide model feedback [4, 5]. It uses human-selected principles to ground feedback and comparisons for RL. For example, two broad goals are "helpfulness" and "harmlessness." A model generates an output, then critiques the output against the principles, and then outputs a refined response for supervised fine-tuning. In the original experiment, human helpfulness feedback and AI harmlessness comparisons train a preference model for RL. </p>
+<p>The normative decision here is about <em>who</em> selects those principles and <em>how</em> adherence is determined. Principles can conflict, adherence can devolve into a sub-routine of RLHF, and translating abstract principles (which may be easier to express) can make them harder to apply under realistic conditions.</p>
+<p><strong>What remains: echo chambers and collecting representative feedback</strong></p>
+<p>Even if we grant an AI model feedback process is sufficiently representative it does not necessarily maintain that status after the model is deployed. The deployed system may subsequently influence who participates, what content they encounter, and which opportunities for feedback are available. </p>
+<p><strong>Ex (hypothetical):</strong> Jury learning aspires to define the relevant population before producing judgements or choices. The assistant attempted to define three groups, but found no transitive ranking consistent with every pairwise majority. However, it turns out the actual distribution across campus is unequal. The proportion of individuals represented by group one (<span class="arithmatex">\(G_1\)</span>) is far higher than the equal weighting they were given in the decision. </p>
+<p>It turns out that recruitment and non-response rates have affected the proportions of groups. While it is true that <span class="arithmatex">\(G_1\)</span> is under-represented relative to population share, it also turns out that <span class="arithmatex">\(G_3\)</span> is a group where the proposed recognition software has a 5x higher error rate than other groups. The assistant realizes that the <em>implementation burden</em> is not equal across groups. Population share alone does not settle appropriate influence. </p>
+<p>More broadly these sorts of representativeness gaps can lead to feedback biases. It is possible that users who engage more with a model also provide more legible feedback for training. Users who are disengaged might leave or provide less useful data. Could measured satisfaction increase while the represented population narrows?</p>
+<p>Jury learning can support personalized evaluation. Its deployment can also change which alternatives people encounter. For social choice it might lead to better collective decision making. For individuals it might help them have their preferences represented. Such deployments can also reduce exposure to competing views and incentivize strategic preference expression. </p>
+<p>Ultimately, social choice can support accountability when preferences across many individuals need to be synthesized into a collective decision process. This does not provide automatic solutions, but it does help convert implicit assumptions into explicitly documented specifications. We also discussed potential failure-modes and feedback loops this process can introduce. </p>
+<p><strong>References</strong></p>
+<p>[1] Santurkar, S., et al. (2023). <a href="https://proceedings.mlr.press/v202/santurkar23a.html">Whose Opinions Do Language Models Reflect?</a>. ICML.</p>
+<p>[2] Conitzer, V., et al. (2024). <a href="https://proceedings.mlr.press/v235/conitzer24a.html">Position: Social Choice Should Guide AI Alignment in Dealing with Diverse Human Feedback</a>. ICML.</p>
+<p>[3] Gordon, Mitchell L., et al. "Jury learning: Integrating dissenting voices into machine learning models." <em>Proceedings of the 2022 CHI Conference on Human Factors in Computing Systems</em>. 2022.</p>
+<p>[4] Bai, Y., et al. (2022). <a href="https://arxiv.org/abs/2212.08073">Constitutional AI: Harmlessness from AI Feedback</a>. See §§1.2 and 4 for the training stages and the combination of human helpfulness and AI harmlessness feedback.</p>
+<p>[5] Huang, S., et al. (2024). <a href="https://arxiv.org/abs/2406.07814">Collective Constitutional AI: Aligning a Language Model with Public Input</a>. FAccT. Optional example; see §§3.1–3.3 for public input and its transformation into principles.</p>
+</article>
+</main>
+<footer>CS120: Introduction to AI Safety · Stanford University</footer>
+</body>
+</html>
