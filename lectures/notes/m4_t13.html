@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sycophancy, manipulation, and preference shaping | Stanford CS120</title>
+  <meta name="description" content="Sycophancy, manipulation, and preference shaping — CS120, Autumn 2026.">
+  <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/lectures/notes/m4_t13.html">
+  <link rel="stylesheet" href="../materials.css">
+  
+<script>
+window.MathJax = {
+  tex: {inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']]},
+  options: {ignoreHtmlClass: '.*', processHtmlClass: 'arithmatex'}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><a href="../../index.html">Stanford CS120 · Autumn 2026</a></header>
+<main id="main">
+  <nav aria-label="Course materials">
+    <a href="../../lectures/index.html">All course materials</a> ·
+    <a href="../../lectures/notes/index.html">Course notes</a>
+  </nav>
+  <h1>Sycophancy, manipulation, and preference shaping</h1>
+  <p class="meta">Class meeting: 2026-11-05</p>
+  <article>
+<p><strong>Module 4: Sycophancy, Manipulation, and Preference Shaping</strong></p>
+<p>Human feedback often is partly produced through judgements which themselves change through interaction with the system being evaluated. This is because individual judgements become preference data, are aggregated into the system, and then influence the future system. Interaction changes the judgements that will become future feedback. </p>
+<p>When the quality of judgement depends on the modality what does alignment mean? An individual can produce rankings through stated preferences, expressed values, or produced outcomes. These distinct modes through which judgements are produced are actually the substrate through which alignment is determined. This note will discuss two phenomenon: revealed vs. stated preference, and preference shaping through sycophancy. </p>
+<p><strong>Revealed vs. stated preferences</strong></p>
+<p>Different modalities for eliciting or inferring preferences can produce different conclusions about the same content. A common division is between revealed and stated preference. Revealed preferences are a way to model individual choices from observed behavior. Stated preferences are elicited by asking individuals what they want or how they evaluate alternatives in a choice.</p>
+<p>According to revealed preference engagement can be treated as a preference signal. Clicking a post, watching a video, or posting a comment are valuable signals for companies that own the platform. Companies often distribute advertisements and then charge based on how often they are engaged with. For example, an advertiser on Instagram may pay nothing to simply have an advertisement viewed, a small amount if a user clicks on a post, and a larger amount if they follow a link to an advertiser website. </p>
+<p>Mili et al. argue that such engagement-based ranking can amplify angry, partisan, and out-group hostile content relative to chronological ranking [2]. In their study, participants rated roughly 20 posts, 10 from the top of an engagement-ranked feed and 10 from a chronological feed. The analysis found significant differences in selected content compared with the fixed pool. Participants often had a stated preference for less political content sourced from an engagement-based feed than chronological ranking [2].</p>
+<p>This analysis established a distinction between revealed preference for engagement-based feeds and stated preferences. However, scaling stated preferences is a different feasibility problem. First, users tend to only provide sparse signals of stated preferences. This is a key reason revealed preferences are used in the first place. Second, over-indexing on stated preference can reduce some forms of divisive content while making it harder for a user to explore new perspectives or content [2]. </p>
+<p><strong>Sycophancy and preference shaping</strong></p>
+<p>Can interaction with an AI system, recommendation system or chatbot, influence the preferences that will later be used to evaluate that system? One way this can happen is through sycophancy which we define here as follows:</p>
+<blockquote>
+<p>Sycophancy: excessive accommodation of a user's apparent demand relative to epistemic warrant</p>
+</blockquote>
+<p>Sycophancy is often described as excessive affirmation, agreement, praise, or preservation of face [1]. However, the failure is not fundamentally about excessive positive valence. As we saw, conforming to a user's revealed preference can lead to engagement with <em>more</em> divisive or negative content. A model or recommendation system can be sycophantic while creating exposure to critcism, nuance, or continued conversation. </p>
+<p><strong>Ex:</strong> A user submits their verified mathematical proof to a Chatbot and asks for harsh criticism. There are no factual concerns to engage with. The Chatbot provides harsh critcism focused on the naming of variables, assumptions, and definition statements. The user asks for a "patch" but the result does not decrease the criticism in subsequent fresh conversations. A prolonged engagement period follows when resolution or a statement of system limitation was warranted.</p>
+<p>Cheng at al. study a notion of sychophancy defined through action endorsement by AI and humans across interpersonal scenarios [1, 1a]. Models affirmed user's actions 49% more often on average. On sampled <code>r/AmITheAsshole</code> cases where human consensus disagreed with the poster the AI models affirmed the poster in 51% of cases. The experiments shows that sycophantic responses raised participants' confidence that htey were right. It also reduced their stated willingness to take responsbility or reparitive action. Yet, participants preferred and trusted these responses more than non-sycophantic models.</p>
+<p>In such a study, the operationalization matters. The live-chat comparison is between a models  <em>explicitly instructed</em> to affirm the user's action or challenge it. Calling the latter "non-sycophantic" does not mean it independently judged which advice was warranted; both response directions were imposed randomly on a given user. Nevertheless, the study was able to show sycophancy, whether positive or negative in valence, affects user beliefs and willingness to engage in prosocial behavior.</p>
+<p><strong>Evaluating alignment</strong></p>
+<p>An alignment evaluation is not complete until it is specified whose preferences are elicited, which outcome is measured, and for <em>whom</em> alignment is claimed. Metrics like observed engagement, stated preferences, and downstream outcomes are separate channels for producing judgements.</p>
+<p>Agreement on one channel doesn't imply agreement on another: polling users about what they want, measuring if they can detect the difference, and whether or not that impacts disposition are separate claims. In the their social media study on Twitter, Mili et al. collected stated-preferences form users with a retrospective reranking [2]. This was useful to better understand what users <em>say</em> they want in a feed, but this not the same as a learned preference predictor for unseen posts.</p>
+<p>Jahanbakhsh et al. make the transition from asking users what they want to testing if they can notice. Users were asked to express priorities over 19 human values [3]. These priorities were then used by a separate LLM to annotate the value expressions in unseen posts, allowing posts to matched to the users stated values. Users were able to recognize the more value-aligned feed in A/B tests 63% of the time [3]. This supports the interpretation stated values allow meaningful control over a user's feed ranking.</p>
+<p>Finally, it can be hard to predict the effect of deploying such an algorithmic change. Nyan et al. ran a three-month randomized Facebook intervention. This intervention reduced exposure to sources the user would find agreeable, while the study analyiss found no measurable changes in various attitudes such as polarization [4]. This doesn't mean exposure doesn't matter in general, but it does suggest that merely changing the order in which items are shown may not be an effective intervention. </p>
+<p><strong>Feedback loops and effective control</strong></p>
+<p>A system can help generate the behavioral and evaluation evidence that will be used to decide what the next version will do. Users may say they want a particular change, but then fail to notice if the system adapts. A system might adapt, but have unintended effects on user engagement. </p>
+<p>Preference change is distinct from selection effects. A user who dislikes a system may disengage, remaining users supply more feedback as a result. This can shift the distribution of data seen during training vs. deployment; something discussed in module two. However, a user who's judgements <em>change</em> after repeated exposure or affirmation has participated in a feedback loop. It is not the model being adapated, but a human being conditioned. </p>
+<p>Naturally, feedback loops imply different hazards than selection. Sycophantic responses can be preferred while producing less propensity for reflection or behavioral change. This creates a hazardous system condition: a company that optimizes for observed approval has an incentive to produce syncophatic model effects. </p>
+<p>On the other hand, if users can be influenced by the very systems they are supposedly evaluating how are we to preserve agency? Control is broader than selecting a ranking method. A user can set values, but not control the distribution of candidate items. They may genuinely prefer a syncophatic AI model even if it causes harm.</p>
+<p>Changing preferences can create hazards, but this doesn't necessarily mean harm is the result. System builders can create safety constraints ranging from automatic warning labels on sensitive topics to community-sourced fact-checking on controversial claims. Users also have agency. Settings limits on certain platforms, being intentional about <em>how</em> they prompt or engage with AI systems, and maintaining an independently grounded set of values are also available actions. </p>
+<p><strong>References</strong></p>
+<p>[1] Cheng, M., Lee, C., Khadpe, P., Yu, S., Han, D., &amp; Jurafsky, D. (2026). <a href="https://www.science.org/doi/10.1126/science.aec8352">Sycophantic AI decreases prosocial intentions and promotes dependence</a>. <em>Science</em>. <a href="https://s3.amazonaws.com/media.mediapost.com/uploads/science.aec8352.pdf">Full-text PDF</a>.</p>
+<p>[1a] Cheng, M., Lee, C., Khadpe, P., Yu, S., Han, D., &amp; Jurafsky, D. (2025). <a href="https://arxiv.org/html/2510.01395v1">Sycophantic AI decreases prosocial intentions and promotes dependence</a>. <em>arXiv</em> (version 1).</p>
+<p>[2] Milli et al. (2025). <a href="https://academic.oup.com/pnasnexus/article/4/3/pgaf062/8052060">Engagement, user satisfaction, and the amplification of divisive content on social media</a>. <em>PNAS Nexus</em>.</p>
+<p>[3] Jahanbakhsh et al. (2026). <a href="https://arxiv.org/html/2509.14434v2">Value Alignment of Social Media Ranking Algorithms</a>. <em>arXiv</em> (version 2).</p>
+<p>[3a] Jahanbakhsh et al. (2025). <a href="https://arxiv.org/html/2509.14434v1">Value Alignment of Social Media Ranking Algorithms</a>. <em>arXiv</em> (version 1).</p>
+<p>[4] Nyhan et al. (2023). <a href="https://www.nature.com/articles/s41586-023-06297-w">Like-minded sources on Facebook are prevalent but not polarizing</a>. <em>Nature</em>.</p>
+</article>
+</main>
+<footer>CS120: Introduction to AI Safety · Stanford University</footer>
+</body>
+</html>
