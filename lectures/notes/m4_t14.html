@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Labor, Organizational Incentives, Data Endogeneity, and Externalities | Stanford CS120</title>
+  <meta name="description" content="Labor, Organizational Incentives, Data Endogeneity, and Externalities — CS120, Autumn 2026.">
+  <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/lectures/notes/m4_t14.html">
+  <link rel="stylesheet" href="../materials.css">
+  
+<script>
+window.MathJax = {
+  tex: {inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']]},
+  options: {ignoreHtmlClass: '.*', processHtmlClass: 'arithmatex'}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><a href="../../index.html">Stanford CS120 · Autumn 2026</a></header>
+<main id="main">
+  <nav aria-label="Course materials">
+    <a href="../../lectures/index.html">All course materials</a> ·
+    <a href="../../lectures/notes/index.html">Course notes</a>
+  </nav>
+  <h1>Labor, Organizational Incentives, Data Endogeneity, and Externalities</h1>
+  <p class="meta">Class meeting: 2026-11-10</p>
+  <article>
+<p><strong>Module 4: Labor, Organizational Incentives, Data Endogeneity, and Externalities</strong></p>
+<p>Who counts as an expert, and who decides whose judgements are suitable for training or evaluation? Paid training data for contemporary AI systems sources from experts, contractors, and crowdworkers. There are also unpaid sources of training data including end users who agree to terms-of-service and knowledge contributors whose outputs are used as public goods. The question of who produces training data is also a question of whose work is recognized as expertise.</p>
+<p>Some sources of data are commissioned others are treated as public goods suggesting that not all activities input to training pipelines are compensated as labor. There are several ways to think about how that provenance matters. In this note, we'll discuss three surrounding hazards that emerge when that provenance becomes confused: data quality, working conditions, and externalities. </p>
+<p><strong>Datasets: quantity and quality assurance</strong></p>
+<p>Would you prefer an AI generated diagnosis from a system trained using domain expert data, thumbs up preference data from chat logs, or someone who crowdsourced an answer from ChatGPT? The point is that quality assurance depends not just on <em>how</em> the evaluation was established, but on <em>who</em> participated in its construction. </p>
+<p>Crowdsourced data often is used to evaluate LLM outputs. What happens when workers use LLMs to produce that reference [1]? Veselovsky et al. estimate that 33-46% of submitted summaries incorporated LLM assistance in their June 2023 MTurk case study. The task given to workers in their study consisted of summarizing medical abstracts in about 100 words. They looked at 46 abstract summaries from 44 workers and classified them using data pre- and post-LLM alongside keystroke analysis. </p>
+<p>Using keystrokes or pre/post splits give some proxy signals about prevelance, but it also signals the challenges of assuring quality data is being collected. LLM assistance doesn't <em>inherently</em> mean the output is low-quality. However, it <em>does</em> create dependence between the reference data and the downstream artifact by shifting the intended pipeline from "human input" <span class="arithmatex">\(\to\)</span> "AI system" to something closer to a feedback loop "AI outputs" <span class="arithmatex">\(\to\)</span> "AI system." Modern detection tools like <a href="https://www.pangram.com/">Pangram</a> are highly effective at detecting AI-generated outputs without relying on keystroke patterns, but the quality assurance problem remains.</p>
+<p><strong>Working conditions</strong></p>
+<p>Data can be high-quality and a model can become safer for its users all while the work required to produce that safety remains hazardous. TIME reports that Kenyan workers employed by Sama labeled toxic text for OpenAI's safety systems, with take-home pay of roughly $1.32–$2 per hour [2]. During interviews, four of the workers described psychological harm and counseling constrained by productivity demands. Sama disputes their accounts of counseling access.</p>
+<p>The hazardous working condition is that creating filtering labels for toxic data can increase the risk of psychological trauma. Similar risks have been documented among jurors exposed to graphic evidence and forensic investigators handling child sexual abuse material [5, 5a]. Reporting on Sama connected the work's traumatic nature to Sama's decision to end its OpenAI work in February 2022, eight months early [2]. While that work ended, the effects on those workers and the industry as a whole did not. In January 2023, Sama announced it would end all content moderation work, including a major contract with Meta, by March 2023 [6].</p>
+<p>It is not possible to know with certainty <em>why</em> OpenAI outsourced this kind of work, and it is unlikely there was a singular reason. The work might have been cheaper to outsource; reporting suggests the original contracts totaled about $200,000 [2]. Differences in legal and regulatory oversight may also matter, although their role in the outsourcing decision is unclear. In a separate image-collection pilot, Sama delivered 1,400 sensitive images, some categorized as "C4," denoting child sexual abuse. TIME reported that some imagery collected under the project was illegal under U.S. law, although OpenAI denied intending to collect C4 images [2]. Understanding data provenance is as much an institutional problem as a technical one.</p>
+<p><strong>Externalities and data endogeneity</strong></p>
+<p>AI systems can change the conditions under which future training and evaluation data is produced. Crowd- and knowledge-workers increasingly rely on LLMs to perform their own work, while individual users may turn to chatbots instead of contributing to public knowledge-sharing platforms.</p>
+<p>The first example illustrates <strong>data endogeneity</strong>: when AI systems influence the production of data used to train or evaluate future systems, either through the reuse of their outputs or changes in human contributions. The second raises the problem of <strong>externalities</strong>: costs or benefits of an activity that fall on others without being fully accounted for by those making decisions about it. Together, these examples show that AI systems do not merely consume data; they also shape the conditions under which future data is produced.</p>
+<p>Del Rio-Chanona et al. give us a combination of both an externality and data endogeneity. They studied the six months following ChatGPT's release, comparing activity on programming and mathematics forums [3]. The study found that activity declined and contributions fell across experience levels, while finding no significant change in post quality as measured by peer voting. Individual use of a chatbot may reduce contributions to a public resource used by others <em>without</em> a detectable decline in post quality, while <em>still</em> changing the volume and distribution of new contributions.</p>
+<p>Their methods were also relevant. They leveraged disparities in access to ChatGPT; users of Russian- and Chinese-language counterparts of Stack Overflow had more limited access to ChatGPT. A separate analysis leveraged differences in programming-language popularity, where ChatGPT was expected to be more capable of answering questions about popular languages with richer training data. A popular Meta Stack Overflow discussion, <a href="https://meta.stackoverflow.com/questions/433864/do-you-agree-with-gergely-that-stack-overflow-is-almost-dead">"Stack Overflow is almost dead"</a>, raises a surprisingly connected question [4]: Which measures establish the health of a knowledge-sharing community, and when are changes or disparities admissible as evidence?</p>
+<p><strong>Conclusions</strong></p>
+<p>The institutions that own the production of data also influence its working conditions.</p>
+<blockquote>
+<p>What isn't data labor? </p>
+</blockquote>
+<p>Safety filtering, text generation, and more recently mathematical explanation have all increasingly been systematized and organized to produce useful data for training and evaluating frontier AI systems. Researchers are <a href="https://openai.com/index/building-scientific-understanding-with-academic-communities/">increasingly invited to pariticipate in explaining results</a> from frontier AI models in exchange for access to information, visibility, and recognition [7]. The company describes unpaid academic collaborations as a upholding a principle of independence. Should they have that right of determination?</p>
+<p>Provenance matters more than ever because the rights and protections a worker have depend on where they live and what role they are officially recognized as occupying. That can range from being employed to contracting to volunteering. </p>
+<p><strong>References</strong></p>
+<p>[1] Veselovsky, V., Horta Ribeiro, M., &amp; West, R. (2023). <a href="https://arxiv.org/html/2306.07899v1">Artificial Artificial Artificial Intelligence: Crowd Workers Widely Use Large Language Models for Text Production Tasks</a>. <em>arXiv</em>, version 1.</p>
+<p>[2] Perrigo, B. (2023). <a href="https://time.com/6247678/openai-chatgpt-kenya-workers/">OpenAI Used Kenyan Workers on Less Than $2 Per Hour to Make ChatGPT Less Toxic</a>. <em>TIME</em>.</p>
+<p>[3] del Rio-Chanona, R. M., Laurentsyeva, N., &amp; Wachs, J. (2024). <a href="https://doi.org/10.1093/pnasnexus/pgae400">Large language models reduce public knowledge sharing on online Q&amp;A platforms</a>. <em>PNAS Nexus</em>, 3(9), pgae400. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11421660/">Full text</a>.</p>
+<p>[4] DeLaHunt, J., and community respondents (2025). <a href="https://meta.stackoverflow.com/questions/433864/do-you-agree-with-gergely-that-stack-overflow-is-almost-dead">Do you agree with Gergely that “Stack Overflow is almost dead”?</a>. <em>Meta Stack Overflow</em>. Optional discussion.</p>
+<p>[5] Brooks, M., et al. (2025). <a href="https://doi.org/10.1111/bjc.12522">Trauma in the courtroom: The role of prior trauma exposure and mental health on stress and emotional responses in jurors</a>. <em>British Journal of Clinical Psychology</em>, 64(3), 603–622.</p>
+<p>[5a] Gewirtz-Meydan, A., Mitchell, K. J., &amp; O'Brien, J. E. (2024). <a href="https://doi.org/10.1016/j.chiabu.2024.106757">Trauma behind the keyboard: Exploring disparities in child sexual abuse materials exposure and mental health factors among investigators and forensic examiners – A network analysis</a>. <em>Child Abuse &amp; Neglect</em>, 152, 106757.</p>
+<p>[6] Perrigo, B. (2023, January 10). <a href="https://time.com/6246018/facebook-sama-quits-content-moderation/">Under fire, Facebook's 'ethical' outsourcing partner quits content moderation work</a>. <em>TIME</em>.</p>
+</article>
+</main>
+<footer>CS120: Introduction to AI Safety · Stanford University</footer>
+</body>
+</html>
