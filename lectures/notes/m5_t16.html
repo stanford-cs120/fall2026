@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>When Do Audits Support Accountability? | Stanford CS120</title>
+  <meta name="description" content="When Do Audits Support Accountability? — CS120, Autumn 2026.">
+  <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/lectures/notes/m5_t16.html">
+  <link rel="stylesheet" href="../materials.css">
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { ignoreHtmlClass: '.*', processHtmlClass: 'arithmatex' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+</head>
+
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header><a href="../../index.html">Stanford CS120 · Autumn 2026</a></header>
+  <main id="main">
+    <nav aria-label="Course materials">
+      <a href="../../lectures/index.html">All course materials</a> ·
+      <a href="../../lectures/notes/index.html">Course notes</a>
+    </nav>
+    <h1>When Do Audits Support Accountability?</h1>
+    <p class="meta">Class meeting: 2026-11-17</p>
+    <article>
+      <p><strong>Module 5: When Do Audits Support Accountability?</strong></p>
+      <p>Audits examine AI systems and the institutions working on them. There is a growing prevalence of third-party
+        auditing and assurance institutions [3]. This trend has been influenced by demand for independent assessment,
+        external accountability, and support for enforcement of existing laws in a given jurisdiction [3–5]. Examples
+        include the European Commission's European Centre for Algorithmic Transparency, which tests algorithmic systems
+        and supports enforcement of the Digital Services Act [4], and AI Forensics, a European nonprofit that conducts
+        independent algorithmic audits [5].</p>
+      <p>In the previous note we discussed construct operationalization as a framework for dealing with unobservable or
+        hard-to-measure constructs. Here we ask how evaluation evidence enters institutional decisions. Who must respond
+        to an audit finding, who has the authority to act, and what makes the institution accountable when a safeguard
+        fails?</p>
+      <p>Raji et al. argue there is an accountability gap in development and deployment of AI systems [1]. While there
+        may be a growing number of external auditing institutions, internal auditing remains challenging. Many harms
+        from AI systems are only recognized <em>after</em> the relevant systems have been deployed. The core argument is
+        that if the responsible development of AI is a core purpose of an organization creating AI, then a governance
+        system through which the whole organization is held accountable should be established.</p>
+      <p>This note gives one perspective on what AI governance and accountability are about, and then uses Raji et al.
+        to examine when audits support accountable governance within an institution. The main distinctions can be drawn
+        concisely: governance directs and controls an institution; accountability concerns who must answer for decisions
+        and their consequences; auditing examines compliance with respect to a set of standards. The central questions
+        concern who must explain and justify their conduct, to whom, and what judgement or consequences can follow [2].
+      </p>
+      <p><strong>Governance, accountability, and auditing</strong></p>
+      <p>ISO 37000:2021 defines governance of organizations as a "human-based system by which an organization is
+        directed, overseen and held accountable for achieving its defined purpose" [6, §3.1.1]. The stipulation of a
+        <em>human-based</em> system is important for AI governance: governance concerns the institutions and people
+        responsible for directing and overseeing AI systems, not merely the technical mechanisms used to control their
+        behavior. AI may support these processes, but ultimate organizational accountability lies with a governing body
+        composed of people [6, §3.3.4].</p>
+      <p>This introduces a distinction between <em>having responsibility</em> and <em>being held accountable</em>.
+        Responsibility refers to the state of obligation to act or make decisions, while accountability refers to the
+        state of answerability for how those responsibilities are fulfilled [6, §§3.2.2–3.2.3]. Raji et al. use
+        <em>accountability</em> broadly to mean "the state of being responsible or answerable for a system, its behavior
+        and its potential impacts" [1, §2]. Bovens offers a narrower, relational perspective: an actor must explain and
+        justify their conduct to a forum that can question, judge, and potentially impose consequences [2]. Assigning
+        responsibility, then, does not by itself establish an effective accountability relationship.</p>
+      <p>An audit, whether internal or external, provides evidence that may be used to determine whether
+        responsibilities have been fulfilled. For example, an audit may evaluate whether an organization is following
+        its specified ethical standards. Those findings may reveal failures, but they do not establish accountability.
+        Closing the gap between responsibility and accountability requires someone who is obligated to respond, a forum
+        able to evaluate that response, and the possibility of consequences.</p>
+      <p><strong>Internal auditing</strong></p>
+      <p>Raji et al. introduce SMACTR, an internal audit framework consisting of five stages: Scoping, Mapping, Artifact
+        Collection, Testing, and Reflection [1, §4]. This framework organizes several methods previously introduced in
+        the course.</p>
+      <p>During scoping, the organization defines audit objectives alongside its ethical principles and potential harms
+        of interest. This roughly corresponds to specifying <a
+          href="https://stanford-cs120.github.io/fall2026/lectures/notes/m1_t3.html">system boundaries and assurance
+          claims</a>: defining the system, harms, and scope of the audit. In the mapping stage, a <a
+          href="https://stanford-cs120.github.io/fall2026/lectures/notes/m1_t3.html">hazard-analysis method</a> (e.g.
+        FMEA) is used in conjunction with assessment against the organization's ethical principles. Following this, <a
+          href="https://stanford-cs120.github.io/fall2026/lectures/notes/m2_t7.html">datasheets and model cards</a>
+        support artifact collection.</p>
+      <p>During testing, <a href="https://stanford-cs120.github.io/fall2026/lectures/notes/m2_t6.html">robustness
+          evaluations</a> are conducted. These may include group-disparity analysis and adversarial testing.
+        Importantly, the documentation helps establish what those tests were intended to cover and what remains out of
+        scope. In the last stage, reflection, an <a
+          href="https://stanford-cs120.github.io/fall2026/lectures/notes/m1_t3.html">assurance claim</a> is synthesized.
+        The institutional assurance is not only about the safety-relevant claim. It also will specify who must respond
+        to the findings, what decisions the assurance changes, and who is accountable for residual risk.</p>
+      <p><strong>When do audits support accountability?</strong></p>
+      <p>The audit is the process of obtaining decision-relevant evidence. Raji et al. also identify post-audit
+        activities that are crucial to determining whether that audit supports accountability. These include go/no-go
+        decisions, design mitigations, and tracking implementation. The audit helps close the accountability gap by
+        making it explicit through evidence; it does not create accountability out of thin air.</p>
+      <p>Audits may struggle to support accountability when there are no mechanisms for enforcing decisions or imposing
+        consequences on the relevant stakeholders. For example, suppose the audit results are sent to the upper-level
+        members of an organization. The results expose internal problems within the organization. Groups may disagree
+        about whether these problems are hazardous or warrant a safety constraint. One possible failure mode is that the
+        audit identifies a problem and then nothing changes due to internal disagreement about how to translate the
+        result into a governing decision. By default, the model or artifact gets released. Later, when there is an
+        incident, the audit creates exposure for the organization by showing that it was aware of potential harms and
+        did nothing.</p>
+      <p><strong>Conclusions</strong></p>
+      <p>In short, an audit is only as useful as the governance structure it is embedded in. Moreover, an organization's
+        governance system is inherently human-based. An organization's AI ethical principles may be embedded in an
+        auditing process, but this still does not determine who chooses these standards or has the power to revise them.
+        This remains a social-choice problem.</p>
+      <p>In this way, the role of the audit might be better seen as a way to make the accountability gaps within an
+        organization explicit. Audits support accountability by making values, principles, and decision criteria
+        explicit and common knowledge within an organization. The slow and potentially politically costly process of
+        administering an audit may also be something of a counterbalance to the comparatively rapid pace of AI
+        development.</p>
+      <p><strong>References</strong></p>
+      <p>[1] Raji et al. (2020). <a href="https://arxiv.org/pdf/2001.00973">Closing the AI Accountability Gap: Defining
+          an End-to-End Framework for Internal Algorithmic Auditing</a>. Required: §§2, 4–5.</p>
+      <p>[2] Bovens (2007). <a href="https://doi.org/10.1111/j.1468-0386.2007.00378.x">Analysing and Assessing
+          Accountability: A Conceptual Framework</a>. <em>Optional: clarifies accountability as a relationship involving
+          explanation, scrutiny, and possible consequences.</em></p>
+      <p>[3] Department for Science, Innovation &amp; Technology (2025). <a
+          href="https://www.gov.uk/government/publications/trusted-third-party-ai-assurance-roadmap/trusted-third-party-ai-assurance-roadmap">Trusted
+          third-party AI assurance roadmap</a>. 3 September 2025.</p>
+      <p>[4] European Commission (2026). <a href="https://digital-strategy.ec.europa.eu/en/policies/dsa-cooperation">The
+          cooperation framework under the Digital Services Act</a>. Updated 6 November 2026.</p>
+      <p>[5] AI Forensics. <a href="https://aiforensics.org/">Looking behind the code</a>. For a contemporary
+        investigation, see <a href="https://aiforensics.org/work/apple-foundational-bias">On-Device Foundational Biases:
+          How Summarization Can Perpetuate Biases</a>, 12 February 2026.</p>
+      <p>[6] International Organization for Standardization. (2021). <a
+          href="https://www.iso.org/standard/65036.html">ISO 37000:2021 — Governance of organizations — Guidance</a>.
+        ISO.</p>
+    </article>
+  </main>
+  <footer>CS120: Introduction to AI Safety · Stanford University</footer>
+</body>
+
+</html>
