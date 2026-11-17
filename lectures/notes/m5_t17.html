@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accountability and the Incentives to Know | Stanford CS120</title>
+  <meta name="description" content="Accountability and the Incentives to Know — CS120, Autumn 2026.">
+  <link rel="canonical" href="https://stanford-cs120.github.io/fall2026/lectures/notes/m5_t17.html">
+  <link rel="stylesheet" href="../materials.css">
+  
+<script>
+window.MathJax = {
+  tex: {inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']]},
+  options: {ignoreHtmlClass: '.*', processHtmlClass: 'arithmatex'}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><a href="../../index.html">Stanford CS120 · Autumn 2026</a></header>
+<main id="main">
+  <nav aria-label="Course materials">
+    <a href="../../lectures/index.html">All course materials</a> ·
+    <a href="../../lectures/notes/index.html">Course notes</a>
+  </nav>
+  <h1>Accountability and the Incentives to Know</h1>
+  <p class="meta">Class meeting: 2026-11-19</p>
+  <article>
+<p><strong>Module 5: Accountability and the Incentives to Know</strong></p>
+<p>Suppose an organization conducts an internal audit that discovers a serious risk from a pending AI model release. Management decides to do nothing, but a later incident exposes that the institution knew. In one interpretation, the institution was exposed by releasing a risky model. In another interpretation, the document trail from the internal audit created legal or reputational exposure for the organization.</p>
+<p>So far in this module we've seen how institutions embed values through choice of theoretical understanding and operationalization. Institutions may also be held accountable through a combination of external and internal auditing and governance structures. We also saw how accountability may be avoided as it can expose when and what an institutions knew about a potential hazard.</p>
+<p>Choosing not to investigate is different from restricting an audit to particular details. Both of these are distinct from actively concealing an existing finding. Some people within an organization may benefit from participating in auditing. Others, such as those in management or public-facing roles, may bear the costs of a model incident or manage the fallout from a negative audit outcome.</p>
+<p><strong>Information hazards</strong></p>
+<p>Assume that an audit or investigation is a type of oracle within an institution that returns true information. Bostrom argues that even under this assumption of true information, hazards remain, and puts forward the following definition [1]:</p>
+<blockquote>
+<p><strong>Information hazard:</strong> A risk that arises from the dissemination or the potential dissemination of (true) information that may cause harm or enable some agent to cause harm.</p>
+</blockquote>
+<p>In this example, suppose an audit surfaces information that would allow an actor to cause harm if it became widely known before the risk was addressed. Disclosure could harm external third parties, such as users or customers; public scrutiny can also impose costs on the institution. Establishing that an information hazard exists remains distinct from establishing or validating a safety constraint.</p>
+<p>In AI, there has been ongoing debate about how to secure AI agents. For example, after a swarm of OpenAI agents in development compromised Hugging Face infrastructure, OpenAI laid out a plan of action that included hardening security, increasing chain-of-thought monitoring efforts, enforcing alignment auditing, and reinforcing its incident response process [4, §IX].</p>
+<p>Monitoring itself also creates hazards. Anthropic and OpenAI have reported models expressing suspicion that they are being evaluated, changing how they act under evaluation and undermining the intended interpretation of safety tests [5–6].</p>
+<p>The broader AI capabilities used for security can also support surveillance. Anthropic has reported misuse of Claude for state-linked surveillance and cyber espionage, including the development of a mass-interception platform in Mali [7].</p>
+<p>In a separate dispute over restrictions on domestic surveillance and autonomous weapons, the Pentagon designated Anthropic a supply-chain risk in March 2026 [8]. The designation under the Federal Acquisition Supply Chain Security Act was upheld on appeal in September; Anthropic's November 10 filing reports that it filed a petition for rehearing [9].</p>
+<p><strong>When ignorance becomes desirable</strong></p>
+<p>Is ignorance a safety constraint or a hazard? Bostrom suggests that "ignorance carries its own dangers which are oftentimes greater than those of knowledge" [1]. On the other hand, developing new capabilities can itself create hazards. New capabilities, biotechnologies, and monitoring technologies can be dual-use: useful for both safe and unsafe purposes.</p>
+<p>Metcalf et al. add nuance to this idea using the relational view of accountability introduced in the previous note [2]. Documentation is a primary tool in a relational accountability framework. However, internal audits rely on employees to faithfully document relevant features and hazards. They argue that accountability is a relation, not a property of a system, writing: "If there is no formal method by which people affected by algorithmic systems might demand changes to that system, then 'accountability' is not meaningful." [2, §2]. Simply put, the governance structure of the organization helps determine whether there is an accountability relationship between developers, regulators, and the public.</p>
+<p>Metcalf et al. argue that organizations can face perverse incentives to remain ignorant of harms associated with their systems [2, §3.1]. For example, reports in 2021 revealed that Meta's internal research had identified emotional harms associated with Instagram use among younger users, while the company had concealed important findings from public scrutiny [3]. Former employee Frances Haugen brought these findings to public attention through whistleblower disclosures and testimony before the U.S. Senate. Although internal accountability failed, external scrutiny was followed by a multistate lawsuit against Meta in 2023 [10] and an August 2026 settlement, subject to court approval, involving up to $17.1 billion in payments and substantial child-safety reforms [11]. This illustrates how organizations can possess evidence of harm without adequately acting on it, and why internal documentation alone does not guarantee accountability.</p>
+<p><strong>Disclosure and an accountable response</strong></p>
+<p>Let's return to the opening example. An internal audit presents evidence of a serious risk from a pending AI release, but management decides not to act on that finding. In that scenario, being able to access the findings does not imply the authority to act on them. A developer may need to know details from the audit to design a safety constraint. The public may need only sufficient information to challenge a decision to proceed with the release. In contrast, management holds formal authority to decide whether to delay the release.</p>
+<p>Incentives also vary across the stakeholders. The person who discovers the hazard, the employee deciding whether to report or blow the whistle, the manager responsible for a decision, and people exposed to a risky release all face different actions and trade-offs. Effective governance, whether external or internal, must account for these differences. For example, laws may protect whistleblowers, while internal policies may protect employees who bring negative findings to management.</p>
+<p>Who gets to decide that information is hazardous? Restricting disclosure may be necessary to prevent information hazards. The public may not need to know every detail of a security vulnerability while still benefiting from information on how to protect themselves from its effects. An independent forum may be able to review restricted evidence while still holding decision-makers accountable. These disclosure decisions also matter because they influence employees' willingness to investigate and report risks in the first place.</p>
+<p><strong>Conclusions</strong></p>
+<p>What makes an institution willing to discover evidence that could count against it? Information hazards and accountability create competing incentives to know. Discovering a hazard may make it possible to prevent harm. On the other hand, audits impose requirements, costs, and reputational risks on the institution. Moreover, an institution captures most of the upside of a "safe" reputation whether that is strictly true or obfuscates internal findings. What ultimately matters is whether governance structures allow people and forums to demand evidence, challenge decisions, and hold institutions accountable.</p>
+<p><strong>References</strong></p>
+<p>[1] Bostrom (2011). <a href="https://nickbostrom.com/information-hazards.pdf">Information Hazards: A Typology of Potential Harms from Knowledge</a>.</p>
+<p>[2] Metcalf, Moss, Singh, Tafese &amp; Watkins (2022). <a href="https://arxiv.org/abs/2203.01455">A relationship and not a thing: A relational approach to algorithmic accountability and assessment documentation</a>.</p>
+<p>[3] Cecilia Kang (2021). <a href="https://www.nytimes.com/2021/10/05/technology/facebook-whistle-blower-hearing.html">Facebook Whistle-Blower Urges Lawmakers to Regulate the Company</a>. <em>The New York Times.</em> Retrieved November 15, 2026.</p>
+<p>[4] OpenAI (2026). <a href="https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face Incident-Technical-Report.pdf">OpenAI–Hugging Face Incident Technical Report</a>. August 26. </p>
+<p>[5] Anthropic (2025). <a href="https://www-cdn.anthropic.com/963373e433e489a87a10c823c52a0a013e9172dd/Claude Sonnet 4.5 System Card.pdf">Claude Sonnet 4.5 System Card</a>. </p>
+<p>[6] Hsu &amp; Arnesen (2026). <a href="https://alignment.openai.com/eval-production-behavior-gap/">Eval-production behavior gaps in agent safety and the role of eval-awareness</a>. OpenAI, November 3.</p>
+<p>[7] Anthropic (2026). <a href="https://www.anthropic.com/threat-intelligence-report-september-2026">Detecting and countering misuse of AI: September 2026</a>.</p>
+<p>[8] U.S. Court of Appeals for the D.C. Circuit (2026). <a href="https://www.govinfo.gov/content/pkg/USCOURTS-caDC-26-01049/pdf/USCOURTS-caDC-26-01049-0.pdf">Anthropic PBC v. United States Department of War</a>, Nos. 26-1049 and 26-1162, September 25.</p>
+<p>[9] Anthropic (2026). <a href="https://www.sec.gov/Archives/edgar/data/2130357/000162828026072484/anthropicpbc-sx1ax2.htm">Form S-1/A, Amendment No. 2</a>, November 10, p. 76.</p>
+<p>[10] California Department of Justice (2023). <a href="https://oag.ca.gov/news/press-releases/attorney-general-bonta-files-lawsuit-against-meta-over-harms-youth-mental-health">Attorney General Bonta Files Lawsuit Against Meta Over Harms to Youth Mental Health</a>. October 24.</p>
+<p>[11] New York State Office of the Attorney General (2026). <a href="https://ag.ny.gov/press-release/2026/attorney-general-james-secures-171-billion-and-groundbreaking-reforms-meta">Attorney General James Secures Up to $17.1 Billion and Groundbreaking Reforms from Meta to Protect Children on Social Media</a>. August 26. </p>
+</article>
+</main>
+<footer>CS120: Introduction to AI Safety · Stanford University</footer>
+</body>
+</html>
